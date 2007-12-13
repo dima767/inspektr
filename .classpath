@@ -9,5 +9,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring/2.5/spring-2.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/2.5/spring-test-2.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/2.5/spring-webmvc-2.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

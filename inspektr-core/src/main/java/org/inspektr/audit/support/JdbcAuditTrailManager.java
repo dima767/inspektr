@@ -15,70 +15,92 @@
  */
 package org.inspektr.audit.support;
 
-import java.sql.Types;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.inspektr.audit.AuditTrailManager;
 import org.inspektr.audit.AuditableActionContext;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.object.StoredProcedure;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.inspektr.common.ioc.annotation.NotNull;
+import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * Implementation of {@link org.inspektr.audit.AuditTrailManager}
- * to persist the audit trail to the EAS-wide AUDIT_TRAIL table in the Oracle
- * data base.
+ * Implementation of {@link org.inspektr.audit.AuditTrailManager} to persist the
+ * audit trail to the EAS-wide AUDIT_TRAIL table in the Oracle data base.
  * 
- * @since 1.0
- * @author lleung
+ * <pre>
+ * CREATE TABLE COM_AUDIT_TRAIL
+ * (
+ *  AUD_USER        VARCHAR2(100)                 NOT NULL,
+ *  AUD_CLIENT_IP	VARCHAR(15)						NOT NULL,
+ *  AUD_SERVER_IP	VARCHAR(15)						NOT NULL,
+ *  AUD_RESOURCE    VARCHAR2(100)                 NOT NULL,
+ *  AUD_ACTION      VARCHAR2(100)                 NOT NULL,
+ *  APPLIC_CD       VARCHAR2(5)                  	NOT NULL,
+ *  AUD_DATE		  DATE							NOT NULL,
+ * )
+ * </pre>
+ * 
+ * @author Scott Battaglia
  * @version $Revision: 1.7 $ $Date: 2007/12/03 22:02:41 $
+ * @since 1.0
+ * 
  */
-public class JdbcAuditTrailManager extends StoredProcedure implements
+public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 		AuditTrailManager {
-	
-	private final Log log = LogFactory.getLog(this.getClass());
-	
-	private static final String PROCEDURE_NAME = "ESS_INSPEKTR.submit_audit_trail";
-	
-	private static final String WHO = "p_who";
-	private static final String WHAT = "p_what";
-	private static final String ACTION = "p_action";
-	private static final String APPLICATION_CODE = "p_applic_cd";
-	private static final String WHEN = "p_time_of_action";
-	
-	
-	public void afterPropertiesSet() {
-		setSql(PROCEDURE_NAME);
-		declareParameter(new SqlParameter(WHO, Types.VARCHAR));
-		declareParameter(new SqlParameter(WHAT, Types.VARCHAR));
-		declareParameter(new SqlParameter(ACTION, Types.VARCHAR));
-		declareParameter(new SqlParameter(APPLICATION_CODE, Types.VARCHAR));
-		declareParameter(new SqlParameter(WHEN, Types.TIMESTAMP));
-		
-		setFunction(false);
-		compile();	
-		super.afterPropertiesSet();
+
+	private static final String INSERT_SQL_STATEMENT = "Insert into COM_AUDIT_TRAIL(AUD_USER, AUD_CLIENT_IP, AUD_SERVER_IP, AUD_RESOURCE, AUD_ACTION, APPLIC_CD, AUD_DATE) Values(?, ?, ?, ?, ?, ?, ?)";
+
+	/** ExecutorService that has one thread to asynchronously save requests. */
+	@NotNull
+	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+	/**
+	 * Instance of TransactionTemplate to manually execute a transaction since
+	 * threads are not in the same transaction.
+	 */
+	@NotNull
+	private final TransactionTemplate transactionTemplate;
+
+	public JdbcAuditTrailManager(final TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 
-	@Transactional(propagation=Propagation.NESTED)
 	public void record(final AuditableActionContext auditableActionContext) {
-		
-		Map<String,Object> params = new HashMap<String,Object>();
-		
-		params.put(WHO, auditableActionContext.getPrincipal());
-		params.put(WHAT, auditableActionContext.getResourceOperatedUpon());
-		params.put(ACTION, auditableActionContext.getActionPerformed());
-		params.put(APPLICATION_CODE, auditableActionContext.getApplicationCode());
-		params.put(WHEN, auditableActionContext.getWhenActionWasPerformed());
+		this.executorService.execute(new LoggingTask(auditableActionContext,
+				this.transactionTemplate));
 
-		try {
-			execute(params);
-		} catch (Throwable t) {
-			log.error("Error persisting audit trail: " + t, t);
+	}
+
+	protected class LoggingTask implements Runnable {
+
+		private final AuditableActionContext auditableActionContext;
+
+		private final TransactionTemplate transactionTemplate;
+
+		public LoggingTask(final AuditableActionContext auditableActionContext, final TransactionTemplate transactionTemplate) {
+			this.auditableActionContext = auditableActionContext;
+			this.transactionTemplate = transactionTemplate;
+		}
+
+		public void run() {
+			this.transactionTemplate
+					.execute(new TransactionCallbackWithoutResult() {
+						protected void doInTransactionWithoutResult(final TransactionStatus transactionStatus) {
+							getSimpleJdbcTemplate()
+									.update(
+											INSERT_SQL_STATEMENT,
+											auditableActionContext.getPrincipal(),
+											auditableActionContext.getClientIpAddress(),
+											auditableActionContext.getServerIpAddress(),
+											auditableActionContext.getResourceOperatedUpon(),
+											auditableActionContext.getActionPerformed(),
+											auditableActionContext.getApplicationCode(),
+											auditableActionContext.getWhenActionWasPerformed());
+						}
+					});
 		}
 	}
 

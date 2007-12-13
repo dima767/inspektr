@@ -30,32 +30,42 @@ import org.springframework.util.Assert;
 public final class AuditableActionContext {
     
     /** This is <i>WHO</i>*/
-    private String principal;
+    private final String principal;
     
     /** This is <i>WHAT</i>*/
-    private String resourceOperatedUpon;
+    private final String resourceOperatedUpon;
     
     /** This is <i>ACTION</i>*/
-    private String actionPerformed;
+    private final String actionPerformed;
     
     /** This is <i>Application from which operation has been performed</i>*/
-    private String applicationCode;
+    private final String applicationCode;
     
     /** This is <i>WHEN</i>*/
-    private Date whenActionWasPerformed;
+    private final Date whenActionWasPerformed;
+    
+    /** Client IP Address */
+    private final String clientIpAddress;
+    
+    /** Server IP Address */
+    private final String serverIpAddress;
 
     public AuditableActionContext(final String principal, final String resourceOperatedUpon, final String actionPerformed, final String applicationCode,
-        final Date whenActionWasPerformed) {
+        final Date whenActionWasPerformed, final String clientIpAddress, final String serverIpAddress) {
         Assert.notNull(principal, "principal cannot be null");
         Assert.notNull(resourceOperatedUpon, "resourceOperatedUpon cannot be null");
         Assert.notNull(actionPerformed, "actionPerformed cannot be null.");
         Assert.notNull(applicationCode, "applicationCode cannot be null.");
         Assert.notNull(whenActionWasPerformed, "whenActionPerformed cannot be null.");
+        Assert.notNull(clientIpAddress, "clientIpAddress cannot be null.");
+        Assert.notNull(serverIpAddress, "serverIpAddress cannot be null.");
         this.principal = principal;
         this.resourceOperatedUpon = resourceOperatedUpon;
         this.actionPerformed = actionPerformed;
         this.applicationCode = applicationCode;
         this.whenActionWasPerformed = new Date(whenActionWasPerformed.getTime());
+        this.clientIpAddress = clientIpAddress;
+        this.serverIpAddress = serverIpAddress;
     }
 
     public String getPrincipal() {
@@ -77,4 +87,12 @@ public final class AuditableActionContext {
     public Date getWhenActionWasPerformed() {
         return new Date(whenActionWasPerformed.getTime());
     }
+
+	public String getClientIpAddress() {
+		return this.clientIpAddress;
+	}
+
+	public String getServerIpAddress() {
+		return this.serverIpAddress;
+	}
 }

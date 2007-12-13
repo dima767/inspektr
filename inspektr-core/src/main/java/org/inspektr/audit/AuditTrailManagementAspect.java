@@ -115,7 +115,8 @@ public final class AuditTrailManagementAspect {
 	            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
 	        } else {
 	        	final String applicationCode = auditable.applicationCode() == null ? this.applicationCode : auditable.applicationCode();
-	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date());
+	        	// TODO get the IP addresses
+	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), null, null);
 	    	        
     	        // Finally record the audit trail info
     	        for(AuditTrailManager manager : auditTrailManagers) {
