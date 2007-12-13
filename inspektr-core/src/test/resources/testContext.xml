@@ -1,0 +1,77 @@
+<beans 
+  xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+	   http://www.springframework.org/schema/aop 
+	   http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+	   http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-2.0.xsd
+	   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+	
+	<aop:aspectj-autoproxy/>
+	
+	<tx:annotation-driven transaction-manager="txManager"/>
+	
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource" >
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@acs3-db.ess.rutgers.edu:1521:acs3" />
+		<property name="username" value="WEB_PAC" />
+		<property name="password" value="pac3user938256128" />
+	</bean>
+	
+	<bean id="auditableBean" class="edu.rutgers.enterprise.inspektr.audit.SimpleAuditableBean"/>
+	
+    <bean id="auditAspect" class="edu.rutgers.enterprise.inspektr.audit.AuditTrailManagementAspect">
+		<property name="resourceResolvers">
+			<list>
+				<bean class="edu.rutgers.enterprise.inspektr.audit.SimpleAuditableResourceResolver"/>
+			</list>
+		</property>
+		<property name="auditTrailManagers">
+			<list>
+				<bean class="edu.rutgers.enterprise.inspektr.audit.support.ConsoleAuditTrailManager"/>
+				<bean class="edu.rutgers.enterprise.inspektr.audit.support.Log4jAuditTrailManager"/>
+				<ref bean="jdbcAuditTrailManager"/>
+			</list>
+		</property>
+		<property name="auditablePrincipalResolver">
+			<bean class="edu.rutgers.enterprise.inspektr.audit.SimpleAuditablePrincipalResolver"/>
+		</property>
+	</bean>
+	
+	<bean id="jdbcAuditTrailManager"
+	      class="edu.rutgers.enterprise.inspektr.audit.support.JdbcAuditTrailManager">
+	      <property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="errorLogManager"
+	      class="edu.rutgers.enterprise.inspektr.errorlog.support.DefaultErrorLogManager">
+	      <constructor-arg index="0" value="TEST"/>
+	      <constructor-arg index="1">
+	          <list>
+	              <bean class="edu.rutgers.enterprise.inspektr.errorlog.support.Log4jErrorReporter"/>
+	          </list>
+	      </constructor-arg>
+	      <property name="currentContextPrincipalResolver">
+	          <bean class="edu.rutgers.enterprise.inspektr.errorlog.TrivialCurrentContextPrincipalResolver"/>
+	      </property>
+	</bean>
+	
+	<bean id="handlerExceptionResolver" 
+	      class="edu.rutgers.enterprise.inspektr.errorlog.web.ErrorLogHandlerExceptionResolver">
+	      <constructor-arg index="0" ref="errorLogManager"/>
+	      <property name="order" value="0"/>
+	</bean>
+	
+	<bean id="errorLoggingFilter"
+	      class="edu.rutgers.enterprise.inspektr.errorlog.web.ErrorLoggingFilter">
+	      <property name="errorLogManager" ref="errorLogManager"/>
+	</bean>
+	
+</beans>
