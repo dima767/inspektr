@@ -19,24 +19,43 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.inspektr.common.ioc.annotation.GreaterThan;
+import org.inspektr.common.ioc.annotation.IsIn;
+import org.inspektr.common.ioc.annotation.NotEmpty;
+import org.inspektr.common.ioc.annotation.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter;
 
 /**
- * Abstract processor to assist in retrieving fields to check for annotations.
+ * BeanPostProcessor to assist in retrieving fields to check for annotations.
  * 
  * @author Scott Battaglia
  * @version $Revision: 1.5 $ $Date: 2007/04/13 20:01:22 $
- * @since 3.1
+ * @since 1.0
  */
-public abstract class AbstractAnnotationBeanPostProcessor extends
+public final class ValidationAnnotationBeanPostProcessor extends
     InstantiationAwareBeanPostProcessorAdapter {
 
-    protected final Log log = LogFactory.getLog(getClass());
+    private final Log log = LogFactory.getLog(getClass());
+    
+    private final Map<Class<? extends Annotation>, AnnotationValidator> annotationMappings = new HashMap<Class<? extends Annotation>, AnnotationValidator>();
+    
+    private final Class<? extends Annotation>[] annotations;
+    
+    public ValidationAnnotationBeanPostProcessor() {
+    	this.annotationMappings.put(GreaterThan.class, new GreaterThanAnnotationValidator());
+    	this.annotationMappings.put(IsIn.class, new IsInAnnotationValidator());
+    	this.annotationMappings.put(NotEmpty.class, new NotEmptyAnnotationValidator());
+    	this.annotationMappings.put(NotNull.class, new NotNullAnnotationValidator());
+    	
+    	this.annotations = this.annotationMappings.keySet().toArray(new Class[this.annotationMappings.size()]);
+    }
 
     public final Object postProcessBeforeInitialization(final Object bean,
         final String beanName) throws BeansException {
@@ -55,13 +74,16 @@ public abstract class AbstractAnnotationBeanPostProcessor extends
             for (final Field field : fields) {
                 final boolean originalValue = field.isAccessible();
                 field.setAccessible(true);
-                final Annotation annotation = field
-                    .getAnnotation(getSupportedAnnotation());
-
-                if (annotation != null) {
-                    processField(field, annotation, bean, beanName);
+                
+                for (final Class<? extends Annotation> annotationClass : this.annotations) {
+                	final Annotation annotation = field.getAnnotation(annotationClass);
+                	final AnnotationValidator validator = this.annotationMappings.get(annotationClass);
+                	
+                	if (validator != null) {
+                		validator.validate(field, annotation, bean, beanName);
+                	}
                 }
-
+                             
                 field.setAccessible(originalValue);
             }
         } catch (final IllegalAccessException e) {
@@ -75,15 +97,4 @@ public abstract class AbstractAnnotationBeanPostProcessor extends
         final List<Field> fields) {
         fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
     }
-
-    /**
-     * @param field the field to check
-     * @param bean the bean to check
-     * @param beanName the name of the bean.
-     * @throws IllegalAccessException
-     */
-    protected abstract void processField(Field field, Annotation annotation,
-        Object bean, String beanName) throws IllegalAccessException;
-
-    protected abstract Class<? extends Annotation> getSupportedAnnotation();
 }

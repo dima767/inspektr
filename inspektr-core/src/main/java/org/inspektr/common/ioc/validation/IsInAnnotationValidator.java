@@ -26,12 +26,11 @@ import org.springframework.beans.FatalBeanException;
  * 
  * @author Scott Battaglia
  * @version $Revision: 1.1 $ $Date: 2007/04/10 20:02:51 $
- * @since 3.1
+ * @since 1.0
  */
-public final class IsInAnnotationBeanPostProcessor extends
-    AbstractAnnotationBeanPostProcessor {
+public final class IsInAnnotationValidator implements AnnotationValidator {
 
-    protected void processField(final Field field, final Annotation annotation,
+    public void validate(final Field field, final Annotation annotation,
         final Object bean, final String beanName) throws IllegalAccessException {
         final IsIn isIn = (IsIn) annotation;
 
@@ -47,8 +46,10 @@ public final class IsInAnnotationBeanPostProcessor extends
             + "' does not contain a value of '" + isIn.value() + "' on bean '"
             + beanName + "'");
     }
+    
+    
 
-    protected Class< ? extends Annotation> getSupportedAnnotation() {
-        return IsIn.class;
+    public Class<? extends Annotation> supports() {
+    	return IsIn.class;
     }
 }

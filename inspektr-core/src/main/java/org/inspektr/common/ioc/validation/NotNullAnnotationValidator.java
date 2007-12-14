@@ -27,20 +27,19 @@ import org.springframework.beans.FatalBeanException;
  * 
  * @author Scott Battaglia
  * @version $Revision: 1.1 $ $Date: 2007/04/09 04:30:31 $
- * @since 3.1
+ * @since 1.0
  */
-public final class NotNullAnnotationBeanPostProcessor extends
-    AbstractAnnotationBeanPostProcessor {
+public final class NotNullAnnotationValidator implements AnnotationValidator {
 
-    protected void processField(final Field field, final Annotation annotation,
-        final Object bean, String beanName) throws IllegalAccessException {
+    public void validate(final Field field, final Annotation annotation,
+            final Object bean, final String beanName) throws IllegalAccessException {
         if (field.get(bean) == null) {
             throw new FatalBeanException("Field " + field.getName()
                 + " cannot be null on bean: " + beanName);
         }
     }
 
-    protected Class< ? extends Annotation> getSupportedAnnotation() {
+    public Class< ? extends Annotation> supports() {
         return NotNull.class;
     }
 }

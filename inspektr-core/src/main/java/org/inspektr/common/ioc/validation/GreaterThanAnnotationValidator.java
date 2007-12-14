@@ -27,16 +27,19 @@ import org.springframework.beans.FatalBeanException;
  * 
  * @author Scott Battaglia
  * @version $Revision: 1.2 $ $Date: 2007/04/10 00:48:49 $
- * @since 3.1
+ * @since 1.0
  * <p>
  * TODO: make more robust to support things other than int.
  * </p>
  */
-public final class GreaterThanAnnotationBeanPostProcessor extends
-    AbstractAnnotationBeanPostProcessor {
+public final class GreaterThanAnnotationValidator implements AnnotationValidator {
+	
+    public Class<? extends Annotation> supports() {
+		return GreaterThan.class;
+	}
 
-    protected void processField(final Field field, final Annotation annotation,
-        final Object bean, final String beanName) throws IllegalAccessException {
+    public void validate(final Field field, final Annotation annotation,
+            final Object bean, final String beanName) throws IllegalAccessException {
         final GreaterThan greaterThan = (GreaterThan) annotation;
 
         final int value = greaterThan.value();
@@ -47,9 +50,5 @@ public final class GreaterThanAnnotationBeanPostProcessor extends
                 + "\" must be greater than \"" + value + "\" on bean \""
                 + beanName + "\"");
         }
-    }
-
-    protected Class< ? extends Annotation> getSupportedAnnotation() {
-        return GreaterThan.class;
     }
 }

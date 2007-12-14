@@ -27,14 +27,13 @@ import org.springframework.beans.FatalBeanException;
 /**
  * @author Scott Battaglia
  * @version $Revision: 1.3 $ $Date: 2007/04/24 18:11:45 $
- * @since 3.1
+ * @since 1.0
  */
-public final class NotEmptyAnnotationBeanPostProcessor extends
-    AbstractAnnotationBeanPostProcessor {
+public final class NotEmptyAnnotationValidator implements AnnotationValidator {
 
-    protected void processField(final Field field, final Annotation annotation,
-        final Object bean, final String beanName) throws IllegalAccessException {
-
+	
+    public void validate(final Field field, final Annotation annotation,
+            final Object bean, final String beanName) throws IllegalAccessException {
         final Object obj = field.get(bean);
         
         if (obj == null) {
@@ -70,7 +69,7 @@ public final class NotEmptyAnnotationBeanPostProcessor extends
 
     }
 
-    protected Class<? extends Annotation> getSupportedAnnotation() {
+    public Class<? extends Annotation> supports() {
         return NotEmpty.class;
     }
 }
