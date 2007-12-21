@@ -89,14 +89,18 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 			this.transactionTemplate
 					.execute(new TransactionCallbackWithoutResult() {
 						protected void doInTransactionWithoutResult(final TransactionStatus transactionStatus) {
+							final String userId = auditableActionContext.getPrincipal().length() <= 100 ? auditableActionContext.getPrincipal() : auditableActionContext.getPrincipal().substring(0, 100);
+							final String resource = auditableActionContext.getResourceOperatedUpon().length() <= 100 ? auditableActionContext.getResourceOperatedUpon() : auditableActionContext.getResourceOperatedUpon().substring(0, 100);
+							final String action = auditableActionContext.getActionPerformed().length() <= 100 ? auditableActionContext.getActionPerformed() : auditableActionContext.getActionPerformed().substring(0, 100);
+							
 							getSimpleJdbcTemplate()
 									.update(
 											INSERT_SQL_STATEMENT,
-											auditableActionContext.getPrincipal(),
+											userId,
 											auditableActionContext.getClientIpAddress(),
 											auditableActionContext.getServerIpAddress(),
-											auditableActionContext.getResourceOperatedUpon(),
-											auditableActionContext.getActionPerformed(),
+											resource,
+											action,
 											auditableActionContext.getApplicationCode(),
 											auditableActionContext.getWhenActionWasPerformed());
 						}
