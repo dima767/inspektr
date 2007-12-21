@@ -40,6 +40,8 @@ public final class CommonsLoggingAuditTrailManager implements AuditTrailManager 
         log.info("ACTION: " + auditableActionContext.getActionPerformed());
         log.info("APPLICATION: " + auditableActionContext.getApplicationCode());
         log.info("WHEN: " + auditableActionContext.getWhenActionWasPerformed());
+        log.info("CLIENT IP ADDRESS: " + auditableActionContext.getClientIpAddress());
+        log.info("SERVER IP ADDRESS: " + auditableActionContext.getServerIpAddress());
         log.info("=============================================================");
         log.info("\n");
         log.info("\n");

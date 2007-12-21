@@ -34,6 +34,8 @@ import org.inspektr.audit.spi.support.DefaultAuditableActionResolver;
 import org.inspektr.audit.spi.support.ObjectCreationAuditableActionResolver;
 import org.inspektr.common.ioc.annotation.NotEmpty;
 import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.web.ClientInfo;
+import org.inspektr.common.web.ClientInfoHolder;
 
 /**
  * A POJO style aspect modularizing management of an audit trail data concern.
@@ -115,8 +117,8 @@ public final class AuditTrailManagementAspect {
 	            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
 	        } else {
 	        	final String applicationCode = auditable.applicationCode() == null ? this.applicationCode : auditable.applicationCode();
-	        	// TODO get the IP addresses
-	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), null, null);
+	        	final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
+	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
 	    	        
     	        // Finally record the audit trail info
     	        for(AuditTrailManager manager : auditTrailManagers) {

@@ -15,6 +15,9 @@
  */
 package org.inspektr.statistics.annotation;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Notes that statistics about the number of times this method has been called should be logged.
  * 
@@ -25,10 +28,55 @@ package org.inspektr.statistics.annotation;
  */
 public @interface Statistic {
 
-	public static enum Precision {MINUTE, HOUR, DAY}
+	// TODO provides a method on Precision to check equality of two dates based on precision.
+	public static enum Precision {MINUTE
+		{
+			public Date normalize(final Date date) {
+				final Calendar c1 = Calendar.getInstance();
+				c1.setTime(date);
+				
+				c1.set(Calendar.SECOND, 0);
+				c1.set(Calendar.MILLISECOND, 0);
+				
+				return c1.getTime();
+			}		
+		}, HOUR {
+			public Date normalize(final Date date) {
+				final Calendar c1 = Calendar.getInstance();
+				c1.setTime(date);
+				
+				c1.set(Calendar.SECOND, 0);
+				c1.set(Calendar.MILLISECOND, 0);
+				c1.set(Calendar.MINUTE, 0);
+				
+				return c1.getTime();
+			}
+		}, DAY {
+			public Date normalize(final Date date) {
+				final Calendar c1 = Calendar.getInstance();
+				c1.setTime(date);
+				
+				c1.set(Calendar.SECOND, 0);
+				c1.set(Calendar.MILLISECOND, 0);
+				c1.set(Calendar.MINUTE, 0);
+				c1.set(Calendar.HOUR_OF_DAY, 0);
+				
+				return c1.getTime();
+			}			
+		};
+		
+		public abstract Date normalize(Date date);
+	
+		public final boolean same(final Date normalizedDate, final Date date2) {
+			final Date normalizedDate2 = normalize(date2);
+			
+			return normalizedDate.equals(normalizedDate2);
+		}
+	}
+	
+	String applicationCode() default "";
 	
 	Precision[] requiredPrecision() default Precision.HOUR;
 	
-	String name();
-	
+	String name();	
 }

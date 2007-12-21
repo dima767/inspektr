@@ -38,6 +38,8 @@ public final class ConsoleAuditTrailManager implements AuditTrailManager {
         System.out.println("ACTION: " + auditableActionContext.getActionPerformed());
         System.out.println("APPLICATION: " + auditableActionContext.getApplicationCode());
         System.out.println("WHEN: " + auditableActionContext.getWhenActionWasPerformed());
+        System.out.println("CLIENT IP ADDRESS: " + auditableActionContext.getClientIpAddress());
+        System.out.println("SERVER IP ADDRESS: " + auditableActionContext.getServerIpAddress());
         System.out.println("=============================================================");
         System.out.println("\n");
     }

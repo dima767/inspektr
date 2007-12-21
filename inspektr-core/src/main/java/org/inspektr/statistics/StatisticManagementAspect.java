@@ -24,7 +24,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.web.ClientInfo;
+import org.inspektr.common.web.ClientInfoHolder;
 import org.inspektr.statistics.annotation.Statistic;
+import org.springframework.util.StringUtils;
 
 /**
  * A POJO style aspect modularizing management of a statistic data concern.
@@ -42,16 +45,22 @@ public class StatisticManagementAspect {
 	@NotNull
 	private final List<StatisticManager> statisticManagers;
 	
-	public StatisticManagementAspect(final List<StatisticManager> statisticManagers) {
+	@NotNull
+	private final String applicationCode;
+	
+	public StatisticManagementAspect(final List<StatisticManager> statisticManagers, final String applicationCode) {
 		this.statisticManagers = statisticManagers;
+		this.applicationCode = applicationCode;
 	}
 	
     @Around(value="@annotation(statistic)", argNames="statistic")
-    public Object handleAuditTrail(final ProceedingJoinPoint joinPoint, final Statistic statistic) throws Throwable {
+    public Object handleStatisticGathering(final ProceedingJoinPoint joinPoint, final Statistic statistic) throws Throwable {
     	try {
     		return joinPoint.proceed();
     	} finally {
-	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), statistic.name(), statistic.requiredPrecision());
+    		final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
+    		final String applicationCode = StringUtils.hasText(statistic.applicationCode()) ? statistic.applicationCode() : this.applicationCode;
+	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), statistic.name(), statistic.requiredPrecision(), clientInfo.getServerIpAddress(), applicationCode);
 	    	
 	    	for (final StatisticManager manager : this.statisticManagers) {
 	    		manager.recalculate(statisticActionContext);

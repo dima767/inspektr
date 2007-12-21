@@ -25,6 +25,7 @@ import org.springframework.util.Assert;
  * 
  * @author Scott Battaglia
  * @version $Revision$ $Date$
+ * @since 1.0
  *
  */
 public final class StatisticActionContext {
@@ -35,14 +36,22 @@ public final class StatisticActionContext {
 	
 	private final Precision[] requiredPrecision;
 	
-	public StatisticActionContext(final Date when, final String what, final Precision[] requiredPrecision) {
+	private final String serverIpAddress;
+	
+	private final String applicationCode;
+	
+	public StatisticActionContext(final Date when, final String what, final Precision[] requiredPrecision, final String serverIpAddress, final String applicationCode) {
 		this.when = new Date(when.getTime());
 		this.what = what;
 		this.requiredPrecision = requiredPrecision;
+		this.serverIpAddress = serverIpAddress;
+		this.applicationCode = applicationCode;
 		
-		Assert.notNull(when, "when cannot be null");
-		Assert.notNull(what, "what cannot be null.");
-		Assert.notNull(requiredPrecision, "requiredPrecision cannot be null");
+		Assert.notNull(this.when, "when cannot be null");
+		Assert.notNull(this.what, "what cannot be null.");
+		Assert.notNull(this.requiredPrecision, "requiredPrecision cannot be null");
+		Assert.notNull(this.serverIpAddress, "serverIpAddress is a required field.");
+		Assert.notNull(this.applicationCode, "applicationCode is a required field.");
 	}
 	
 	public String getWhat() {
@@ -56,7 +65,12 @@ public final class StatisticActionContext {
 	public Precision[] getRequiredPrecision() {
 		return this.requiredPrecision;
 	}
-	
-	
 
+	public String getServerIpAddress() {
+		return this.serverIpAddress;
+	}
+
+	public String getApplicationCode() {
+		return this.applicationCode;
+	}
 }

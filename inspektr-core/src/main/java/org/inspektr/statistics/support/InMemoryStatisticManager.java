@@ -15,14 +15,101 @@
  */
 package org.inspektr.statistics.support;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.inspektr.common.ioc.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
-import org.inspektr.statistics.StatisticManager;
+import org.inspektr.statistics.annotation.Statistic.Precision;
 
-public class InMemoryStatisticManager implements StatisticManager {
+/**
+ * Example StatisticsManager that stores everything in memory.
+ * <p>
+ * Note that if this is running long enough, you could run out of memory, as it has no upper bound on the amount of statistics it stores.
+ * 
+ * @author Scott Battaglia
+ * @version $Revision$ $Date$
+ * @since 1.0
+ *
+ */
+public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedStatisticManager {
+	
+	@NotNull
+	private final List<StatisticValue> values = new ArrayList<StatisticValue>();
 
-	public void recalculate(StatisticActionContext statisticActionContext) {
-		// TODO Auto-generated method stub
-
+	protected Runnable newTask(final StatisticActionContext statisticActionContext) {
+		return new StatisticGatheringTask(statisticActionContext, this.values);
 	}
+	
+	protected static final class StatisticGatheringTask implements Runnable {
+		
+		private final StatisticActionContext context;
+		
+		private final List<StatisticValue> values;
+		
+		public StatisticGatheringTask(final StatisticActionContext context, final List<StatisticValue> values) {
+			this.context = context;
+			this.values = values;
+		}
 
+		public void run() {
+			for (final Precision precision : this.context.getRequiredPrecision()) {
+				boolean matched = false;
+				for (final StatisticValue value : this.values) {
+					if (value.matches(this.context.getWhen(), precision)) {
+						value.increment();
+						matched = true;
+						break;
+					}
+				}
+				
+				if (!matched) {
+					values.add(new StatisticValue(precision, this.context.getWhen(), this.context.getWhat()));
+				}
+			}
+		}
+	}
+	
+	protected static final class StatisticValue {
+		private final Precision precision;
+		
+		private final Date date;
+		
+		private final AtomicInteger count;
+		
+		private final String name;
+		
+		public StatisticValue(final Precision precision, final Date date, final String name) {
+			this.precision = precision;
+			this.date = precision.normalize(date);
+			this.name = name;
+			this.count = new AtomicInteger(1);
+		}
+		
+		public void increment() {
+			this.count.incrementAndGet();
+		}
+		
+		public boolean matches(final Date date, final Precision precision) {
+			return precision.same(this.date, date);
+		}
+
+		public Precision getPrecision() {
+			return this.precision;
+		}
+
+		public Date getDate() {
+			return this.date;
+		}
+
+		public int getCount() {
+			return this.count.get();
+		}
+
+		public String getName() {
+			return this.name;
+		}
+	}
 }
