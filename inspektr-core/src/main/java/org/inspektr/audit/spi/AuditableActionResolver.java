@@ -23,7 +23,7 @@ import org.inspektr.audit.annotation.Auditable;
  * functionality, to provide the action taken.
  * 
  * @author Scott Battaglia
- * @version $Id: AuditablePrincipalResolver.java,v 1.2 2007/12/03 22:02:12 lleung Exp $
+ * @version $Revision$ $Date$
  * @since 1.0
  */
 public interface AuditableActionResolver {

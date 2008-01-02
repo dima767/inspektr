@@ -40,11 +40,14 @@ import org.springframework.util.StringUtils;
 @Aspect
 public class StatisticManagementAspect {
 	
+	/** Instance of Commons Logging */
 	private final Log log = LogFactory.getLog(this.getClass());
 	
+	/** The list of StatisticManagers to use to update statistics. */
 	@NotNull
 	private final List<StatisticManager> statisticManagers;
 	
+	/** The default application code. */
 	@NotNull
 	private final String applicationCode;
 	

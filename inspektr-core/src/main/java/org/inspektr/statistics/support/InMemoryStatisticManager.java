@@ -83,7 +83,7 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 		
 		public StatisticValue(final Precision precision, final Date date, final String name) {
 			this.precision = precision;
-			this.date = precision.normalize(date);
+			this.date = date;
 			this.name = name;
 			this.count = new AtomicInteger(1);
 		}

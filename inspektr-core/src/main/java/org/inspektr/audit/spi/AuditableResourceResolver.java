@@ -22,7 +22,7 @@ import org.aspectj.lang.JoinPoint;
  * functionality, to provide a current resource on which an auditable action is being performed.
  * 
  * @author Dmitriy Kopylenko
- * @version $Id: AuditableResourceResolver.java,v 1.3 2007/12/03 22:02:07 lleung Exp $
+ * @version $Revision$ $Date$
  * @since 1.0
  */
 public interface AuditableResourceResolver {

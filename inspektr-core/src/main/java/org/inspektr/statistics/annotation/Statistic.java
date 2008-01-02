@@ -28,7 +28,6 @@ import java.util.Date;
  */
 public @interface Statistic {
 
-	// TODO provides a method on Precision to check equality of two dates based on precision.
 	public static enum Precision {MINUTE
 		{
 			public Date normalize(final Date date) {
@@ -67,10 +66,11 @@ public @interface Statistic {
 		
 		public abstract Date normalize(Date date);
 	
-		public final boolean same(final Date normalizedDate, final Date date2) {
+		public final boolean same(final Date date1, final Date date2) {
+			final Date normalizedDate1 = normalize(date1);
 			final Date normalizedDate2 = normalize(date2);
 			
-			return normalizedDate.equals(normalizedDate2);
+			return normalizedDate1.equals(normalizedDate2);
 		}
 	}
 	

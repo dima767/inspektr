@@ -24,7 +24,7 @@ import org.inspektr.audit.AuditableActionContext;
  * <code>AuditTrailManager</code> that dumps auditable information to a configured logger.
  * 
  * @author Dmitriy Kopylenko
- * @version $Id: Log4jAuditTrailManager.java,v 1.1 2007/06/12 15:18:43 dkopylen Exp $
+ * @version $Revision$ $Date$
  * @since 1.0
  * @see AuditTrailManager
  */
@@ -43,7 +43,6 @@ public final class CommonsLoggingAuditTrailManager implements AuditTrailManager 
         log.info("CLIENT IP ADDRESS: " + auditableActionContext.getClientIpAddress());
         log.info("SERVER IP ADDRESS: " + auditableActionContext.getServerIpAddress());
         log.info("=============================================================");
-        log.info("\n");
-        log.info("\n");
+        log.info("\n\n");
     }
 }

@@ -24,7 +24,6 @@ import org.inspektr.audit.spi.AuditableActionResolver;
 import org.inspektr.audit.spi.AuditableResourceResolver;
 import org.inspektr.audit.spi.support.DefaultAuditableActionResolver;
 
-
 /**
  * States that this method should be logged for auditing purposes.
  * 

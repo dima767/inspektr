@@ -27,8 +27,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class ClientInfo {
 	
+	/** IP Address of the server (local). */
 	private final String serverIpAddress;
 	
+	/** IP Address of the client (Remote) */
 	private final String clientIpAddress;
 	
 	public ClientInfo(final HttpServletRequest request) {

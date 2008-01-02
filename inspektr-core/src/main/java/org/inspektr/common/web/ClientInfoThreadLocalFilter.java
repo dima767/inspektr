@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
+ * Creates a ClientInfo object and passes it to the {@link ClientInfoHolder}
  * 
  * @author Scott Battaglia
  * @version $Revision$ $Date$

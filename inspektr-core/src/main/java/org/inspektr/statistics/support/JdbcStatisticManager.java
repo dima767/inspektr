@@ -46,6 +46,10 @@ import org.springframework.transaction.support.TransactionTemplate;
  *
  */
 public final class JdbcStatisticManager extends AbstractThreadExecutorBasedStatisticManager {
+	
+	private static final String UPDATE_STATISTIC = "Update COM_STATISTICS Set STAT_COUNT = STAT_COUNT + 1 WHERE STAT_SERVER_IP = ? AND STAT_DATE = ? AND APPLIC_CD = ? AND STAT_PRECISION = ? AND STAT_NAME = ?";
+	
+	private static final String INSERT_STATISTIC = "Insert into COM_STATISTICS(STAT_SERVER_IP, STAT_DATE, APPLIC_CD, STAT_PRECISION, STAT_COUNT, STAT_NAME) VALUES(?, ?, ?, ?, 1, ?)";
 
 	@NotNull
 	private final SimpleJdbcTemplate jdbcTemplate;
@@ -88,10 +92,12 @@ public final class JdbcStatisticManager extends AbstractThreadExecutorBasedStati
 						final String applicationCode = statisticActionContext.getApplicationCode();
 						final String serverIpAddress = statisticActionContext.getServerIpAddress();
 						
+						final int updateCount = jdbcTemplate.update(UPDATE_STATISTIC, serverIpAddress, date, applicationCode, precision.name(), name);
+						
+						if (updateCount == 0) {
+							jdbcTemplate.update(INSERT_STATISTIC, serverIpAddress, date, applicationCode, precision.name(), name);
+						}
 					}
-					
-					// TODO Auto-generated method stub
-					
 				}				
 			});
 		}		

@@ -25,6 +25,11 @@ package org.inspektr.statistics;
  */
 public interface StatisticManager {
 	
+	/**
+	 * Recalculate statistics based on the latest action.
+	 * 
+	 * @param statisticActionContext the action to use to update the statistics.
+	 */
 	void recalculate(StatisticActionContext statisticActionContext);
 
 }
