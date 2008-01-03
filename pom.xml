@@ -6,7 +6,7 @@
 	<artifactId>inspektr</artifactId>
 	<packaging>pom</packaging>
 	<name>Inspektr</name>
-	<version>0.5.1</version>
+	<version>0.5.2</version>
 	<url>http://code.google.com/p/inspektr</url>
 	<inceptionYear>2007</inceptionYear>
 

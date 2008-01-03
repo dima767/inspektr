@@ -77,10 +77,13 @@ public final class ValidationAnnotationBeanPostProcessor extends
                 
                 for (final Class<? extends Annotation> annotationClass : this.annotations) {
                 	final Annotation annotation = field.getAnnotation(annotationClass);
-                	final AnnotationValidator validator = this.annotationMappings.get(annotationClass);
                 	
-                	if (validator != null) {
-                		validator.validate(field, annotation, bean, beanName);
+                	if (annotation != null) {
+                		final AnnotationValidator validator = this.annotationMappings.get(annotationClass);
+                	
+	                	if (validator != null) {
+	                		validator.validate(field, annotation, bean, beanName);
+	                	}
                 	}
                 }
                              
