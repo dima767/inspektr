@@ -32,10 +32,12 @@ import org.inspektr.audit.spi.AuditableResourceResolver;
 import org.inspektr.audit.spi.support.BooleanAuditableActionResolver;
 import org.inspektr.audit.spi.support.DefaultAuditableActionResolver;
 import org.inspektr.audit.spi.support.ObjectCreationAuditableActionResolver;
+import org.inspektr.audit.spi.support.ReturnValueAsStringResourceResolver;
 import org.inspektr.common.ioc.annotation.NotEmpty;
 import org.inspektr.common.ioc.annotation.NotNull;
 import org.inspektr.common.web.ClientInfo;
 import org.inspektr.common.web.ClientInfoHolder;
+import org.springframework.util.StringUtils;
 
 /**
  * A POJO style aspect modularizing management of an audit trail data concern.
@@ -85,6 +87,8 @@ public final class AuditTrailManagementAspect {
     	for (final AuditableResourceResolver resolver : auditableResourceResolvers) {
     		this.auditableResourceResolvers.put(resolver.getClass(), resolver);
     	}
+    	
+    	this.auditableResourceResolvers.put(ReturnValueAsStringResourceResolver.class, new ReturnValueAsStringResourceResolver());
     }
     
     @Around(value="@annotation(auditable)", argNames="auditable")
@@ -116,7 +120,7 @@ public final class AuditTrailManagementAspect {
 	        } else if (auditableResource == null) {
 	            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
 	        } else {
-	        	final String applicationCode = auditable.applicationCode() == null ? this.applicationCode : auditable.applicationCode();
+	        	final String applicationCode = StringUtils.hasText(auditable.applicationCode()) ? auditable.applicationCode() : this.applicationCode;
 	        	final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
 	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
 	    	        
