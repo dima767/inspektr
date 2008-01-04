@@ -18,7 +18,6 @@ package org.inspektr.statistics.support;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.inspektr.common.ioc.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
@@ -58,15 +57,18 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 			for (final Precision precision : this.context.getRequiredPrecision()) {
 				boolean matched = false;
 				for (final StatisticValue value : this.values) {
-					if (value.matches(this.context.getWhen(), precision)) {
+					if (value.matches(this.context.getWhen(), precision, this.context.getWhat())) {
 						value.increment();
 						matched = true;
+						System.out.println(value.toString());
 						break;
 					}
 				}
 				
 				if (!matched) {
-					values.add(new StatisticValue(precision, this.context.getWhen(), this.context.getWhat()));
+					final StatisticValue value = new StatisticValue(precision, this.context.getWhen(), this.context.getWhat());
+					System.out.println(value.toString());
+					values.add(value);
 				}
 			}
 		}
@@ -77,23 +79,23 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 		
 		private final Date date;
 		
-		private final AtomicInteger count;
+		private int count;
 		
 		private final String name;
 		
 		public StatisticValue(final Precision precision, final Date date, final String name) {
 			this.precision = precision;
-			this.date = date;
+			this.date = precision.normalize(date);
 			this.name = name;
-			this.count = new AtomicInteger(1);
+			this.count = 1;
 		}
 		
 		public void increment() {
-			this.count.incrementAndGet();
+			this.count++;
 		}
 		
-		public boolean matches(final Date date, final Precision precision) {
-			return precision.same(this.date, date);
+		public boolean matches(final Date date, final Precision precision, final String name) {
+			return precision.same(this.date, date) && this.precision == precision && this.name.equals(name);
 		}
 
 		public Precision getPrecision() {
@@ -105,11 +107,15 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 		}
 
 		public int getCount() {
-			return this.count.get();
+			return this.count;
 		}
 
 		public String getName() {
 			return this.name;
+		}
+		
+		public String toString() {
+			return "name=[" + this.name + "],date=[" + this.date + "],precision=[" + this.precision + "],count=[" + count + "]";
 		}
 	}
 }

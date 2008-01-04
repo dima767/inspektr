@@ -15,6 +15,10 @@
  */
 package org.inspektr.statistics.annotation;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,6 +30,8 @@ import java.util.Date;
  * @since 1.0
  *
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
 public @interface Statistic {
 
 	public static enum Precision {MINUTE

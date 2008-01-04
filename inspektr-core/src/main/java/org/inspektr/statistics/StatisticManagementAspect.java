@@ -62,9 +62,8 @@ public class StatisticManagementAspect {
     		return joinPoint.proceed();
     	} finally {
     		final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
-    		final String applicationCode = StringUtils.hasText(statistic.applicationCode()) ? statistic.applicationCode() : this.applicationCode;
-	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), statistic.name(), statistic.requiredPrecision(), clientInfo.getServerIpAddress(), applicationCode);
-	    	
+    		final String appCode = StringUtils.hasText(statistic.applicationCode()) ? statistic.applicationCode() : this.applicationCode;
+	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), statistic.name(), statistic.requiredPrecision(), clientInfo.getServerIpAddress(), appCode);
 	    	for (final StatisticManager manager : this.statisticManagers) {
 	    		manager.recalculate(statisticActionContext);
 	    	}
