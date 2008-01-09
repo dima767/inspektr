@@ -6,12 +6,12 @@
 		<artifactId>inspektr</artifactId>
 		<version>0.6</version>
 	</parent>
-	<description>Inspektr Core</description>
+	<description>Inspektr Web Application</description>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.inspektr</groupId>
-	<artifactId>inspektr-core</artifactId>
-	<packaging>jar</packaging>
-	<name>Inspektr Core</name>
+	<artifactId>inspektr-webapp</artifactId>
+	<packaging>war</packaging>
+	<name>Inspektr Web Application</name>
 	<dependencies>		
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -19,20 +19,14 @@
 			<version>2.4</version>
 			<scope>compile</scope>
 		</dependency>
-	
+		
 		<dependency>
-			<groupId>aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.5.3</version>
-			<scope>runtime</scope>
-		</dependency>
-	
-		<dependency>
-			<groupId>aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>1.5.3</version>
+			<groupId>org.inspektr</groupId>
+			<artifactId>inspektr-core</artifactId>
+			<version>0.6</version>
 			<scope>compile</scope>
 		</dependency>
+
 		
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -49,10 +43,17 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>2.5</version>
-			<scope>test</scope>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+			<type>jar</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+			<type>jar</type>
 		</dependency>
 	</dependencies>
 </project>
