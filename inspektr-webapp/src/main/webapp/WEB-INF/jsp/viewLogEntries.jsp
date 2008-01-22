@@ -4,8 +4,8 @@
 <form method="get" action="viewLogEntries.html" style="width:100%; display: block;" class="full">
 <p>
 <label for="applicationCode">Application:</label> <select name="applicationCode">
-<c:forEach items="${applicationCode}" var="item">
-	<option${eventType eq logSearchRequest.eventType ? ' selected="selected"' : ''}>${item}</option>
+<c:forEach items="${applicationCodes}" var="item">
+	<option${item eq logSearchRequest.applicationCode ? ' selected="selected"' : ''}>${item}</option>
 </c:forEach>
 </select>
 

@@ -63,15 +63,16 @@ public final class LogManagerImpl implements LogManager {
 			}
 		}
 		
-		
 		if (applicationCode != null && startDate != null && principal == null) {
 			for (final LogEntryDao logEntryDao : this.logEntryDaos) {
 				list.addAll(logEntryDao.findLogEntriesFor(applicationCode, startDate, endDate));
 			}
 		}
 		
-		for (final LogEntryDao logEntryDao : this.logEntryDaos) {
-			list.addAll(logEntryDao.findLogEntriesFor(applicationCode, startDate, endDate, principal));
+		if (applicationCode != null && startDate != null && principal != null) {
+			for (final LogEntryDao logEntryDao : this.logEntryDaos) {
+				list.addAll(logEntryDao.findLogEntriesFor(applicationCode, startDate, endDate, principal));
+			}
 		}
 		
 		final PropertyComparator propertyComparator = new PropertyComparator("entryDate", true, false);

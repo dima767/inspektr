@@ -45,6 +45,7 @@ public final class LogSearchRequestImpl implements LogSearchRequest {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)-1);
         this.startDate = calendar.getTime();
+        this.endDate = new Date();
 	}
 
 	public void setApplicationCode(final String applicationCode) {
