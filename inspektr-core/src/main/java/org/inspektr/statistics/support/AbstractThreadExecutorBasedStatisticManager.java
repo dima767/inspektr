@@ -21,9 +21,10 @@ import java.util.concurrent.Executors;
 import org.inspektr.common.ioc.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.StatisticManager;
+import org.springframework.beans.factory.DisposableBean;
 
 public abstract class AbstractThreadExecutorBasedStatisticManager implements
-		StatisticManager {
+		StatisticManager, DisposableBean {
 
 	/** ExecutorService that has one thread to asynchronously save requests. */
 	@NotNull
@@ -32,6 +33,10 @@ public abstract class AbstractThreadExecutorBasedStatisticManager implements
 	public final void recalculate(final StatisticActionContext statisticActionContext) {
 		this.executorService.execute(newTask(statisticActionContext));
 	}
-	
+
+	public void destroy() throws Exception {
+		this.executorService.shutdown();
+	}
+
 	protected abstract Runnable newTask(StatisticActionContext statisticActionContext);
 }
