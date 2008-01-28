@@ -11,6 +11,12 @@
 	</bean>
 	
 	<bean
+		name="/viewStatisticEntries.html"
+		class="org.inspektr.webapp.controller.StatisticSearchRequestController">
+		<constructor-arg index="0" ref="statisticManager" />
+	</bean>
+	
+	<bean
 		id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 		p:prefix="/WEB-INF/jsp/"
