@@ -75,7 +75,7 @@
 <div id="nav-main">
   <ul
     ><li><a id="viewLogEntries" href="viewLogEntries.html"><span>logs</span></a></li
-    ><li><a id="manageServiceView" href="viewStatistics.html"><span>statistics</span></a></li
+    ><li><a id="viewStatisticEntries" href="viewStatisticEntries.html"><span>statistics</span></a></li
   ></ul>
 </div>
 <!-- CONTENT -->
