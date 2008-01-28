@@ -31,7 +31,7 @@ import org.inspektr.webapp.domain.StatisticSearchRequest;
  * @since 1.0
  *
  */
-public class StatisticManagerImpl implements StatisticManager {
+public final class StatisticManagerImpl implements StatisticManager {
 	
 	@NotNull
 	private StatisticDao statisticDao;
@@ -51,5 +51,9 @@ public class StatisticManagerImpl implements StatisticManager {
 		}
 
 		return null;
+	}
+
+	public List<String> getApplicationCodes() {
+		return this.statisticDao.getApplicationCodes();
 	}
 }

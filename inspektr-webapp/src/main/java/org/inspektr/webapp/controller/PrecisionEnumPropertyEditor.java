@@ -13,12 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.inspektr.webapp.service;
+package org.inspektr.webapp.controller;
 
-import java.util.List;
+import java.beans.PropertyEditorSupport;
 
-import org.inspektr.webapp.domain.Statistic;
-import org.inspektr.webapp.domain.StatisticSearchRequest;
+import org.inspektr.statistics.annotation.Statistic.Precision;
 
 /**
  * 
@@ -27,9 +26,15 @@ import org.inspektr.webapp.domain.StatisticSearchRequest;
  * @since 1.0
  *
  */
-public interface StatisticManager {
-
-	List<Statistic> findStatisticsBy(StatisticSearchRequest request);
+public class PrecisionEnumPropertyEditor extends PropertyEditorSupport {
 	
-	List<String> getApplicationCodes();
+	private Precision enumValue;
+	
+	public Object getValue() {
+		return this.enumValue;
+	}
+
+	public void setAsText(final String text) throws IllegalArgumentException {
+		this.enumValue = Precision.valueOf(text);
+	}
 }

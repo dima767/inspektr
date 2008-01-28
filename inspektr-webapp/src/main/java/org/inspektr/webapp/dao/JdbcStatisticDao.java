@@ -28,6 +28,7 @@ import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 
 /**
+ * Implementation of {@link StatisticDao} that loads the required statistics from the database.
  * 
  * @author Scott Battaglia
  * @version $Revision$ $Date$
@@ -44,36 +45,47 @@ public final class JdbcStatisticDao extends SimpleJdbcDaoSupport implements Stat
 			statistic.setCount(rs.getInt("STAT_COUNT"));
 			statistic.setPrecision(Precision.valueOf(rs.getString("STAT_PRECISION")));
 			statistic.setWhat(rs.getString("STAT_NAME"));
-			statistic.setWhen(rs.getDate("STAT_DATE"));
+			statistic.setWhen(rs.getTimestamp("STAT_DATE"));
 			
 			return statistic;
 		}
 	};
+	
+	private final ParameterizedRowMapper<String> applicationCodeAsStringParameterizedRowMapper = new ParameterizedRowMapper<String>() {
+
+		public String mapRow(final ResultSet rs, final int rownum) throws SQLException {
+			return rs.getString("APPLIC_CD");
+		}};
+	
+	private final String SQL_SELECT_PREFIX = "Select APPLIC_CD, STAT_COUNT, STAT_PRECISION, STAT_NAME, STAT_DATE From COM_STATISTICS Where APPLIC_CD = ? AND ";
+	
+	private final String SQL_SELECT_SUFFIX = " ORDER BY STAT_DATE, STAT_PRECISION";
+	
+	public List<String> getApplicationCodes() {
+		return getSimpleJdbcTemplate().query("Select Distinct APPLIC_CD From COM_STATISTICS Order By APPLIC_CD", this.applicationCodeAsStringParameterizedRowMapper);
+	}
 
 	public List<Statistic> findComparisonStatistics(final Date firstDate,
 			final Date secondDate, final String applicationCode,
 			final Precision[] requiredPrecision) {
 		final Date[] firstDateLowHigh = constructLowAndHighDates(firstDate);
 		final Date[] secondDateLowHigh = constructLowAndHighDates(secondDate);
-		return getSimpleJdbcTemplate().query("Select APPLIC_CD, STAT_COUNT, STAT_PRECISION, STAT_NAME, STAT_DATE From COM_STATISTICS Where APPLIC_CD = ? AND ((STAT_DATE >= ? AND STAT_DATE <= ?) OR (STAT_DATE >= ? AND STAT_DATE <=?))" + constructPrecisionSuffix(requiredPrecision)  + " ORDER BY STAT_DATE, STAT_PRECISION", this.statisticParameterizedRowMapper, applicationCode, firstDateLowHigh[0], firstDateLowHigh[1], secondDateLowHigh[0], secondDateLowHigh[1]);
+		return getSimpleJdbcTemplate().query(SQL_SELECT_PREFIX + "((STAT_DATE >= ? AND STAT_DATE <= ?) OR (STAT_DATE >= ? AND STAT_DATE <=?)) AND " + constructPrecisionSuffix(requiredPrecision)  + SQL_SELECT_SUFFIX, this.statisticParameterizedRowMapper, applicationCode, firstDateLowHigh[0], firstDateLowHigh[1], secondDateLowHigh[0], secondDateLowHigh[1]);
 	}
 
 	public List<Statistic> findStatisticsForDateRange(final Date startDate,
 			final Date endDate, final String applicationCode, final Precision[] requiredPrecision) {
-		
-		
-		// TODO Auto-generated method stub
-		return null;
+		return getSimpleJdbcTemplate().query(SQL_SELECT_PREFIX + "STAT_DATE >= ? AND STAT_DATE <= ? AND " + constructPrecisionSuffix(requiredPrecision) + SQL_SELECT_SUFFIX, this.statisticParameterizedRowMapper, applicationCode, startDate, endDate);
 	}
 	
 	private String constructPrecisionSuffix(final Precision[] requiredPrecision) {
-		final StringBuilder stringBuilder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
+		builder.append("(");
 		for (final Precision precision : requiredPrecision) {
-			
+			builder.append("STAT_PRECISION = '" + precision.name() + "' OR ");
 		}
 		
-		// TODO FIX
-		return "";
+		return builder.substring(0, builder.length()-4) + ")";
 	}
 	
 	private Date[] constructLowAndHighDates(final Date date) {

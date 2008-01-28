@@ -33,5 +33,6 @@ public interface StatisticDao {
 	List<Statistic> findStatisticsForDateRange(Date startDate, Date endDate, String applicationCode, Precision[] requiredPrecision);
 	
 	List<Statistic> findComparisonStatistics(Date firstDate, Date secondDate, String applicationCode, Precision[] requiredPrecision);
-
+	
+	List<String> getApplicationCodes();
 }

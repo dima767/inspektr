@@ -27,7 +27,7 @@ import org.inspektr.statistics.annotation.Statistic.Precision;
  * @since 1.0
  *
  */
-public final class StatisticsSearchRequestImpl implements StatisticSearchRequest {
+public final class StatisticSearchRequestImpl implements StatisticSearchRequest {
 	
 	private String applicationCode;
 	
@@ -38,6 +38,13 @@ public final class StatisticsSearchRequestImpl implements StatisticSearchRequest
 	private SearchType searchType;
 	
 	private Precision[] requiredPrecisions;
+	
+	public StatisticSearchRequestImpl() {
+		this.endDate = new Date();
+		this.startDate = new Date();
+		this.searchType = SearchType.DATE_RANGE;
+		this.requiredPrecisions = new Precision[] {Precision.DAY};
+	}
 
 	public void setApplicationCode(final String applicationCode) {
 		this.applicationCode = applicationCode;
