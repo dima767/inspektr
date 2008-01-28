@@ -37,6 +37,11 @@ public final class ClientInfo {
 		this.serverIpAddress = request.getLocalAddr();
 		this.clientIpAddress = request.getRemoteAddr();
 	}
+	
+	public ClientInfo(final String serverIpAddress, final String clientIpAddress) {
+		this.serverIpAddress = serverIpAddress;
+		this.clientIpAddress = clientIpAddress;
+	}
 
 	public String getServerIpAddress() {
 		return this.serverIpAddress;
