@@ -38,7 +38,6 @@ import org.inspektr.common.ioc.annotation.NotNull;
 import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.spi.support.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
-import org.inspektr.common.web.ClientInfoHolder;
 import org.springframework.util.StringUtils;
 
 /**
@@ -102,16 +101,17 @@ public final class AuditTrailManagementAspect {
     	String currentPrincipal = null;
     	String auditableResource = null;
     	String action = null;
+    	Object retVal = null;
     	try {
-	    	final Object retval = joinPoint.proceed();
+	    	retVal = joinPoint.proceed();
 	    	
-	        currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, retval);
+	        currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, retVal);
 	        if (currentPrincipal != null) {
-	        	auditableResource = this.auditableResourceResolvers.get(auditable.resourceResolverClass()).resolveFrom(joinPoint, retval);		        
-		        action = auditableActionResolvers.get(auditable.actionResolverClass()).resolveFrom(joinPoint, retval, auditable);
+	        	auditableResource = this.auditableResourceResolvers.get(auditable.resourceResolverClass()).resolveFrom(joinPoint, retVal);		        
+		        action = auditableActionResolvers.get(auditable.actionResolverClass()).resolveFrom(joinPoint, retVal, auditable);
 	        }
 	        
-	        return retval;
+	        return retVal;
     	} catch (Exception e) {
     		currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, e);
 	        if (currentPrincipal != null) {
@@ -126,7 +126,7 @@ public final class AuditTrailManagementAspect {
 	            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
 	        } else {
 	        	final String applicationCode = StringUtils.hasText(auditable.applicationCode()) ? auditable.applicationCode() : this.applicationCode;
-	        	final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
+	        	final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
 	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
     	        // Finally record the audit trail info
     	        for(AuditTrailManager manager : auditTrailManagers) {
