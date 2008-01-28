@@ -35,6 +35,8 @@ import org.inspektr.audit.spi.support.ObjectCreationAuditableActionResolver;
 import org.inspektr.audit.spi.support.ReturnValueAsStringResourceResolver;
 import org.inspektr.common.ioc.annotation.NotEmpty;
 import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.spi.ClientInfoResolver;
+import org.inspektr.common.spi.support.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
 import org.inspektr.common.web.ClientInfoHolder;
 import org.springframework.util.StringUtils;
@@ -66,6 +68,9 @@ public final class AuditTrailManagementAspect {
 	
 	@NotNull
 	private final String applicationCode;
+
+	@NotNull
+	private ClientInfoResolver clientInfoResolver = new DefaultClientInfoResolver();
     
 	/**
 	 * Constructs an AuditTrailManagementAspect with the following parameters.  Also, registers some default AuditableActionResolvers including the
@@ -123,7 +128,6 @@ public final class AuditTrailManagementAspect {
 	        	final String applicationCode = StringUtils.hasText(auditable.applicationCode()) ? auditable.applicationCode() : this.applicationCode;
 	        	final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
 	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
-	    	        
     	        // Finally record the audit trail info
     	        for(AuditTrailManager manager : auditTrailManagers) {
     	            manager.record(auditContext);
@@ -137,4 +141,8 @@ public final class AuditTrailManagementAspect {
     		this.auditableActionResolvers.put(resolver.getClass(), resolver);
     	}
     }
+
+	public void setClientInfoResolver(final ClientInfoResolver factory) {
+		this.clientInfoResolver = factory;
+	} 
 }

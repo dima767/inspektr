@@ -24,8 +24,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.spi.ClientInfoResolver;
+import org.inspektr.common.spi.support.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
-import org.inspektr.common.web.ClientInfoHolder;
 import org.inspektr.statistics.annotation.Statistic;
 import org.springframework.util.StringUtils;
 
@@ -51,6 +52,9 @@ public class StatisticManagementAspect {
 	@NotNull
 	private final String applicationCode;
 	
+	@NotNull
+	private ClientInfoResolver clientInfoResolver = new DefaultClientInfoResolver();
+	
 	public StatisticManagementAspect(final List<StatisticManager> statisticManagers, final String applicationCode) {
 		this.statisticManagers = statisticManagers;
 		this.applicationCode = applicationCode;
@@ -58,10 +62,12 @@ public class StatisticManagementAspect {
 	
     @Around(value="@annotation(statistic)", argNames="statistic")
     public Object handleStatisticGathering(final ProceedingJoinPoint joinPoint, final Statistic statistic) throws Throwable {
+    	Object retVal = null;
     	try {
-    		return joinPoint.proceed();
+    		retVal = joinPoint.proceed();
+    		return retVal;
     	} finally {
-    		final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
+    		final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
     		final String appCode = StringUtils.hasText(statistic.applicationCode()) ? statistic.applicationCode() : this.applicationCode;
 	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), statistic.name(), statistic.requiredPrecision(), clientInfo.getServerIpAddress(), appCode);
 	    	for (final StatisticManager manager : this.statisticManagers) {
