@@ -18,8 +18,6 @@ package org.inspektr.statistics;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -39,10 +37,7 @@ import org.springframework.util.StringUtils;
  *
  */
 @Aspect
-public class StatisticManagementAspect {
-	
-	/** Instance of Commons Logging */
-	private final Log log = LogFactory.getLog(this.getClass());
+public final class StatisticManagementAspect {
 	
 	/** The list of StatisticManagers to use to update statistics. */
 	@NotNull
@@ -75,4 +70,8 @@ public class StatisticManagementAspect {
 	    	}
     	}
     }
+
+    public void setClientInfoResolver(final ClientInfoResolver clientInfoResolver) {
+		this.clientInfoResolver = clientInfoResolver;
+	}
 }
