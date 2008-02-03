@@ -23,6 +23,15 @@ import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.StatisticManager;
 import org.springframework.beans.factory.DisposableBean;
 
+/**
+ * Abstract class to handle the multithreading capability required by most implementations
+ * of the StatisticManager.
+ * 
+ * @author Scott Battaglia
+ * @version $Revision$ $Date$
+ * @since 1.0
+ *
+ */
 public abstract class AbstractThreadExecutorBasedStatisticManager implements
 		StatisticManager, DisposableBean {
 
