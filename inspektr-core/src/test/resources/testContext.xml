@@ -25,52 +25,52 @@
 		<property name="password" value="pac3user938256128" />
 	</bean>
 	
-	<bean id="auditableBean" class="edu.rutgers.enterprise.inspektr.audit.SimpleAuditableBean"/>
+	<bean id="auditableBean" class="org.inspektr.audit.SimpleAuditableBean"/>
 	
-    <bean id="auditAspect" class="edu.rutgers.enterprise.inspektr.audit.AuditTrailManagementAspect">
+    <bean id="auditAspect" class="org.inspektr.audit.AuditTrailManagementAspect">
 		<property name="resourceResolvers">
 			<list>
-				<bean class="edu.rutgers.enterprise.inspektr.audit.SimpleAuditableResourceResolver"/>
+				<bean class="org.inspektr.audit.SimpleAuditableResourceResolver"/>
 			</list>
 		</property>
 		<property name="auditTrailManagers">
 			<list>
-				<bean class="edu.rutgers.enterprise.inspektr.audit.support.ConsoleAuditTrailManager"/>
-				<bean class="edu.rutgers.enterprise.inspektr.audit.support.Log4jAuditTrailManager"/>
+				<bean class="org.inspektr.audit.support.ConsoleAuditTrailManager"/>
+				<bean class="org.inspektr.audit.support.Log4jAuditTrailManager"/>
 				<ref bean="jdbcAuditTrailManager"/>
 			</list>
 		</property>
 		<property name="auditablePrincipalResolver">
-			<bean class="edu.rutgers.enterprise.inspektr.audit.SimpleAuditablePrincipalResolver"/>
+			<bean class="org.inspektr.audit.SimpleAuditablePrincipalResolver"/>
 		</property>
 	</bean>
 	
 	<bean id="jdbcAuditTrailManager"
-	      class="edu.rutgers.enterprise.inspektr.audit.support.JdbcAuditTrailManager">
+	      class="org.inspektr.audit.support.JdbcAuditTrailManager">
 	      <property name="dataSource" ref="dataSource"/>
 	</bean>
 	
 	<bean id="errorLogManager"
-	      class="edu.rutgers.enterprise.inspektr.errorlog.support.DefaultErrorLogManager">
+	      class="org.inspektr.errorlog.support.DefaultErrorLogManager">
 	      <constructor-arg index="0" value="TEST"/>
 	      <constructor-arg index="1">
 	          <list>
-	              <bean class="edu.rutgers.enterprise.inspektr.errorlog.support.Log4jErrorReporter"/>
+	              <bean class="org.inspektr.errorlog.support.Log4jErrorReporter"/>
 	          </list>
 	      </constructor-arg>
 	      <property name="currentContextPrincipalResolver">
-	          <bean class="edu.rutgers.enterprise.inspektr.errorlog.TrivialCurrentContextPrincipalResolver"/>
+	          <bean class="org.inspektr.errorlog.TrivialCurrentContextPrincipalResolver"/>
 	      </property>
 	</bean>
 	
 	<bean id="handlerExceptionResolver" 
-	      class="edu.rutgers.enterprise.inspektr.errorlog.web.ErrorLogHandlerExceptionResolver">
+	      class="org.inspektr.errorlog.web.ErrorLogHandlerExceptionResolver">
 	      <constructor-arg index="0" ref="errorLogManager"/>
 	      <property name="order" value="0"/>
 	</bean>
 	
 	<bean id="errorLoggingFilter"
-	      class="edu.rutgers.enterprise.inspektr.errorlog.web.ErrorLoggingFilter">
+	      class="org.inspektr.errorlog.web.ErrorLoggingFilter">
 	      <property name="errorLogManager" ref="errorLogManager"/>
 	</bean>
 	
