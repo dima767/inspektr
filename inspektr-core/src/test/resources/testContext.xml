@@ -20,9 +20,9 @@
     
     <bean id="dataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource" >
 		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
-		<property name="url" value="jdbc:oracle:thin:@acs3-db.ess.rutgers.edu:1521:acs3" />
-		<property name="username" value="WEB_PAC" />
-		<property name="password" value="pac3user938256128" />
+		<property name="url" value="{jdbc.url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
 	</bean>
 	
 	<bean id="auditableBean" class="org.inspektr.audit.SimpleAuditableBean"/>
