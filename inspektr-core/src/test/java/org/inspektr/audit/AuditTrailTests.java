@@ -15,6 +15,8 @@
  */
 package org.inspektr.audit;
 
+import org.inspektr.common.web.ClientInfo;
+import org.inspektr.common.web.ClientInfoHolder;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 
@@ -32,6 +34,8 @@ public class AuditTrailTests extends AbstractDependencyInjectionSpringContextTes
     }
     
     public void testAuditingMachinery() {
+    	final ClientInfo clientInfo = new ClientInfo("myserver", "yourserver");
+    	ClientInfoHolder.setClientInfo(clientInfo);
         this.theBean.doSomething("String arg");
         this.theBean.returnSomething(new Object());
         try {

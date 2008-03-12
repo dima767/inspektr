@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="inspektr-core/src/main/java"/>
-	<classpathentry kind="src" path="inspektr-core/src/test/resources"/>
 	<classpathentry kind="src" path="inspektr-core/src/test/java"/>
+	<classpathentry excluding="**" kind="src" output="inspektr-core/src/test/resources" path="inspektr-core/src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="M2_REPO/aspectj/aspectjrt/1.5.3/aspectjrt-1.5.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/2.5/spring-test-2.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.4/servlet-api-2.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/taglibs/standard/1.1.2/standard-1.1.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/2.5.1/spring-context-2.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-beans/2.5.1/spring-beans-2.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-core/2.5.1/spring-core-2.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/2.5.1/spring-webmvc-2.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/2.5.1/spring-web-2.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-jdbc/2.5.1/spring-jdbc-2.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/2.5.1/spring-tx-2.5.1.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER/modules"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

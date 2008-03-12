@@ -12,6 +12,7 @@
 	
 	<aop:aspectj-autoproxy/>
 	
+	<!-- 
 	<tx:annotation-driven transaction-manager="txManager"/>
 	
 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -24,54 +25,57 @@
 		<property name="username" value="${username}" />
 		<property name="password" value="${password}" />
 	</bean>
+	 -->
 	
 	<bean id="auditableBean" class="org.inspektr.audit.SimpleAuditableBean"/>
 	
     <bean id="auditAspect" class="org.inspektr.audit.AuditTrailManagementAspect">
-		<property name="resourceResolvers">
+    	<constructor-arg index="0">
+    		<bean class="org.inspektr.audit.SimpleAuditablePrincipalResolver"/>
+    	</constructor-arg>
+    	<constructor-arg index="1">
 			<list>
 				<bean class="org.inspektr.audit.SimpleAuditableResourceResolver"/>
 			</list>
-		</property>
-		<property name="auditTrailManagers">
+		</constructor-arg>
+		<constructor-arg index="2">
 			<list>
 				<bean class="org.inspektr.audit.support.ConsoleAuditTrailManager"/>
-				<bean class="org.inspektr.audit.support.Log4jAuditTrailManager"/>
-				<ref bean="jdbcAuditTrailManager"/>
+				<bean class="org.inspektr.audit.support.CommonsLoggingAuditTrailManager"/>
+				<!-- <ref bean="jdbcAuditTrailManager"/> -->
 			</list>
-		</property>
-		<property name="auditablePrincipalResolver">
-			<bean class="org.inspektr.audit.SimpleAuditablePrincipalResolver"/>
-		</property>
+		</constructor-arg>
+		<constructor-arg index="3" value="TEST" />
 	</bean>
 	
+	<!-- 
 	<bean id="jdbcAuditTrailManager"
 	      class="org.inspektr.audit.support.JdbcAuditTrailManager">
 	      <property name="dataSource" ref="dataSource"/>
 	</bean>
-	
+	 -->
+	 
 	<bean id="errorLogManager"
-	      class="org.inspektr.errorlog.support.DefaultErrorLogManager">
+	      class="org.inspektr.error.support.DefaultErrorLogManager">
 	      <constructor-arg index="0" value="TEST"/>
 	      <constructor-arg index="1">
 	          <list>
-	              <bean class="org.inspektr.errorlog.support.Log4jErrorReporter"/>
+	              <bean class="org.inspektr.error.support.CommonsLoggingErrorReporter"/>
 	          </list>
 	      </constructor-arg>
 	      <property name="currentContextPrincipalResolver">
-	          <bean class="org.inspektr.errorlog.TrivialCurrentContextPrincipalResolver"/>
+	          <bean class="org.inspektr.error.TrivialCurrentContextPrincipalResolver"/>
 	      </property>
 	</bean>
 	
 	<bean id="handlerExceptionResolver" 
-	      class="org.inspektr.errorlog.web.ErrorLogHandlerExceptionResolver">
+	      class="org.inspektr.error.web.ErrorLogHandlerExceptionResolver">
 	      <constructor-arg index="0" ref="errorLogManager"/>
 	      <property name="order" value="0"/>
 	</bean>
 	
 	<bean id="errorLoggingFilter"
-	      class="org.inspektr.errorlog.web.ErrorLoggingFilter">
+	      class="org.inspektr.error.web.ErrorLoggingFilter">
 	      <property name="errorLogManager" ref="errorLogManager"/>
 	</bean>
-	
 </beans>
