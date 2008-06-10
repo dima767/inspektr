@@ -16,16 +16,21 @@
 package org.inspektr.statistics;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.inspektr.common.ioc.annotation.NotEmpty;
 import org.inspektr.common.ioc.annotation.NotNull;
 import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.spi.support.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
 import org.inspektr.statistics.annotation.Statistic;
+import org.inspektr.statistics.spi.StatisticNameResolver;
+import org.inspektr.statistics.spi.support.DefaultStatisticNameResolver;
 import org.springframework.util.StringUtils;
 
 /**
@@ -50,21 +55,31 @@ public final class StatisticManagementAspect {
 	@NotNull
 	private ClientInfoResolver clientInfoResolver = new DefaultClientInfoResolver();
 	
+	@NotEmpty
+	private Map<Class <? extends StatisticNameResolver>, StatisticNameResolver> nameResolvers = new HashMap<Class <? extends StatisticNameResolver>, StatisticNameResolver>();
+	
 	public StatisticManagementAspect(final List<StatisticManager> statisticManagers, final String applicationCode) {
 		this.statisticManagers = statisticManagers;
 		this.applicationCode = applicationCode;
+		
+		nameResolvers.put(DefaultStatisticNameResolver.class, new DefaultStatisticNameResolver());
 	}
 	
     @Around(value="@annotation(statistic)", argNames="statistic")
     public Object handleStatisticGathering(final ProceedingJoinPoint joinPoint, final Statistic statistic) throws Throwable {
     	Object retVal = null;
+    	String name = null;
     	try {
     		retVal = joinPoint.proceed();
+    		name = nameResolvers.get(statistic.nameResolverClass()).resolveFrom(joinPoint, retVal, statistic);
     		return retVal;
+    	} catch (final Exception e) {
+    		name = nameResolvers.get(statistic.nameResolverClass()).resolveFrom(joinPoint, e, statistic);
+    		throw e;
     	} finally {
     		final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
     		final String appCode = StringUtils.hasText(statistic.applicationCode()) ? statistic.applicationCode() : this.applicationCode;
-	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), statistic.name(), statistic.requiredPrecision(), clientInfo.getServerIpAddress(), appCode);
+	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), name, statistic.requiredPrecision(), clientInfo.getServerIpAddress(), appCode);
 	    	for (final StatisticManager manager : this.statisticManagers) {
 	    		manager.recalculate(statisticActionContext);
 	    	}
@@ -74,4 +89,10 @@ public final class StatisticManagementAspect {
     public void setClientInfoResolver(final ClientInfoResolver clientInfoResolver) {
 		this.clientInfoResolver = clientInfoResolver;
 	}
+    
+    public void setAdditionalStatisticNameResolvers(final List<StatisticNameResolver> statisticNameResolvers) {
+    	for (final StatisticNameResolver resolver : statisticNameResolvers) {
+    		this.nameResolvers.put(resolver.getClass(), resolver);
+    	}
+    }
 }

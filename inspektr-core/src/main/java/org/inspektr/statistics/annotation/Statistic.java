@@ -22,6 +22,9 @@ import java.lang.annotation.Target;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.inspektr.statistics.spi.StatisticNameResolver;
+import org.inspektr.statistics.spi.support.DefaultStatisticNameResolver;
+
 /**
  * Notes that statistics about the number of times this method has been called should be logged.
  * 
@@ -84,5 +87,7 @@ public @interface Statistic {
 	
 	Precision[] requiredPrecision() default Precision.HOUR;
 	
-	String name();	
+	String name();
+	
+	Class<? extends StatisticNameResolver> nameResolverClass() default DefaultStatisticNameResolver.class;
 }

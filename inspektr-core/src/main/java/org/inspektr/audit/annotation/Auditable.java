@@ -20,7 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.inspektr.audit.spi.AuditableActionResolver;
 import org.inspektr.audit.spi.AuditableResourceResolver;
 import org.inspektr.audit.spi.support.DefaultAuditableActionResolver;
 
@@ -66,7 +65,7 @@ public @interface Auditable {
 	 * Whether to use one of the built in resolvers or not.
 	 * @return the resolver to use.  Defaults to the {@link DefaultAuditableActionResolver}, which means just return the action.  
 	 */
-	Class <? extends AuditableActionResolver> actionResolverClass() default DefaultAuditableActionResolver.class;
+	Class <? extends org.inspektr.audit.spi.AuditableActionResolver> actionResolverClass() default DefaultAuditableActionResolver.class;
 	
 	/**
 	 * Returns the AuditableResourceResolver that knows how to resolve the resource.

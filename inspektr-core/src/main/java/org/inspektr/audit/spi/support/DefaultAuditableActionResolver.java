@@ -18,9 +18,10 @@ package org.inspektr.audit.spi.support;
 import org.aspectj.lang.JoinPoint;
 import org.inspektr.audit.annotation.Auditable;
 import org.inspektr.audit.spi.AuditableActionResolver;
+import org.inspektr.common.spi.ActionResolver;
 
 /**
- * Default implementation of the {@link AuditableActionResolver} interface that returns the value
+ * Default implementation of the {@link ActionResolver} interface that returns the value
  * of the Auditable annotation as the action.
  * 
  * @author Scott Battaglia

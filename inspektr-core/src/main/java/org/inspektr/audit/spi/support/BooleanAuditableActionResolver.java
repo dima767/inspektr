@@ -18,9 +18,10 @@ package org.inspektr.audit.spi.support;
 import org.aspectj.lang.JoinPoint;
 import org.inspektr.audit.annotation.Auditable;
 import org.inspektr.audit.spi.AuditableActionResolver;
+import org.inspektr.common.spi.ActionResolver;
 
 /**
- * Implementation of {@link AuditableActionResolver} that can process boolean return values.
+ * Implementation of {@link ActionResolver} that can process boolean return values.
  * <p>
  * Return values are basically action + either the success or failure suffix based on the boolean
  * value.
