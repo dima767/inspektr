@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.inspektr.common.ioc.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.annotation.Statistic.Precision;
@@ -34,6 +36,8 @@ import org.inspektr.statistics.annotation.Statistic.Precision;
  *
  */
 public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedStatisticManager {
+	
+	private static final Log LOG = LogFactory.getLog(InMemoryStatisticManager.class);
 	
 	@NotNull
 	private final List<StatisticValue> values = new ArrayList<StatisticValue>();
@@ -60,14 +64,14 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 					if (value.matches(this.context.getWhen(), precision, this.context.getWhat())) {
 						value.increment();
 						matched = true;
-						System.out.println(value.toString());
+						LOG.info(value.toString());
 						break;
 					}
 				}
 				
 				if (!matched) {
 					final StatisticValue value = new StatisticValue(precision, this.context.getWhen(), this.context.getWhat());
-					System.out.println(value.toString());
+					LOG.info(value.toString());
 					values.add(value);
 				}
 			}
