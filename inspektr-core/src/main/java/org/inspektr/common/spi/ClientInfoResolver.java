@@ -33,7 +33,7 @@ public interface ClientInfoResolver {
 	 * 
 	 * @param joinPoint the point where the join occurred.
 	 * @param retVal the return value from the method call.
-	 * @return the constructed ClientInfo object.
+	 * @return the constructed ClientInfo object.  Should never return null!
 	 */
 	ClientInfo resolveFrom(JoinPoint joinPoint, Object retVal);
 }

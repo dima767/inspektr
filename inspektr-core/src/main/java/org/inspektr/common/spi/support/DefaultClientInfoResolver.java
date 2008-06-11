@@ -15,6 +15,8 @@
  */
 package org.inspektr.common.spi.support;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
@@ -29,8 +31,18 @@ import org.inspektr.common.web.ClientInfoHolder;
  *
  */
 public final class DefaultClientInfoResolver implements ClientInfoResolver {
+	
+	private final Log log = LogFactory.getLog(getClass());
 
 	public ClientInfo resolveFrom(final JoinPoint joinPoint, final Object retVal) {
-		return ClientInfoHolder.getClientInfo();
+		final ClientInfo clientInfo = ClientInfoHolder.getClientInfo();
+		
+		if (clientInfo != null) {
+			return clientInfo;
+		}
+		
+		log.warn("No ClientInfo could be found.  Returning empty ClientInfo object.");
+		
+		return new ClientInfo("unknown", "unknown");
 	}
 }
