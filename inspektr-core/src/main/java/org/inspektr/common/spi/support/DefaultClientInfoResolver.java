@@ -43,6 +43,6 @@ public final class DefaultClientInfoResolver implements ClientInfoResolver {
 		
 		log.warn("No ClientInfo could be found.  Returning empty ClientInfo object.");
 		
-		return new ClientInfo("unknown", "unknown");
+		return new ClientInfo();
 	}
 }

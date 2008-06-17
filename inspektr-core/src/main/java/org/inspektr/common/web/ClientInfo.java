@@ -33,14 +33,17 @@ public final class ClientInfo {
 	/** IP Address of the client (Remote) */
 	private final String clientIpAddress;
 	
+	public ClientInfo() {
+		this(null, null);
+	}
+	
 	public ClientInfo(final HttpServletRequest request) {
-		this.serverIpAddress = request.getLocalAddr();
-		this.clientIpAddress = request.getRemoteAddr();
+		this(request.getLocalAddr(), request.getRemoteAddr());
 	}
 	
 	public ClientInfo(final String serverIpAddress, final String clientIpAddress) {
-		this.serverIpAddress = serverIpAddress;
-		this.clientIpAddress = clientIpAddress;
+		this.serverIpAddress = serverIpAddress == null ? "unknown" : serverIpAddress;
+		this.clientIpAddress = clientIpAddress == null ? "unknown" : clientIpAddress;
 	}
 
 	public String getServerIpAddress() {
