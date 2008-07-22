@@ -13,12 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.inspektr.common.spi.support;
+package org.inspektr.common.spi;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
-import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
 import org.inspektr.common.web.ClientInfoHolder;
 

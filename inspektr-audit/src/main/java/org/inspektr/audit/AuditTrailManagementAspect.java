@@ -36,9 +36,8 @@ import org.inspektr.audit.spi.support.ReturnValueAsStringResourceResolver;
 import org.inspektr.common.annotation.NotEmpty;
 import org.inspektr.common.annotation.NotNull;
 import org.inspektr.common.spi.ClientInfoResolver;
-import org.inspektr.common.spi.support.DefaultClientInfoResolver;
+import org.inspektr.common.spi.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
-import org.springframework.util.StringUtils;
 
 /**
  * A POJO style aspect modularizing management of an audit trail data concern.
@@ -125,7 +124,7 @@ public final class AuditTrailManagementAspect {
 	        } else if (auditableResource == null) {
 	            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
 	        } else {
-	        	final String applicationCode = StringUtils.hasText(auditable.applicationCode()) ? auditable.applicationCode() : this.applicationCode;
+	        	final String applicationCode = (auditable.applicationCode() != null && auditable.applicationCode().length() > 0) ? auditable.applicationCode() : this.applicationCode;
 	        	final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
 	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
     	        // Finally record the audit trail info

@@ -26,7 +26,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.inspektr.common.annotation.NotEmpty;
 import org.inspektr.common.annotation.NotNull;
 import org.inspektr.common.spi.ClientInfoResolver;
-import org.inspektr.common.spi.support.DefaultClientInfoResolver;
+import org.inspektr.common.spi.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
 import org.inspektr.statistics.annotation.Statistic;
 import org.inspektr.statistics.spi.StatisticNameResolver;
