@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="inspektr-core/src/main/java"/>
+	<classpathentry kind="src" path="inspektr-error/src/main/java"/>
 	<classpathentry kind="src" path="inspektr-audit/src/main/java"/>
 	<classpathentry kind="src" path="inspektr-support-spring/src/main/java"/>
 	<classpathentry kind="src" path="inspektr-common/src/main/java"/>
