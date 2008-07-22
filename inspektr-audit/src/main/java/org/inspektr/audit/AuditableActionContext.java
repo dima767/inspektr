@@ -17,8 +17,6 @@ package org.inspektr.audit;
 
 import java.util.Date;
 
-import org.springframework.util.Assert;
-
 /**
  * Immutable container holding the core elements of an auditable action that need to be recorded
  * as an audit trail record.
@@ -52,13 +50,13 @@ public final class AuditableActionContext {
 
     public AuditableActionContext(final String principal, final String resourceOperatedUpon, final String actionPerformed, final String applicationCode,
         final Date whenActionWasPerformed, final String clientIpAddress, final String serverIpAddress) {
-        Assert.notNull(principal, "principal cannot be null");
-        Assert.notNull(resourceOperatedUpon, "resourceOperatedUpon cannot be null");
-        Assert.notNull(actionPerformed, "actionPerformed cannot be null.");
-        Assert.notNull(applicationCode, "applicationCode cannot be null.");
-        Assert.notNull(whenActionWasPerformed, "whenActionPerformed cannot be null.");
-        Assert.notNull(clientIpAddress, "clientIpAddress cannot be null.");
-        Assert.notNull(serverIpAddress, "serverIpAddress cannot be null.");
+        assertNotNull(principal, "principal cannot be null");
+        assertNotNull(resourceOperatedUpon, "resourceOperatedUpon cannot be null");
+        assertNotNull(actionPerformed, "actionPerformed cannot be null.");
+        assertNotNull(applicationCode, "applicationCode cannot be null.");
+        assertNotNull(whenActionWasPerformed, "whenActionPerformed cannot be null.");
+        assertNotNull(clientIpAddress, "clientIpAddress cannot be null.");
+        assertNotNull(serverIpAddress, "serverIpAddress cannot be null.");
         this.principal = principal;
         this.resourceOperatedUpon = resourceOperatedUpon;
         this.actionPerformed = actionPerformed;
@@ -66,6 +64,12 @@ public final class AuditableActionContext {
         this.whenActionWasPerformed = new Date(whenActionWasPerformed.getTime());
         this.clientIpAddress = clientIpAddress;
         this.serverIpAddress = serverIpAddress;
+    }
+    
+    protected void assertNotNull(final Object o, final String message) {
+    	if (o == null) {
+    		throw new IllegalArgumentException(message);
+    	}
     }
 
     public String getPrincipal() {
