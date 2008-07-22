@@ -13,13 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.inspektr.common.ioc.validation;
+package org.inspektr.common.validation;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 
-import org.inspektr.common.ioc.annotation.IsIn;
-import org.springframework.beans.FatalBeanException;
+import org.inspektr.common.annotation.IsIn;
 
 /**
  * Checks whether a value is in an array of values.
@@ -28,13 +26,13 @@ import org.springframework.beans.FatalBeanException;
  * @version $Revision: 1.1 $ $Date: 2007/04/10 20:02:51 $
  * @since 1.0
  */
-public final class IsInAnnotationValidator implements AnnotationValidator {
+public final class IsInAnnotationValidator extends AbstractAnnotationValidator {
 
-    public void validate(final Field field, final Annotation annotation,
-        final Object bean, final String beanName) throws IllegalAccessException {
+	protected void validateInternal(final Annotation annotation, final Object arg,
+			final String type, final String fieldName, final String objectName) {
         final IsIn isIn = (IsIn) annotation;
-
-        final int val = field.getInt(bean);
+        final Integer integer = (Integer) arg;
+        final int val = integer.intValue();
 
         for (int i = 0; i < isIn.value().length; i++) {
             if (val == isIn.value()[i]) {
@@ -42,12 +40,10 @@ public final class IsInAnnotationValidator implements AnnotationValidator {
             }
         }
 
-        throw new FatalBeanException("field '" + field.getName()
-            + "' does not contain a value of '" + isIn.value() + "' on bean '"
-            + beanName + "'");
-    }
-    
-    
+        throw new IllegalStateException(type + " '" + fieldName
+            + "' does not contain a value of '" + isIn.value() + "' on '"
+            + objectName + "'");
+	}
 
     public Class<? extends Annotation> supports() {
     	return IsIn.class;

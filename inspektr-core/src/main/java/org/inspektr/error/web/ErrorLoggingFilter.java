@@ -22,7 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.annotation.NotNull;
 import org.inspektr.error.ErrorLogManager;
 import org.springframework.web.filter.OncePerRequestFilter;
 

@@ -18,7 +18,7 @@ package org.inspektr.error.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.annotation.NotNull;
 import org.inspektr.error.ErrorLogManager;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;

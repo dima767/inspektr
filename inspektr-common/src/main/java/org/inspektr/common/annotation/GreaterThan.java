@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.inspektr.common.ioc.annotation;
+package org.inspektr.common.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,14 +21,14 @@ import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
 
 /**
- * States that the collection cannot be empty.
+ * Marks that the field must be greater than the provided value.
  * 
  * @author Scott Battaglia
  * @version $Revision: 1.2 $ $Date: 2007/04/10 00:48:49 $
  * @since 1.0
  */
-@Target( {ElementType.FIELD})
+@Target( {ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface NotEmpty {
-    // nothing to do
+public @interface GreaterThan {
+    int value();
 }

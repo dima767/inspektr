@@ -18,7 +18,7 @@ package org.inspektr.statistics.support;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.StatisticManager;
 import org.springframework.beans.factory.DisposableBean;

@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 
 import org.inspektr.audit.AuditTrailManager;
 import org.inspektr.audit.AuditableActionContext;
-import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.annotation.NotNull;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;

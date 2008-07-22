@@ -13,10 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.inspektr.common.ioc.validation;
+package org.inspektr.common.validation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * Interface for usage with the {@link ValidationAnnotationBeanPostProcessor}.  Each AnnotationValidator
@@ -29,7 +30,9 @@ import java.lang.reflect.Field;
  */
 public interface AnnotationValidator {
 	
-	public void validate(Field field, Annotation annotation, Object bean, String beanName) throws IllegalAccessException;
+	void validate(Field field, Annotation annotation, Object bean, String beanName) throws IllegalAccessException;
+	
+	void validate(Method method, Annotation annotation, Object arg, int argIndex);
 	
 	Class<? extends Annotation> supports();
 }

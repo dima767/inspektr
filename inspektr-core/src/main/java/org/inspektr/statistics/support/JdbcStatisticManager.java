@@ -19,7 +19,7 @@ import java.util.Date;
 
 import javax.sql.DataSource;
 
-import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.annotation.Statistic.Precision;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;

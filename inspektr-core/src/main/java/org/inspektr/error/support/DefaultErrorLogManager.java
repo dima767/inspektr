@@ -17,8 +17,8 @@ package org.inspektr.error.support;
 
 import java.util.List;
 
-import org.inspektr.common.ioc.annotation.NotEmpty;
-import org.inspektr.common.ioc.annotation.NotNull;
+import org.inspektr.common.annotation.NotEmpty;
+import org.inspektr.common.annotation.NotNull;
 import org.inspektr.error.ErrorLogManager;
 import org.inspektr.error.ErrorReporter;
 import org.inspektr.error.spi.CurrentContextPrincipalResolver;

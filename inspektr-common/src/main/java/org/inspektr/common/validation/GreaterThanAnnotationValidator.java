@@ -13,13 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.inspektr.common.ioc.validation;
+package org.inspektr.common.validation;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 
-import org.inspektr.common.ioc.annotation.GreaterThan;
-import org.springframework.beans.FatalBeanException;
+import org.inspektr.common.annotation.GreaterThan;
 
 /**
  * Works in conjunction with the {@link GreaterThan} annotation to ensure that
@@ -32,23 +30,23 @@ import org.springframework.beans.FatalBeanException;
  * TODO: make more robust to support things other than int.
  * </p>
  */
-public final class GreaterThanAnnotationValidator implements AnnotationValidator {
+public final class GreaterThanAnnotationValidator extends AbstractAnnotationValidator {
 	
     public Class<? extends Annotation> supports() {
 		return GreaterThan.class;
 	}
 
-    public void validate(final Field field, final Annotation annotation,
-            final Object bean, final String beanName) throws IllegalAccessException {
+	protected void validateInternal(final Annotation annotation, final Object arg,
+			final String type, final String fieldName, final String objectName) {
         final GreaterThan greaterThan = (GreaterThan) annotation;
-
         final int value = greaterThan.value();
-        final int val = field.getInt(bean);
+        final Integer integer = (Integer) arg;
+        final int val = integer.intValue();
 
         if (val <= value) {
-            throw new FatalBeanException("value of field \"" + field.getName()
-                + "\" must be greater than \"" + value + "\" on bean \""
-                + beanName + "\"");
+            throw new IllegalStateException(type +  " \"" + fieldName
+                + "\" must be greater than \"" + value + "\" on \""
+                + objectName + "\"");
         }
     }
 }

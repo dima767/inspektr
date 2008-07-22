@@ -17,12 +17,13 @@ package org.inspektr.common.web;
 
 import java.io.IOException;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * Creates a ClientInfo object and passes it to the {@link ClientInfoHolder}
@@ -32,22 +33,28 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @since 1.0
  *
  */
-public class ClientInfoThreadLocalFilter extends OncePerRequestFilter {
+public class ClientInfoThreadLocalFilter implements Filter {
 
 	public void destroy() {
 		// nothing to do here
 	}
 
-	protected void doFilterInternal(final HttpServletRequest request,
-			final HttpServletResponse response, final FilterChain filterChain)
-			throws ServletException, IOException {
-		
+	
+	
+	public void doFilter(final ServletRequest request, final ServletResponse response,
+			final FilterChain filterChain) throws IOException, ServletException {
 		try {
-			final ClientInfo clientInfo = new ClientInfo(request);
+			final ClientInfo clientInfo = new ClientInfo((HttpServletRequest) request);
 			ClientInfoHolder.setClientInfo(clientInfo);
 			filterChain.doFilter(request, response);
 		} finally {
 			ClientInfoHolder.clear();
 		}
+	}
+
+
+
+	public void init(final FilterConfig filterConfig) throws ServletException {
+		// nothing to do
 	}
 }
