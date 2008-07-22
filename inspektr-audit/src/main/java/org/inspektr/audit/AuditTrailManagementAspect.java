@@ -36,7 +36,7 @@ import org.inspektr.audit.spi.support.ReturnValueAsStringResourceResolver;
 import org.inspektr.common.annotation.NotEmpty;
 import org.inspektr.common.annotation.NotNull;
 import org.inspektr.common.spi.ClientInfoResolver;
-import org.inspektr.common.spi.support.DefaultClientInfoResolver;
+import org.inspektr.common.spi.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
 import org.springframework.util.StringUtils;
 
