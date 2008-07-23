@@ -39,12 +39,18 @@ public final class StatisticActionContext {
 	
 	private final String applicationCode;
 	
-	public StatisticActionContext(final Date when, final String what, final Precision[] requiredPrecision, final String serverIpAddress, final String applicationCode) {
+	private final long startTime;
+	
+	private final long endTime;
+	
+	public StatisticActionContext(final Date when, final String what, final Precision[] requiredPrecision, final String serverIpAddress, final String applicationCode, final long startTime, final long endTime) {
 		this.when = new Date(when.getTime());
 		this.what = what;
 		this.requiredPrecision = requiredPrecision;
 		this.serverIpAddress = serverIpAddress;
 		this.applicationCode = applicationCode;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		
 		assertNotNull(this.when, "when cannot be null");
 		assertNotNull(this.what, "what cannot be null.");
@@ -77,5 +83,9 @@ public final class StatisticActionContext {
 
 	public String getApplicationCode() {
 		return this.applicationCode;
+	}
+	
+	public long getExecutionTime() {
+		return this.endTime - this.startTime;
 	}
 }

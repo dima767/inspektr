@@ -68,7 +68,9 @@ public final class StatisticManagementAspect {
     public Object handleStatisticGathering(final ProceedingJoinPoint joinPoint, final Statistic statistic) throws Throwable {
     	Object retVal = null;
     	String name = null;
+    	final long startTime = System.currentTimeMillis();
     	try {
+    		
     		retVal = joinPoint.proceed();
     		name = nameResolvers.get(statistic.nameResolverClass()).resolveFrom(joinPoint, retVal, statistic);
     		return retVal;
@@ -76,9 +78,10 @@ public final class StatisticManagementAspect {
     		name = nameResolvers.get(statistic.nameResolverClass()).resolveFrom(joinPoint, e, statistic);
     		throw e;
     	} finally {
+    		final long endTime = System.currentTimeMillis();
     		final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
     		final String appCode = (statistic.applicationCode() !=null && statistic.applicationCode().length() > 0) ? statistic.applicationCode() : this.applicationCode;
-	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), name, statistic.requiredPrecision(), clientInfo.getServerIpAddress(), appCode);
+	    	final StatisticActionContext statisticActionContext = new StatisticActionContext(new Date(), name, statistic.requiredPrecision(), clientInfo.getServerIpAddress(), appCode, startTime, endTime);
 	    	for (final StatisticManager manager : this.statisticManagers) {
 	    		manager.recalculate(statisticActionContext);
 	    	}

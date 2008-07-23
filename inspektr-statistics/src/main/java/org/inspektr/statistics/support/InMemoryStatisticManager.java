@@ -62,7 +62,7 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 				boolean matched = false;
 				for (final StatisticValue value : this.values) {
 					if (value.matches(this.context.getWhen(), precision, this.context.getWhat())) {
-						value.increment();
+						value.increment(context.getExecutionTime());
 						matched = true;
 						LOG.info(value.toString());
 						break;
@@ -71,6 +71,7 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 				
 				if (!matched) {
 					final StatisticValue value = new StatisticValue(precision, this.context.getWhen(), this.context.getWhat());
+					value.increment(context.getExecutionTime());
 					LOG.info(value.toString());
 					values.add(value);
 				}
@@ -87,15 +88,21 @@ public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedS
 		
 		private final String name;
 		
+		private long executionTime;
+		
 		public StatisticValue(final Precision precision, final Date date, final String name) {
 			this.precision = precision;
 			this.date = precision.normalize(date);
 			this.name = name;
-			this.count = 1;
+			this.count = 0;
+			this.executionTime = 0;
 		}
 		
-		public void increment() {
+		public synchronized void increment(final long executionTime) {
+			final long oldTotalTime = this.executionTime * count;
+			final long newTotalTime = oldTotalTime + executionTime;
 			this.count++;
+			this.executionTime = newTotalTime / count;
 		}
 		
 		public boolean matches(final Date date, final Precision precision, final String name) {

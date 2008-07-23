@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="inspektr-statistics/src/main/java"/>
-	<classpathentry kind="src" path="inspektr-support-spring-security/src/main/java"/>
-	<classpathentry kind="src" path="inspektr-error/src/main/java"/>
-	<classpathentry kind="src" path="inspektr-audit/src/main/java"/>
-	<classpathentry kind="src" path="inspektr-support-spring/src/main/java"/>
-	<classpathentry kind="src" path="inspektr-common/src/main/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" output="inspektr-common/target/classes" path="inspektr-common/src/main/java"/>
+	<classpathentry kind="src" output="inspektr-statistics/target/classes" path="inspektr-statistics/src/main/java"/>
+	<classpathentry kind="src" output="inspektr-error/target/classes" path="inspektr-error/src/main/java"/>
+	<classpathentry kind="src" output="inspektr-audit/target/classes" path="inspektr-audit/src/main/java"/>
+	<classpathentry kind="src" output="inspektr-support-spring/target/classes" path="inspektr-support-spring/src/main/java"/>
+	<classpathentry kind="src" output="inspektr-support-spring-security/target/classes" path="inspektr-support-spring-security/src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER/modules"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

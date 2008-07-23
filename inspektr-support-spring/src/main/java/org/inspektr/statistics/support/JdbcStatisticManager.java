@@ -36,7 +36,8 @@ import org.springframework.transaction.support.TransactionTemplate;
  *     APPLIC_CD VARCHAR2(5) NOT NULL,
  *     STAT_PRECISION VARCHAR2(6) NOT NULL,
  *     STAT_COUNT NUMBER NOT NULL,
- *     STAT_NAME VARCHAR2(100)
+ *     STAT_NAME VARCHAR2(100),
+ *     STAT_TIMING NUMBER NOT NULL
  * )
  * </pre>
  * 
@@ -47,9 +48,9 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public final class JdbcStatisticManager extends AbstractThreadExecutorBasedStatisticManager {
 	
-	private static final String UPDATE_STATISTIC = "Update COM_STATISTICS Set STAT_COUNT = STAT_COUNT + 1 WHERE STAT_SERVER_IP = ? AND STAT_DATE = ? AND APPLIC_CD = ? AND STAT_PRECISION = ? AND STAT_NAME = ?";
+	private static final String UPDATE_STATISTIC = "Update COM_STATISTICS Set STAT_COUNT = STAT_COUNT + 1, STAT_TIMING = (((STAT_TIMING*STAT_COUNT)+?)/(STAT_COUNT+1)) WHERE STAT_SERVER_IP = ? AND STAT_DATE = ? AND APPLIC_CD = ? AND STAT_PRECISION = ? AND STAT_NAME = ?";
 	
-	private static final String INSERT_STATISTIC = "Insert into COM_STATISTICS(STAT_SERVER_IP, STAT_DATE, APPLIC_CD, STAT_PRECISION, STAT_COUNT, STAT_NAME) VALUES(?, ?, ?, ?, 1, ?)";
+	private static final String INSERT_STATISTIC = "Insert into COM_STATISTICS(STAT_SERVER_IP, STAT_DATE, APPLIC_CD, STAT_PRECISION, STAT_COUNT, STAT_NAME, STAT_TIMING) VALUES(?, ?, ?, ?, 1, ?, ?)";
 
 	@NotNull
 	private final SimpleJdbcTemplate jdbcTemplate;
@@ -92,10 +93,10 @@ public final class JdbcStatisticManager extends AbstractThreadExecutorBasedStati
 						final String applicationCode = statisticActionContext.getApplicationCode();
 						final String serverIpAddress = statisticActionContext.getServerIpAddress();
 						
-						final int updateCount = jdbcTemplate.update(UPDATE_STATISTIC, serverIpAddress, date, applicationCode, precision.name(), name);
+						final int updateCount = jdbcTemplate.update(UPDATE_STATISTIC, statisticActionContext.getExecutionTime(), serverIpAddress, date, applicationCode, precision.name(), name);
 						
 						if (updateCount == 0) {
-							jdbcTemplate.update(INSERT_STATISTIC, serverIpAddress, date, applicationCode, precision.name(), name);
+							jdbcTemplate.update(INSERT_STATISTIC, serverIpAddress, date, applicationCode, precision.name(), name, statisticActionContext.getExecutionTime());
 						}
 					}
 				}				
