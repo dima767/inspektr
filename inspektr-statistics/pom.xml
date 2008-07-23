@@ -6,12 +6,12 @@
 		<artifactId>inspektr</artifactId>
 		<version>0.8.0-SNAPSHOT</version>
 	</parent>
-	<description>Inspektr Error Logging</description>
+	<description>Inspektr Statistics</description>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.inspektr</groupId>
-	<artifactId>inspektr-error</artifactId>
+	<artifactId>inspektr-statistics</artifactId>
 	<packaging>jar</packaging>
-	<name>Inspektr Error Logging</name>
+	<name>Inspektr Statistics</name>
 	<dependencies>			
 		<dependency>
 			<groupId>aspectj</groupId>

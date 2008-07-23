@@ -6,8 +6,6 @@
 	<classpathentry kind="src" path="inspektr-audit/src/main/java"/>
 	<classpathentry kind="src" path="inspektr-support-spring/src/main/java"/>
 	<classpathentry kind="src" path="inspektr-common/src/main/java"/>
-	<classpathentry kind="src" path="inspektr-core/src/test/java"/>
-	<classpathentry excluding="**" kind="src" output="inspektr-core/src/test/resources" path="inspektr-core/src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.maven.ide.eclipse.MAVEN2_CLASSPATH_CONTAINER/modules"/>
 	<classpathentry kind="output" path="target/classes"/>

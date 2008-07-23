@@ -6,22 +6,22 @@
 		<artifactId>inspektr</artifactId>
 		<version>0.8.0-SNAPSHOT</version>
 	</parent>
-	<description>Inspektr Error Logging</description>
+	<description>Inspektr Spring Security Support</description>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.inspektr</groupId>
-	<artifactId>inspektr-error</artifactId>
+	<artifactId>inspektr-support-spring-security</artifactId>
 	<packaging>jar</packaging>
-	<name>Inspektr Error Logging</name>
-	<dependencies>			
+	<name>Inspektr Spring Security Support</name>
+	<dependencies>		
 		<dependency>
-			<groupId>aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>1.5.3</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>2.0.3</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.inspektr</groupId>
-			<artifactId>inspektr-common</artifactId>
+			<artifactId>inspektr-audit</artifactId>
 			<version>0.8.0-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
