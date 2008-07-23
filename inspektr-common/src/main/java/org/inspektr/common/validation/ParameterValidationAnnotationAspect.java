@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.inspektr.support.spring;
+package org.inspektr.common.validation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -28,11 +28,6 @@ import org.inspektr.common.annotation.GreaterThan;
 import org.inspektr.common.annotation.IsIn;
 import org.inspektr.common.annotation.NotEmpty;
 import org.inspektr.common.annotation.NotNull;
-import org.inspektr.common.validation.AnnotationValidator;
-import org.inspektr.common.validation.GreaterThanAnnotationValidator;
-import org.inspektr.common.validation.IsInAnnotationValidator;
-import org.inspektr.common.validation.NotEmptyAnnotationValidator;
-import org.inspektr.common.validation.NotNullAnnotationValidator;
 
 /**
  * Aspect that will read the parameters for the method and validate them against the known validators.
