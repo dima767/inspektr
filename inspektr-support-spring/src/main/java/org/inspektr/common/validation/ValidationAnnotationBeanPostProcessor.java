@@ -29,6 +29,7 @@ import org.inspektr.common.annotation.GreaterThan;
 import org.inspektr.common.annotation.IsIn;
 import org.inspektr.common.annotation.NotEmpty;
 import org.inspektr.common.annotation.NotNull;
+import org.inspektr.common.annotation.RegExp;
 import org.inspektr.common.validation.AnnotationValidator;
 import org.inspektr.common.validation.GreaterThanAnnotationValidator;
 import org.inspektr.common.validation.IsInAnnotationValidator;
@@ -51,15 +52,16 @@ public final class ValidationAnnotationBeanPostProcessor extends
     
     private final Map<Class<? extends Annotation>, AnnotationValidator> annotationMappings = new HashMap<Class<? extends Annotation>, AnnotationValidator>();
     
-    private final Class<? extends Annotation>[] annotations;
-    
     public ValidationAnnotationBeanPostProcessor() {
     	this.annotationMappings.put(GreaterThan.class, new GreaterThanAnnotationValidator());
     	this.annotationMappings.put(IsIn.class, new IsInAnnotationValidator());
     	this.annotationMappings.put(NotEmpty.class, new NotEmptyAnnotationValidator());
     	this.annotationMappings.put(NotNull.class, new NotNullAnnotationValidator());
-    	
-    	this.annotations = this.annotationMappings.keySet().toArray(new Class[this.annotationMappings.size()]);
+    }
+    
+    public ValidationAnnotationBeanPostProcessor(final Map<String,String> patterns) {
+    	this();
+    	this.annotationMappings.put(RegExp.class, new RegExpAnnotationValidator(patterns));
     }
 
     public final Object postProcessBeforeInitialization(final Object bean,
@@ -79,18 +81,14 @@ public final class ValidationAnnotationBeanPostProcessor extends
             for (final Field field : fields) {
                 final boolean originalValue = field.isAccessible();
                 field.setAccessible(true);
-                
-                for (final Class<? extends Annotation> annotationClass : this.annotations) {
-                	final Annotation annotation = field.getAnnotation(annotationClass);
-                	
-                	if (annotation != null) {
-                		final AnnotationValidator validator = this.annotationMappings.get(annotationClass);
-                	
-	                	if (validator != null) {
-	                		validator.validate(field, annotation, bean, beanName);
-	                	}
-                	}
-                }
+    			
+    			for (final Annotation annotation : field.getAnnotations()) {
+    				final AnnotationValidator validator = annotationMappings.get(annotation.getClass());
+    				
+    				if (validator != null) {
+    					validator.validate(field, annotation, bean, beanName);
+    				}
+    			}
                              
                 field.setAccessible(originalValue);
             }

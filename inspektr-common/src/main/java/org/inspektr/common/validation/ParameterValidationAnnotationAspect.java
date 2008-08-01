@@ -28,6 +28,7 @@ import org.inspektr.common.annotation.GreaterThan;
 import org.inspektr.common.annotation.IsIn;
 import org.inspektr.common.annotation.NotEmpty;
 import org.inspektr.common.annotation.NotNull;
+import org.inspektr.common.annotation.RegExp;
 
 /**
  * Aspect that will read the parameters for the method and validate them against the known validators.
@@ -49,7 +50,12 @@ public final class ParameterValidationAnnotationAspect {
     	this.annotationMappings.put(NotNull.class, new NotNullAnnotationValidator());
 	}
 	
-	@Before(value="")
+	public ParameterValidationAnnotationAspect(final Map<String,String> patterns) {
+		this();
+		this.annotationMappings.put(RegExp.class, new RegExpAnnotationValidator(patterns));
+	}
+	
+	@Before(value="@args(org.inspektr.common.annotation.GreaterThan)  || @args(org.inspektr.common.annotation.IsIn) || @args(org.inspektr.common.annotation.NotEmpty) || @args(org.inspektr.common.annotation.NotNull) || @args(org.inspektr.common.annotation.RegExp)")
 	public void doValidationCheck(final JoinPoint joinPoint) {
 		final Object[] args = joinPoint.getArgs();
 		final MethodSignature m = (MethodSignature) joinPoint.getStaticPart().getSignature();
@@ -59,7 +65,7 @@ public final class ParameterValidationAnnotationAspect {
 		
 		for (int i = 0; i < annotations.length; i++) {
 			final Annotation[] annotationsForParam = annotations[i];
-			for (int j = 0; j < annotationsForParam.length; i++) {
+			for (int j = 0; j < annotationsForParam.length; j++) {
 				final Annotation annotation = annotationsForParam[j];
 				final AnnotationValidator validator = annotationMappings.get(annotation.getClass());
 				
