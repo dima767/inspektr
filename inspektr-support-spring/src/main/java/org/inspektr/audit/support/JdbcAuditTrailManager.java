@@ -51,7 +51,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 		AuditTrailManager {
 
-	private static final String INSERT_SQL_STATEMENT = "Insert into COM_AUDIT_TRAIL(AUD_USER, AUD_CLIENT_IP, AUD_SERVER_IP, AUD_RESOURCE, AUD_ACTION, APPLIC_CD, AUD_DATE) Values(?, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_SQL_STATEMENT_PREFIX = "Insert into ";
+	
+	private static final String INSERT_SQL_STATEMENT_SUFFIX = " (AUD_USER, AUD_CLIENT_IP, AUD_SERVER_IP, AUD_RESOURCE, AUD_ACTION, APPLIC_CD, AUD_DATE) Values(?, ?, ?, ?, ?, ?, ?)";
 
 	/** ExecutorService that has one thread to asynchronously save requests. */
 	@NotNull
@@ -63,6 +65,9 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 	 */
 	@NotNull
 	private final TransactionTemplate transactionTemplate;
+	
+	@NotNull
+	private String tableName = "COM_AUDIT_TRAIL";
 
 	public JdbcAuditTrailManager(final TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
@@ -95,7 +100,7 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 							
 							getSimpleJdbcTemplate()
 									.update(
-											INSERT_SQL_STATEMENT,
+											INSERT_SQL_STATEMENT_PREFIX + tableName + INSERT_SQL_STATEMENT_SUFFIX,
 											userId,
 											auditableActionContext.getClientIpAddress(),
 											auditableActionContext.getServerIpAddress(),
@@ -108,4 +113,7 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 		}
 	}
 
+	public void setTableName(final String tableName) {
+		this.tableName = tableName;
+	}
 }
