@@ -34,7 +34,7 @@ public interface AuditableResourceResolver {
      * @param retval	The returnedValue
      * @return	The resource String.
      */
-    String resolveFrom(JoinPoint auditableTarget, Object retval);
+    String[] resolveFrom(JoinPoint auditableTarget, Object retval);
     
     /**
      * Resolve the auditable resource for an auditable action that has
@@ -44,5 +44,5 @@ public interface AuditableResourceResolver {
      * @param exception	The exception incurred when the join point proceeds.
      * @return	The resource String.
      */
-    String resolveFrom(JoinPoint auditableTarget, Exception exception);
+    String[] resolveFrom(JoinPoint auditableTarget, Exception exception);
 }

@@ -15,6 +15,9 @@
  */
 package org.inspektr.audit.spi.support;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.aspectj.lang.JoinPoint;
 import org.inspektr.audit.spi.AuditableResourceResolver;
 
@@ -30,12 +33,28 @@ import org.inspektr.audit.spi.AuditableResourceResolver;
 public class ReturnValueAsStringResourceResolver implements
 		AuditableResourceResolver {
 
-	public String resolveFrom(final JoinPoint auditableTarget, final Object retval) {
-		return retval.toString();
+	public String[] resolveFrom(final JoinPoint auditableTarget, final Object retval) {
+		if (retval instanceof Collection) {
+			final Collection c = (Collection) retval;
+			final String[] retvals = new String[c.size()];
+			
+			int i = 0;
+			for (final Iterator iter = c.iterator(); iter.hasNext() && i < c.size(); i++) {
+				final Object o = iter.next();
+				
+				if (o != null) {
+					retvals[i] = iter.next().toString();
+				}
+			}
+			
+			return retvals;
+		}
+		// TODO what to do if an array is returned
+		
+		return new String[] {retval.toString()};
 	}
 
-	// TODO should this be exception.getMessage() or ""?
-	public String resolveFrom(final JoinPoint auditableTarget, final Exception exception) {
-		return exception.getMessage();
+	public String[] resolveFrom(final JoinPoint auditableTarget, final Exception exception) {
+		return new String[] {exception.getMessage()};
 	}
 }

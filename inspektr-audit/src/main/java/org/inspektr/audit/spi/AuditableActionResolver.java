@@ -17,6 +17,7 @@ package org.inspektr.audit.spi;
 
 import org.aspectj.lang.JoinPoint;
 import org.inspektr.audit.annotation.Auditable;
+import org.inspektr.common.spi.ActionResolver;
 
 /**
  * An SPI interface needed to be implemented by individual applications requiring an audit trail record keeping
@@ -26,7 +27,7 @@ import org.inspektr.audit.annotation.Auditable;
  * @version $Revision$ $Date$
  * @since 1.0
  */
-public interface AuditableActionResolver {
+public interface AuditableActionResolver extends ActionResolver<Auditable> {
 	
 
     /**

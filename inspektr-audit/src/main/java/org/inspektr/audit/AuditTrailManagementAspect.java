@@ -26,6 +26,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.inspektr.audit.annotation.Auditable;
+import org.inspektr.audit.annotation.Auditables;
 import org.inspektr.audit.spi.AuditableActionResolver;
 import org.inspektr.audit.spi.AuditablePrincipalResolver;
 import org.inspektr.audit.spi.AuditableResourceResolver;
@@ -94,11 +95,45 @@ public final class AuditTrailManagementAspect {
     	this.auditableResourceResolvers.put(ReturnValueAsStringResourceResolver.class, new ReturnValueAsStringResourceResolver());
     }
     
+    @Around(value="@annotation(auditables)", argNames="auditables")
+    public Object handleAuditTrail(final ProceedingJoinPoint joinPoint, final Auditables auditables) throws Throwable {
+    	Object retVal = null;
+    	String currentPrincipal = null;
+    	final String[] actions = new String[auditables.value().length];
+    	final String[][] auditableResources = new String[auditables.value().length][];
+    	try {
+    		retVal = joinPoint.proceed();
+    		currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, retVal);
+    		
+	        if (currentPrincipal != null) {
+	        	for (int i = 0; i < auditables.value().length; i++) {
+		        	auditableResources[i] = this.auditableResourceResolvers.get(auditables.value()[i].resourceResolverClass()).resolveFrom(joinPoint, retVal);		        
+			        actions[i] = auditableActionResolvers.get(auditables.value()[i].actionResolverClass()).resolveFrom(joinPoint, retVal, auditables.value()[i]);
+	        	}
+	        }
+	        return retVal;
+    	} catch (final Exception e) {
+    		currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, e);
+    		
+	        if (currentPrincipal != null) {
+	        	for (int i = 0; i < auditables.value().length; i++) {
+		        	auditableResources[i] = this.auditableResourceResolvers.get(auditables.value()[i].resourceResolverClass()).resolveFrom(joinPoint, e);		        
+			        actions[i] = auditableActionResolvers.get(auditables.value()[i].actionResolverClass()).resolveFrom(joinPoint, e, auditables.value()[i]);
+	        	}
+	        }
+	        throw e;
+    	} finally {
+    		for (int i = 0; i < auditables.value().length; i++) {
+    			executeAuditCode(currentPrincipal, auditableResources[i], joinPoint, retVal, actions[i], auditables.value()[i]);
+    		}
+    	}
+    }
+    
     @Around(value="@annotation(auditable)", argNames="auditable")
     public Object handleAuditTrail(final ProceedingJoinPoint joinPoint, final Auditable auditable) throws Throwable {
     	
     	String currentPrincipal = null;
-    	String auditableResource = null;
+    	String[] auditableResource = null;
     	String action = null;
     	Object retVal = null;
     	try {
@@ -111,7 +146,7 @@ public final class AuditTrailManagementAspect {
 	        }
 	        
 	        return retVal;
-    	} catch (Exception e) {
+    	} catch (final Exception e) {
     		currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, e);
 	        if (currentPrincipal != null) {
 	        	auditableResource = this.auditableResourceResolvers.get(auditable.resourceResolverClass()).resolveFrom(joinPoint, e);
@@ -119,20 +154,27 @@ public final class AuditTrailManagementAspect {
 	        }
     		throw e;
     	} finally {
-    		if (currentPrincipal == null) {
-	            log.warn("Recording of audit trail information did not succeed: cannot resolve the principal.");
-	        } else if (auditableResource == null) {
-	            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
-	        } else {
-	        	final String applicationCode = (auditable.applicationCode() == null && auditable.applicationCode().length() > 0) ? auditable.applicationCode() : this.applicationCode;
-	        	final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
-	        	final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, new Date(), clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
+    		executeAuditCode(currentPrincipal, auditableResource, joinPoint, retVal, action, auditable);
+    	}
+    }
+    
+    private void executeAuditCode(final String currentPrincipal, final String[] auditableResources, final ProceedingJoinPoint joinPoint, final Object retVal, final String action, final Auditable auditable) {
+		if (currentPrincipal == null) {
+            log.warn("Recording of audit trail information did not succeed: cannot resolve the principal.");
+        } else if (auditableResources == null) {
+            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
+        } else {
+        	final String applicationCode = (auditable.applicationCode() == null && auditable.applicationCode().length() > 0) ? auditable.applicationCode() : this.applicationCode;
+        	final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
+        	final Date actionDate = new Date();
+        	for (final String auditableResource : auditableResources) {
+        		final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, actionDate, clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
     	        // Finally record the audit trail info
     	        for(AuditTrailManager manager : auditTrailManagers) {
     	            manager.record(auditContext);
     	        }
-	        }
-    	}
+        	}
+        }
     }
     
     public void setAdditionalAuditableActionResolvers(final List<AuditableActionResolver> auditableActionResolvers) {
