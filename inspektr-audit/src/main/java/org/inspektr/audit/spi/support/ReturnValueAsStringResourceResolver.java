@@ -49,7 +49,16 @@ public class ReturnValueAsStringResourceResolver implements
 			
 			return retvals;
 		}
-		// TODO what to do if an array is returned
+		
+		if (retval instanceof Object[]) {
+			final Object[] vals = (Object[]) retval;
+			final String[] retvals = new String[vals.length];
+			for (int i = 0; i < vals.length; i++) {
+				retvals[i] = vals[i].toString();
+			}
+			
+			return retvals;
+		}
 		
 		return new String[] {retval.toString()};
 	}
