@@ -40,13 +40,26 @@ public final class GreaterThanAnnotationValidator extends AbstractAnnotationVali
 			final String type, final String fieldName, final String objectName) {
         final GreaterThan greaterThan = (GreaterThan) annotation;
         final int value = greaterThan.value();
-        final Integer integer = (Integer) arg;
-        final int val = integer.intValue();
-
-        if (val <= value) {
-            throw new IllegalStateException(type +  " \"" + fieldName
-                + "\" must be greater than \"" + value + "\" on \""
-                + objectName + "\"");
+        
+        if (arg instanceof Integer) {
+        	validateInt(((Integer) arg).intValue(), value, type, fieldName, objectName);
         }
+        
+        if (arg instanceof Integer[]) {
+        	final Integer[] ints = (Integer[]) arg;
+        	
+        	for (int i = 0; i < ints.length; i++) {
+        		validateInt(ints[i].intValue(), value, type, fieldName + "[" + i + "]", objectName);
+        	}
+        }
+
     }
+	
+	private void validateInt(final int currentValue, final int minimumValue, final String type, final String fieldName, final String objectName) {
+        if (currentValue <= minimumValue) {
+            throw new IllegalStateException(type +  " \"" + fieldName
+                + "\" must be greater than \"" + minimumValue + "\" on \""
+                + objectName + "\"");
+        }		
+	}
 }
