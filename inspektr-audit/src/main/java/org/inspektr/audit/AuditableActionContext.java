@@ -15,6 +15,7 @@
  */
 package org.inspektr.audit;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -25,9 +26,14 @@ import java.util.Date;
  * @version $Id: AuditableActionContext.java,v 1.2 2007/06/14 14:43:32 dkopylen Exp $
  * @since 1.0
  */
-public final class AuditableActionContext {
-    
-    /** This is <i>WHO</i>*/
+public final class AuditableActionContext implements Serializable {
+	
+    /**
+	 * Unique Id for serialization.
+	 */
+	private static final long serialVersionUID = -3530737409883959089L;
+
+	/** This is <i>WHO</i>*/
     private final String principal;
     
     /** This is <i>WHAT</i>*/
