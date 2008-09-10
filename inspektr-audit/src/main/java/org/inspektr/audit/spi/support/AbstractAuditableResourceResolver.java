@@ -15,12 +15,12 @@ public abstract class AbstractAuditableResourceResolver implements
 		AuditableResourceResolver {
 
 	public final String[] resolveFrom(final JoinPoint joinPoint, final Object retVal) {
-		return createResource(joinPoint);
+		return createResource(joinPoint.getArgs());
 	}
 
 	public final String[] resolveFrom(final JoinPoint joinPoint, final Exception e) {
-		return createResource(joinPoint);
+		return createResource(joinPoint.getArgs());
 	}
 	
-	protected abstract String[] createResource(final JoinPoint joinPoint);
+	protected abstract String[] createResource(final Object[] args);
 }
