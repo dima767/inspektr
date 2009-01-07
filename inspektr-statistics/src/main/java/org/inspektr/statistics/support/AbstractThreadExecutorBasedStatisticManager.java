@@ -18,7 +18,6 @@ package org.inspektr.statistics.support;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.StatisticManager;
 
@@ -37,7 +36,6 @@ public abstract class AbstractThreadExecutorBasedStatisticManager implements
 		StatisticManager {
 
 	/** ExecutorService that has one thread to asynchronously save requests. */
-	@NotNull
 	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	public final void recalculate(final StatisticActionContext statisticActionContext) {

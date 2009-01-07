@@ -38,8 +38,6 @@ public class ClientInfoThreadLocalFilter implements Filter {
 	public void destroy() {
 		// nothing to do here
 	}
-
-	
 	
 	public void doFilter(final ServletRequest request, final ServletResponse response,
 			final FilterChain filterChain) throws IOException, ServletException {

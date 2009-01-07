@@ -20,7 +20,6 @@ import java.util.concurrent.Executors;
 
 import org.inspektr.audit.AuditTrailManager;
 import org.inspektr.audit.AuditableActionContext;
-import org.inspektr.common.annotation.NotNull;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -56,17 +55,14 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 	private static final String INSERT_SQL_STATEMENT_SUFFIX = " (AUD_USER, AUD_CLIENT_IP, AUD_SERVER_IP, AUD_RESOURCE, AUD_ACTION, APPLIC_CD, AUD_DATE) Values(?, ?, ?, ?, ?, ?, ?)";
 
 	/** ExecutorService that has one thread to asynchronously save requests. */
-	@NotNull
 	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	/**
 	 * Instance of TransactionTemplate to manually execute a transaction since
 	 * threads are not in the same transaction.
 	 */
-	@NotNull
 	private final TransactionTemplate transactionTemplate;
-	
-	@NotNull
+
 	private String tableName = "COM_AUDIT_TRAIL";
 
 	public JdbcAuditTrailManager(final TransactionTemplate transactionTemplate) {

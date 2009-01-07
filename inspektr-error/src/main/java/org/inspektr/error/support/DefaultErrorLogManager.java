@@ -17,8 +17,6 @@ package org.inspektr.error.support;
 
 import java.util.List;
 
-import org.inspektr.common.annotation.NotEmpty;
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.error.ErrorLogManager;
 import org.inspektr.error.ErrorReporter;
 import org.inspektr.error.spi.CurrentContextPrincipalResolver;
@@ -35,7 +33,6 @@ public class DefaultErrorLogManager implements ErrorLogManager {
 	/**
 	 * The application identifier to use when recording errors.
 	 */
-	@NotNull
 	private String applicationCode;
 	
 	/**
@@ -46,7 +43,6 @@ public class DefaultErrorLogManager implements ErrorLogManager {
 	/**
 	 * The ErrorReporters to use to report the errors.
 	 */
-	@NotEmpty
 	private List<ErrorReporter> errorReporters;
 	
 	/**

@@ -18,7 +18,6 @@ package org.inspektr.error.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.error.ErrorLogManager;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -43,7 +42,6 @@ import org.springframework.web.servlet.ModelAndView;
 public final class ErrorLogHandlerExceptionResolver implements
 		HandlerExceptionResolver, Ordered {
 	
-	@NotNull
 	private ErrorLogManager errorLogManager;
 	
 	private int order = 0;

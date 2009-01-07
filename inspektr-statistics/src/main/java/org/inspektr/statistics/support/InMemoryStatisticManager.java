@@ -21,7 +21,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.annotation.Statistic.Precision;
 
@@ -38,8 +37,7 @@ import org.inspektr.statistics.annotation.Statistic.Precision;
 public final class InMemoryStatisticManager extends AbstractThreadExecutorBasedStatisticManager {
 	
 	private static final Log LOG = LogFactory.getLog(InMemoryStatisticManager.class);
-	
-	@NotNull
+
 	private final List<StatisticValue> values = new ArrayList<StatisticValue>();
 
 	protected Runnable newTask(final StatisticActionContext statisticActionContext) {

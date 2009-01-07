@@ -23,8 +23,6 @@ import java.util.Map;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.inspektr.common.annotation.NotEmpty;
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.spi.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
@@ -44,17 +42,13 @@ import org.inspektr.statistics.spi.support.DefaultStatisticNameResolver;
 public final class StatisticManagementAspect {
 	
 	/** The list of StatisticManagers to use to update statistics. */
-	@NotNull
 	private final List<StatisticManager> statisticManagers;
 	
 	/** The default application code. */
-	@NotNull
 	private final String applicationCode;
-	
-	@NotNull
+
 	private ClientInfoResolver clientInfoResolver = new DefaultClientInfoResolver();
-	
-	@NotEmpty
+
 	private Map<Class <? extends StatisticNameResolver>, StatisticNameResolver> nameResolvers = new HashMap<Class <? extends StatisticNameResolver>, StatisticNameResolver>();
 	
 	public StatisticManagementAspect(final List<StatisticManager> statisticManagers, final String applicationCode) {

@@ -22,7 +22,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.error.ErrorLogManager;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -40,10 +39,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 public class ErrorLoggingFilter extends OncePerRequestFilter {
 	
-	@NotNull
 	private ErrorLogManager errorLogManager;
 
-	@Override
 	protected void doFilterInternal(final HttpServletRequest request,
 			final HttpServletResponse response, final FilterChain filterChain)
 			throws ServletException, IOException {

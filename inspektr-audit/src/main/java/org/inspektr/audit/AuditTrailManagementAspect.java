@@ -34,8 +34,6 @@ import org.inspektr.audit.spi.support.BooleanAuditableActionResolver;
 import org.inspektr.audit.spi.support.DefaultAuditableActionResolver;
 import org.inspektr.audit.spi.support.ObjectCreationAuditableActionResolver;
 import org.inspektr.audit.spi.support.ReturnValueAsStringResourceResolver;
-import org.inspektr.common.annotation.NotEmpty;
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.spi.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
@@ -53,22 +51,16 @@ public final class AuditTrailManagementAspect {
 	
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	@NotNull
     private final AuditablePrincipalResolver auditablePrincipalResolver;
     
-	@NotEmpty
     private final Map<Class <? extends AuditableActionResolver>, AuditableActionResolver> auditableActionResolvers = new HashMap<Class <? extends AuditableActionResolver>, AuditableActionResolver>();
 
-	@NotEmpty
 	private final Map<Class <? extends AuditableResourceResolver>, AuditableResourceResolver> auditableResourceResolvers = new HashMap<Class <? extends AuditableResourceResolver>, AuditableResourceResolver>();
 
-	@NotEmpty
     private final List<AuditTrailManager> auditTrailManagers;
 	
-	@NotNull
 	private final String applicationCode;
 
-	@NotNull
 	private ClientInfoResolver clientInfoResolver = new DefaultClientInfoResolver();
     
 	/**
