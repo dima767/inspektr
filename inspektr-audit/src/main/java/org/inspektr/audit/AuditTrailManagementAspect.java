@@ -30,10 +30,7 @@ import org.inspektr.audit.annotation.Auditables;
 import org.inspektr.audit.spi.AuditableActionResolver;
 import org.inspektr.audit.spi.AuditablePrincipalResolver;
 import org.inspektr.audit.spi.AuditableResourceResolver;
-import org.inspektr.audit.spi.support.BooleanAuditableActionResolver;
-import org.inspektr.audit.spi.support.DefaultAuditableActionResolver;
-import org.inspektr.audit.spi.support.ObjectCreationAuditableActionResolver;
-import org.inspektr.audit.spi.support.ReturnValueAsStringResourceResolver;
+import org.inspektr.audit.spi.support.*;
 import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.spi.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
@@ -67,9 +64,10 @@ public final class AuditTrailManagementAspect {
 	 * Constructs an AuditTrailManagementAspect with the following parameters.  Also, registers some default AuditableActionResolvers including the
 	 * {@link DefaultAuditableActionResolver}, the {@link BooleanAuditableActionResolver} and the {@link ObjectCreationAuditableActionResolver}.
 	 * 
-	 * @param auditablePrincipalResolver
-	 * @param auditableResourceResolvers
-	 * @param auditTrailManagers
+	 * @param auditablePrincipalResolver the resolver which will locate principals.
+	 * @param auditableResourceResolvers the additional list of resource resolvers.
+	 * @param auditTrailManagers the list of managers to write the audit trail out to.
+     * @param applicationCode the overall code that identifies this application.
 	 */
     public AuditTrailManagementAspect(final AuditablePrincipalResolver auditablePrincipalResolver, final List<AuditableResourceResolver> auditableResourceResolvers, final List<AuditTrailManager> auditTrailManagers, final String applicationCode) {
     	this.auditablePrincipalResolver = auditablePrincipalResolver;
@@ -85,6 +83,7 @@ public final class AuditTrailManagementAspect {
     	}
     	
     	this.auditableResourceResolvers.put(ReturnValueAsStringResourceResolver.class, new ReturnValueAsStringResourceResolver());
+        this.auditableResourceResolvers.put(ParametersAsStringResourceResolver.class, new ParametersAsStringResourceResolver());
     }
     
     @Around(value="@annotation(auditables)", argNames="auditables")

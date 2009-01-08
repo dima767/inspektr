@@ -19,7 +19,6 @@ import java.util.Date;
 
 import javax.sql.DataSource;
 
-import org.inspektr.common.annotation.NotNull;
 import org.inspektr.statistics.StatisticActionContext;
 import org.inspektr.statistics.annotation.Statistic.Precision;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
@@ -52,10 +51,8 @@ public final class JdbcStatisticManager extends AbstractThreadExecutorBasedStati
 	
 	private static final String INSERT_STATISTIC = "Insert into COM_STATISTICS(STAT_SERVER_IP, STAT_DATE, APPLIC_CD, STAT_PRECISION, STAT_COUNT, STAT_NAME, STAT_TIMING) VALUES(?, ?, ?, ?, 1, ?, ?)";
 
-	@NotNull
 	private final SimpleJdbcTemplate jdbcTemplate;
-	
-	@NotNull
+
 	private final TransactionTemplate transactionTemplate;
 		
 	public JdbcStatisticManager(final DataSource dataSource, final TransactionTemplate transactionTemplate) {
