@@ -115,6 +115,5 @@
 		<module>inspektr-error</module>
 		<module>inspektr-audit</module>
 		<module>inspektr-support-spring</module>
-		<module>inspektr-support-spring-security</module>
 	</modules>
 </project>

@@ -76,6 +76,7 @@ public final class AuditTrailManagementAspect {
     	this.auditableActionResolvers.put(DefaultAuditableActionResolver.class, new DefaultAuditableActionResolver());
     	this.auditableActionResolvers.put(BooleanAuditableActionResolver.class, new BooleanAuditableActionResolver());
     	this.auditableActionResolvers.put(ObjectCreationAuditableActionResolver.class, new ObjectCreationAuditableActionResolver());
+        this.auditableActionResolvers.put(ExceptionFailureSuffixAuditableActionResolver.class, new ExceptionFailureSuffixAuditableActionResolver());
     	this.applicationCode = applicationCode;
     	
     	for (final AuditableResourceResolver resolver : auditableResourceResolvers) {
