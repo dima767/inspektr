@@ -1,0 +1,2 @@
+The Inspektr project allows for non-intrusive auditing and logging of the fine-grained execution paths e.g. Spring-managed beans method executions 
+by using annotations and Spring-managed @Aspect-style aspects.
