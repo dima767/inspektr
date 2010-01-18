@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.inspektr.audit.spi.support;
+package org.inspektr.audit.annotation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Returns the parameters as an array of strings.
- *
+ * States that this method should be logged for auditing purposes.
+ * <p>
+ * This is a holder annotation to hold multiple {@link org.inspektr.audit.annotation.Audit} annotations.
+ * 
+ * @author Alice Leung
+ * @author Dmitriy Kopylenko
  * @author Scott Battaglia
  * @version $Revision$ $Date$
- * @since 1.0.0
+ * @since 1.0
+ *
  */
-public class ParametersAsStringResourceResolver extends AbstractAuditResourceResolver {
-
-    protected String[] createResource(final Object[] args) {
-        final List<String> stringArgs = new ArrayList<String>();
-
-        for (final Object arg : args) {
-            stringArgs.add(arg.toString());
-        }
-
-        return stringArgs.toArray(new String[stringArgs.size()]);
-    }
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Audits {
+	
+	Audit[] value();
 }

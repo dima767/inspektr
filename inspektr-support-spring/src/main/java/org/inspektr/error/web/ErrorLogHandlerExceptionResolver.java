@@ -1,17 +1,17 @@
 /**
- *  Copyright 2007 Rutgers, the State University of New Jersey
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *      
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (C) 2009 Rutgers, the State University of New Jersey.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.inspektr.error.web;
 
@@ -39,8 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @version $Revision: 1.3 $ $Date: 2007/07/11 20:48:46 $
  * @since 1.0
  */
-public final class ErrorLogHandlerExceptionResolver implements
-		HandlerExceptionResolver, Ordered {
+public final class ErrorLogHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
 	
 	private ErrorLogManager errorLogManager;
 	
@@ -49,15 +48,13 @@ public final class ErrorLogHandlerExceptionResolver implements
 	/**
 	 * Constructs a new <code>ErrorLogHandlerExceptionResolver</code>.
 	 * 
-	 * @param errorlogManager the ErrorLogManager facility to use
+	 * @param errorLogManager the ErrorLogManager facility to use
 	 */
-	public ErrorLogHandlerExceptionResolver(final ErrorLogManager errorlogManager) {
-		this.errorLogManager = errorlogManager;
+	public ErrorLogHandlerExceptionResolver(final ErrorLogManager errorLogManager) {
+		this.errorLogManager = errorLogManager;
 	}
 
-	public ModelAndView resolveException(final HttpServletRequest request,
-			final HttpServletResponse response, final Object handler, final Exception exception) {
-		
+	public ModelAndView resolveException(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final Exception exception) {
 		this.errorLogManager.recordError(exception);
 		
 		// Return null so that further processing can take over.

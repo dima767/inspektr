@@ -1,22 +1,22 @@
 /**
- *  Copyright 2007 Rutgers, the State University of New Jersey
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *      
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (C) 2009 Rutgers, the State University of New Jersey.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.inspektr.audit.support;
 
 import org.inspektr.audit.AuditTrailManager;
-import org.inspektr.audit.AuditableActionContext;
+import org.inspektr.audit.AuditActionContext;
 
 /**
  * Simple <code>AuditTrailManager</code> that dumps auditable information to output stream.
@@ -30,16 +30,16 @@ import org.inspektr.audit.AuditableActionContext;
  */
 public final class ConsoleAuditTrailManager implements AuditTrailManager {
 
-    public void record(final AuditableActionContext auditableActionContext) {
+    public void record(final AuditActionContext auditActionContext) {
         System.out.println("Audit trail record BEGIN");
         System.out.println("=============================================================");
-        System.out.println("WHO: " + auditableActionContext.getPrincipal());
-        System.out.println("WHAT: " + auditableActionContext.getResourceOperatedUpon());
-        System.out.println("ACTION: " + auditableActionContext.getActionPerformed());
-        System.out.println("APPLICATION: " + auditableActionContext.getApplicationCode());
-        System.out.println("WHEN: " + auditableActionContext.getWhenActionWasPerformed());
-        System.out.println("CLIENT IP ADDRESS: " + auditableActionContext.getClientIpAddress());
-        System.out.println("SERVER IP ADDRESS: " + auditableActionContext.getServerIpAddress());
+        System.out.println("WHO: " + auditActionContext.getPrincipal());
+        System.out.println("WHAT: " + auditActionContext.getResourceOperatedUpon());
+        System.out.println("ACTION: " + auditActionContext.getActionPerformed());
+        System.out.println("APPLICATION: " + auditActionContext.getApplicationCode());
+        System.out.println("WHEN: " + auditActionContext.getWhenActionWasPerformed());
+        System.out.println("CLIENT IP ADDRESS: " + auditActionContext.getClientIpAddress());
+        System.out.println("SERVER IP ADDRESS: " + auditActionContext.getServerIpAddress());
         System.out.println("=============================================================");
         System.out.println("\n");
     }

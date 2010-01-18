@@ -11,18 +11,18 @@
 	<groupId>org.inspektr</groupId>
 	<artifactId>inspektr-audit</artifactId>
 	<packaging>jar</packaging>
-	<name>Inspektr Auditing</name>
+	<name>Inspektr - Auditing API</name>
+
 	<dependencies>			
 		<dependency>
-			<groupId>aspectj</groupId>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.5.3</version>
-			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.inspektr</groupId>
 			<artifactId>inspektr-common</artifactId>
-			<version>0.8.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

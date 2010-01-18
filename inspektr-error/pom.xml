@@ -14,15 +14,9 @@
 	<name>Inspektr Error Logging</name>
 	<dependencies>			
 		<dependency>
-			<groupId>aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>1.5.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.inspektr</groupId>
 			<artifactId>inspektr-common</artifactId>
-			<version>0.8.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

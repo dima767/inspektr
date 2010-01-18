@@ -15,25 +15,27 @@
  */
 package org.inspektr.audit.spi.support;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.aspectj.lang.JoinPoint;
+import org.inspektr.audit.spi.AuditResourceResolver;
 
 /**
- * Returns the parameters as an array of strings.
- *
+ * Abstract AuditResourceResolver for when the resource is the same regardless of an exception or not.
+ * 
  * @author Scott Battaglia
  * @version $Revision$ $Date$
- * @since 1.0.0
+ * @since 1.0
+ *
  */
-public class ParametersAsStringResourceResolver extends AbstractAuditResourceResolver {
+public abstract class AbstractAuditResourceResolver implements
+        AuditResourceResolver {
 
-    protected String[] createResource(final Object[] args) {
-        final List<String> stringArgs = new ArrayList<String>();
+	public final String[] resolveFrom(final JoinPoint joinPoint, final Object retVal) {
+		return createResource(joinPoint.getArgs());
+	}
 
-        for (final Object arg : args) {
-            stringArgs.add(arg.toString());
-        }
-
-        return stringArgs.toArray(new String[stringArgs.size()]);
-    }
+	public final String[] resolveFrom(final JoinPoint joinPoint, final Exception e) {
+		return createResource(joinPoint.getArgs());
+	}
+	
+	protected abstract String[] createResource(final Object[] args);
 }

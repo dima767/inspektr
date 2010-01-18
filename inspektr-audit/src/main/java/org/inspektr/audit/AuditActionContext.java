@@ -1,17 +1,17 @@
 /**
- *  Copyright 2007 Rutgers, the State University of New Jersey
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *      
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (C) 2009 Rutgers, the State University of New Jersey.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.inspektr.audit;
 
@@ -19,14 +19,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Immutable container holding the core elements of an auditable action that need to be recorded
+ * Immutable container holding the core elements of an audit-able action that need to be recorded
  * as an audit trail record.
  * 
  * @author Dmitriy Kopylenko
- * @version $Id: AuditableActionContext.java,v 1.2 2007/06/14 14:43:32 dkopylen Exp $
+ * @version $Id: AuditActionContext.java,v 1.2 2007/06/14 14:43:32 dkopylen Exp $
  * @since 1.0
  */
-public final class AuditableActionContext implements Serializable {
+public final class AuditActionContext implements Serializable {
 	
     /**
 	 * Unique Id for serialization.
@@ -54,7 +54,7 @@ public final class AuditableActionContext implements Serializable {
     /** Server IP Address */
     private final String serverIpAddress;
 
-    public AuditableActionContext(final String principal, final String resourceOperatedUpon, final String actionPerformed, final String applicationCode,
+    public AuditActionContext(final String principal, final String resourceOperatedUpon, final String actionPerformed, final String applicationCode,
         final Date whenActionWasPerformed, final String clientIpAddress, final String serverIpAddress) {
         assertNotNull(principal, "principal cannot be null");
         assertNotNull(resourceOperatedUpon, "resourceOperatedUpon cannot be null");
@@ -71,7 +71,7 @@ public final class AuditableActionContext implements Serializable {
         this.clientIpAddress = clientIpAddress;
         this.serverIpAddress = serverIpAddress;
     }
-    
+
     protected void assertNotNull(final Object o, final String message) {
     	if (o == null) {
     		throw new IllegalArgumentException(message);

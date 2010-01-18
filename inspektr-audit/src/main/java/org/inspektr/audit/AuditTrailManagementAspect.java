@@ -1,36 +1,32 @@
 /**
- *  Copyright 2007 Rutgers, the State University of New Jersey
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *      
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (C) 2009 Rutgers, the State University of New Jersey.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.inspektr.audit;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
-import org.inspektr.audit.annotation.Auditable;
-import org.inspektr.audit.annotation.Auditables;
-import org.inspektr.audit.spi.AuditableActionResolver;
-import org.inspektr.audit.spi.AuditablePrincipalResolver;
-import org.inspektr.audit.spi.AuditableResourceResolver;
-import org.inspektr.audit.spi.support.*;
+import org.inspektr.audit.annotation.Audit;
+import org.inspektr.audit.annotation.Audits;
+import org.inspektr.audit.spi.AuditActionResolver;
+import org.inspektr.audit.spi.AuditResourceResolver;
+import org.inspektr.common.spi.PrincipalResolver;
 import org.inspektr.common.spi.ClientInfoResolver;
 import org.inspektr.common.spi.DefaultClientInfoResolver;
 import org.inspektr.common.web.ClientInfo;
@@ -46,13 +42,11 @@ import org.inspektr.common.web.ClientInfo;
 @Aspect
 public final class AuditTrailManagementAspect {
 	
-	private final Log log = LogFactory.getLog(this.getClass());
-
-    private final AuditablePrincipalResolver auditablePrincipalResolver;
+    private final PrincipalResolver auditPrincipalResolver;
     
-    private final Map<Class <? extends AuditableActionResolver>, AuditableActionResolver> auditableActionResolvers = new HashMap<Class <? extends AuditableActionResolver>, AuditableActionResolver>();
+    private final Map<String, AuditActionResolver> auditActionResolvers;
 
-	private final Map<Class <? extends AuditableResourceResolver>, AuditableResourceResolver> auditableResourceResolvers = new HashMap<Class <? extends AuditableResourceResolver>, AuditableResourceResolver>();
+	private final Map<String, AuditResourceResolver> auditResourceResolvers;
 
     private final List<AuditTrailManager> auditTrailManagers;
 	
@@ -61,118 +55,98 @@ public final class AuditTrailManagementAspect {
 	private ClientInfoResolver clientInfoResolver = new DefaultClientInfoResolver();
     
 	/**
-	 * Constructs an AuditTrailManagementAspect with the following parameters.  Also, registers some default AuditableActionResolvers including the
-	 * {@link DefaultAuditableActionResolver}, the {@link BooleanAuditableActionResolver} and the {@link ObjectCreationAuditableActionResolver}.
-	 * 
-	 * @param auditablePrincipalResolver the resolver which will locate principals.
-	 * @param auditableResourceResolvers the additional list of resource resolvers.
-	 * @param auditTrailManagers the list of managers to write the audit trail out to.
+	 * Constructs an AuditTrailManagementAspect with the following parameters.  Also, registers some default AuditActionResolvers including the
+	 * {@link org.inspektr.audit.spi.support.DefaultAuditActionResolver}, the {@link org.inspektr.audit.spi.support.BooleanAuditActionResolver} and the {@link org.inspektr.audit.spi.support.ObjectCreationAuditActionResolver}.
+	 *
      * @param applicationCode the overall code that identifies this application.
+	 * @param auditablePrincipalResolver the resolver which will locate principals.
+     * @param auditTrailManagers the list of managers to write the audit trail out to.
+	 * @param auditActionResolverMap the map of resolvers by name provided in the annotation on the method.
+     * @param auditResourceResolverMap the map of resolvers by the name provided in the annotation on the method.
 	 */
-    public AuditTrailManagementAspect(final AuditablePrincipalResolver auditablePrincipalResolver, final List<AuditableResourceResolver> auditableResourceResolvers, final List<AuditTrailManager> auditTrailManagers, final String applicationCode) {
-    	this.auditablePrincipalResolver = auditablePrincipalResolver;
+    public AuditTrailManagementAspect(final String applicationCode, final PrincipalResolver auditablePrincipalResolver, final List<AuditTrailManager> auditTrailManagers, final Map<String,AuditActionResolver> auditActionResolverMap, final Map<String,AuditResourceResolver> auditResourceResolverMap) {
+    	this.auditPrincipalResolver = auditablePrincipalResolver;
     	this.auditTrailManagers = auditTrailManagers;
-    	
-    	this.auditableActionResolvers.put(DefaultAuditableActionResolver.class, new DefaultAuditableActionResolver());
-    	this.auditableActionResolvers.put(BooleanAuditableActionResolver.class, new BooleanAuditableActionResolver());
-    	this.auditableActionResolvers.put(ObjectCreationAuditableActionResolver.class, new ObjectCreationAuditableActionResolver());
-        this.auditableActionResolvers.put(ExceptionFailureSuffixAuditableActionResolver.class, new ExceptionFailureSuffixAuditableActionResolver());
     	this.applicationCode = applicationCode;
-    	
-    	for (final AuditableResourceResolver resolver : auditableResourceResolvers) {
-    		this.auditableResourceResolvers.put(resolver.getClass(), resolver);
-    	}
-    	
-    	this.auditableResourceResolvers.put(ReturnValueAsStringResourceResolver.class, new ReturnValueAsStringResourceResolver());
-        this.auditableResourceResolvers.put(ParametersAsStringResourceResolver.class, new ParametersAsStringResourceResolver());
+        this.auditActionResolvers = auditActionResolverMap;
+        this.auditResourceResolvers = auditResourceResolverMap;
+
     }
     
-    @Around(value="@annotation(auditables)", argNames="auditables")
-    public Object handleAuditTrail(final ProceedingJoinPoint joinPoint, final Auditables auditables) throws Throwable {
+    @Around(value="@annotation(audits)", argNames="audits")
+    public Object handleAuditTrail(final ProceedingJoinPoint joinPoint, final Audits audits) throws Throwable {
     	Object retVal = null;
     	String currentPrincipal = null;
-    	final String[] actions = new String[auditables.value().length];
-    	final String[][] auditableResources = new String[auditables.value().length][];
+    	final String[] actions = new String[audits.value().length];
+    	final String[][] auditableResources = new String[audits.value().length][];
     	try {
     		retVal = joinPoint.proceed();
-    		currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, retVal);
+    		currentPrincipal = this.auditPrincipalResolver.resolveFrom(joinPoint, retVal);
     		
 	        if (currentPrincipal != null) {
-	        	for (int i = 0; i < auditables.value().length; i++) {
-		        	auditableResources[i] = this.auditableResourceResolvers.get(auditables.value()[i].resourceResolverClass()).resolveFrom(joinPoint, retVal);		        
-			        actions[i] = auditableActionResolvers.get(auditables.value()[i].actionResolverClass()).resolveFrom(joinPoint, retVal, auditables.value()[i]);
+	        	for (int i = 0; i < audits.value().length; i++) {
+                    final AuditActionResolver auditActionResolver = this.auditActionResolvers.get(audits.value()[i].actionResolverName());
+                    final AuditResourceResolver auditResourceResolver = this.auditResourceResolvers.get(audits.value()[i].resourceResolverName());
+		        	auditableResources[i] = auditResourceResolver.resolveFrom(joinPoint, retVal);
+			        actions[i] = auditActionResolver.resolveFrom(joinPoint, retVal, audits.value()[i]);
 	        	}
 	        }
 	        return retVal;
     	} catch (final Exception e) {
-    		currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, e);
+    		currentPrincipal = this.auditPrincipalResolver.resolveFrom(joinPoint, e);
     		
 	        if (currentPrincipal != null) {
-	        	for (int i = 0; i < auditables.value().length; i++) {
-		        	auditableResources[i] = this.auditableResourceResolvers.get(auditables.value()[i].resourceResolverClass()).resolveFrom(joinPoint, e);		        
-			        actions[i] = auditableActionResolvers.get(auditables.value()[i].actionResolverClass()).resolveFrom(joinPoint, e, auditables.value()[i]);
+	        	for (int i = 0; i < audits.value().length; i++) {
+		        	auditableResources[i] = this.auditResourceResolvers.get(audits.value()[i].resourceResolverName()).resolveFrom(joinPoint, e);
+			        actions[i] = auditActionResolvers.get(audits.value()[i].actionResolverName()).resolveFrom(joinPoint, e, audits.value()[i]);
 	        	}
 	        }
 	        throw e;
     	} finally {
-    		for (int i = 0; i < auditables.value().length; i++) {
-    			executeAuditCode(currentPrincipal, auditableResources[i], joinPoint, retVal, actions[i], auditables.value()[i]);
+    		for (int i = 0; i < audits.value().length; i++) {
+    			executeAuditCode(currentPrincipal, auditableResources[i], joinPoint, retVal, actions[i], audits.value()[i]);
     		}
     	}
     }
     
-    @Around(value="@annotation(auditable)", argNames="auditable")
-    public Object handleAuditTrail(final ProceedingJoinPoint joinPoint, final Auditable auditable) throws Throwable {
+    @Around(value="@annotation(audit)", argNames="audit")
+    public Object handleAuditTrail(final ProceedingJoinPoint joinPoint, final Audit audit) throws Throwable {
+        final AuditActionResolver auditActionResolver = this.auditActionResolvers.get(audit.actionResolverName());
+        final AuditResourceResolver auditResourceResolver = this.auditResourceResolvers.get(audit.resourceResolverName());
     	
     	String currentPrincipal = null;
-    	String[] auditableResource = null;
+    	String[] auditResource = null;
     	String action = null;
     	Object retVal = null;
     	try {
 	    	retVal = joinPoint.proceed();
 	    	
-	        currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, retVal);
-	        if (currentPrincipal != null) {
-	        	auditableResource = this.auditableResourceResolvers.get(auditable.resourceResolverClass()).resolveFrom(joinPoint, retVal);		        
-		        action = auditableActionResolvers.get(auditable.actionResolverClass()).resolveFrom(joinPoint, retVal, auditable);
-	        }
-	        
+	        currentPrincipal = this.auditPrincipalResolver.resolveFrom(joinPoint, retVal);
+            auditResource = auditResourceResolver.resolveFrom(joinPoint, retVal);
+            action = auditActionResolver.resolveFrom(joinPoint, retVal, audit);
+
 	        return retVal;
     	} catch (final Exception e) {
-    		currentPrincipal = this.auditablePrincipalResolver.resolveFrom(joinPoint, e);
-	        if (currentPrincipal != null) {
-	        	auditableResource = this.auditableResourceResolvers.get(auditable.resourceResolverClass()).resolveFrom(joinPoint, e);
-		        action = auditableActionResolvers.get(auditable.actionResolverClass()).resolveFrom(joinPoint, e, auditable);
-	        }
+    		currentPrincipal = this.auditPrincipalResolver.resolveFrom(joinPoint, e);
+            auditResource = auditResourceResolver.resolveFrom(joinPoint, e);
+            action = auditActionResolver.resolveFrom(joinPoint, e, audit);
     		throw e;
     	} finally {
-    		executeAuditCode(currentPrincipal, auditableResource, joinPoint, retVal, action, auditable);
+    		executeAuditCode(currentPrincipal, auditResource, joinPoint, retVal, action, audit);
     	}
     }
     
-    private void executeAuditCode(final String currentPrincipal, final String[] auditableResources, final ProceedingJoinPoint joinPoint, final Object retVal, final String action, final Auditable auditable) {
-		if (currentPrincipal == null) {
-            log.warn("Recording of audit trail information did not succeed: cannot resolve the principal.");
-        } else if (auditableResources == null) {
-            log.warn("Recording of audit trail information did not succeed: cannot resolve the auditable resource.");
-        } else {
-        	final String applicationCode = (auditable.applicationCode() == null && auditable.applicationCode().length() > 0) ? auditable.applicationCode() : this.applicationCode;
-        	final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
-        	final Date actionDate = new Date();
-        	for (final String auditableResource : auditableResources) {
-        		final AuditableActionContext auditContext = new AuditableActionContext(currentPrincipal, auditableResource, action, applicationCode, actionDate, clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
-    	        // Finally record the audit trail info
-    	        for(AuditTrailManager manager : auditTrailManagers) {
-    	            manager.record(auditContext);
-    	        }
-        	}
+    private void executeAuditCode(final String currentPrincipal, final String[] auditableResources, final ProceedingJoinPoint joinPoint, final Object retVal, final String action, final Audit audit) {
+        final String applicationCode = (audit.applicationCode() == null && audit.applicationCode().length() > 0) ? audit.applicationCode() : this.applicationCode;
+        final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
+        final Date actionDate = new Date();
+        for (final String auditableResource : auditableResources) {
+            final AuditActionContext auditContext = new AuditActionContext(currentPrincipal, auditableResource, action, applicationCode, actionDate, clientInfo.getClientIpAddress(), clientInfo.getServerIpAddress());
+            // Finally record the audit trail info
+            for(AuditTrailManager manager : auditTrailManagers) {
+                manager.record(auditContext);
+            }
         }
-    }
-    
-    public void setAdditionalAuditableActionResolvers(final List<AuditableActionResolver> auditableActionResolvers) {
-    	for (final AuditableActionResolver resolver : auditableActionResolvers) {
-    		this.auditableActionResolvers.put(resolver.getClass(), resolver);
-    	}
     }
 
 	public void setClientInfoResolver(final ClientInfoResolver factory) {

@@ -1,25 +1,25 @@
 /**
- *  Copyright 2007 Rutgers, the State University of New Jersey
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *      
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (C) 2009 Rutgers, the State University of New Jersey.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.inspektr.error.support;
 
 import java.util.List;
 
+import org.inspektr.common.spi.PrincipalResolver;
 import org.inspektr.error.ErrorLogManager;
 import org.inspektr.error.ErrorReporter;
-import org.inspektr.error.spi.CurrentContextPrincipalResolver;
 
 /**
  * An <code>ErrorLogManager</code> implementation.
@@ -38,7 +38,7 @@ public class DefaultErrorLogManager implements ErrorLogManager {
 	/**
 	 * The resolver for a description of the principal associated with the error.
 	 */
-	private CurrentContextPrincipalResolver currentContextPrincipalResolver;
+	private PrincipalResolver currentContextPrincipalResolver;
 	
 	/**
 	 * The ErrorReporters to use to report the errors.
@@ -55,14 +55,14 @@ public class DefaultErrorLogManager implements ErrorLogManager {
 		this.applicationCode = applicationCode;
 		this.errorReporters = errorReporters;
 	}
-	
+
 	/**
 	 * Sets the <code>currentContextPrincipalResolver</code>. The resolver will be
 	 * used to resolve current context information on the principal.
-	 * 
+	 *
 	 * @param resolver	the <code>CurrentContextPrincipalResolver</code> to use.
 	 */
-	public void setCurrentContextPrincipalResolver(CurrentContextPrincipalResolver resolver) {
+	public void setCurrentContextPrincipalResolver(PrincipalResolver resolver) {
 		this.currentContextPrincipalResolver = resolver;
 	}
 

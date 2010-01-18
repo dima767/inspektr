@@ -1,17 +1,17 @@
 /**
- *  Copyright 2007 Rutgers, the State University of New Jersey
- *  
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *  
- *      http://www.apache.org/licenses/LICENSE-2.0
- *      
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Copyright (C) 2009 Rutgers, the State University of New Jersey.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.inspektr.audit.support;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.inspektr.audit.AuditTrailManager;
-import org.inspektr.audit.AuditableActionContext;
+import org.inspektr.audit.AuditActionContext;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -47,8 +47,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @since 1.0
  * 
  */
-public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
-		AuditTrailManager {
+public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements AuditTrailManager {
 
 	private static final String INSERT_SQL_STATEMENT_PREFIX = "Insert into ";
 	
@@ -69,20 +68,19 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 		this.transactionTemplate = transactionTemplate;
 	}
 
-	public void record(final AuditableActionContext auditableActionContext) {
-		this.executorService.execute(new LoggingTask(auditableActionContext,
-				this.transactionTemplate));
+	public void record(final AuditActionContext auditActionContext) {
+		this.executorService.execute(new LoggingTask(auditActionContext, this.transactionTemplate));
 
 	}
 
 	protected class LoggingTask implements Runnable {
 
-		private final AuditableActionContext auditableActionContext;
+		private final AuditActionContext auditActionContext;
 
 		private final TransactionTemplate transactionTemplate;
 
-		public LoggingTask(final AuditableActionContext auditableActionContext, final TransactionTemplate transactionTemplate) {
-			this.auditableActionContext = auditableActionContext;
+        public LoggingTask(final AuditActionContext auditActionContext, final TransactionTemplate transactionTemplate) {
+			this.auditActionContext = auditActionContext;
 			this.transactionTemplate = transactionTemplate;
 		}
 
@@ -90,20 +88,20 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 			this.transactionTemplate
 					.execute(new TransactionCallbackWithoutResult() {
 						protected void doInTransactionWithoutResult(final TransactionStatus transactionStatus) {
-							final String userId = auditableActionContext.getPrincipal().length() <= 100 ? auditableActionContext.getPrincipal() : auditableActionContext.getPrincipal().substring(0, 100);
-							final String resource = auditableActionContext.getResourceOperatedUpon().length() <= 100 ? auditableActionContext.getResourceOperatedUpon() : auditableActionContext.getResourceOperatedUpon().substring(0, 100);
-							final String action = auditableActionContext.getActionPerformed().length() <= 100 ? auditableActionContext.getActionPerformed() : auditableActionContext.getActionPerformed().substring(0, 100);
+							final String userId = auditActionContext.getPrincipal().length() <= 100 ? auditActionContext.getPrincipal() : auditActionContext.getPrincipal().substring(0, 100);
+							final String resource = auditActionContext.getResourceOperatedUpon().length() <= 100 ? auditActionContext.getResourceOperatedUpon() : auditActionContext.getResourceOperatedUpon().substring(0, 100);
+							final String action = auditActionContext.getActionPerformed().length() <= 100 ? auditActionContext.getActionPerformed() : auditActionContext.getActionPerformed().substring(0, 100);
 							
 							getSimpleJdbcTemplate()
 									.update(
 											INSERT_SQL_STATEMENT_PREFIX + tableName + INSERT_SQL_STATEMENT_SUFFIX,
 											userId,
-											auditableActionContext.getClientIpAddress(),
-											auditableActionContext.getServerIpAddress(),
+											auditActionContext.getClientIpAddress(),
+											auditActionContext.getServerIpAddress(),
 											resource,
 											action,
-											auditableActionContext.getApplicationCode(),
-											auditableActionContext.getWhenActionWasPerformed());
+											auditActionContext.getApplicationCode(),
+											auditActionContext.getWhenActionWasPerformed());
 						}
 					});
 		}

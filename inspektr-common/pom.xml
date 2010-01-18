@@ -11,14 +11,14 @@
 	<groupId>org.inspektr</groupId>
 	<artifactId>inspektr-common</artifactId>
 	<packaging>jar</packaging>
-	<name>Inspektr Common</name>
+	<name>Inspektr - Common API</name>
+    
 	<dependencies>			
 		<dependency>
-			<groupId>aspectj</groupId>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.5.3</version>
-			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
