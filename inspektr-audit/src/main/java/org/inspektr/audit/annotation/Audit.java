@@ -20,10 +20,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.inspektr.audit.spi.AuditActionResolver;
-import org.inspektr.audit.spi.AuditResourceResolver;
-import org.inspektr.audit.spi.support.DefaultAuditActionResolver;
-
 /**
  * States that this method should be logged for auditing purposes.
  * 
