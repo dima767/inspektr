@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 Rutgers, the State University of New Jersey.
+ * Copyright (C) 2010 Virginia Tech.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  * </pre>
  * 
  * @author Scott Battaglia
+ * @author Marvin S. Addison
  * @version $Revision: 1.7 $ $Date: 2007/12/03 22:02:41 $
  * @since 1.0
  * 
