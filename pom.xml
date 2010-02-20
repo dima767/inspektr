@@ -6,7 +6,7 @@
 	<artifactId>inspektr</artifactId>
 	<packaging>pom</packaging>
 	<name>Inspektr</name>
-	<version>1.0.0-RC1-SNAPSHOT</version>
+	<version>1.0.0-RC1</version>
 	<url>http://code.google.com/p/inspektr</url>
 	<inceptionYear>2007</inceptionYear>
 
@@ -169,8 +169,8 @@
     </dependencies>
 
     <properties>
-        <spring.version>3.0.0.RELEASE</spring.version>
-        <spring.security.version>3.0.0.RELEASE</spring.security.version>
+        <spring.version>3.0.1.RELEASE</spring.version>
+        <spring.security.version>3.0.1.RELEASE</spring.security.version>
         <slf4j.version>1.5.8</slf4j.version>
         <junit.version>4.7</junit.version>
         <aspectj.version>1.6.7</aspectj.version>

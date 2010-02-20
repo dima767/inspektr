@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.inspektr</groupId>
 		<artifactId>inspektr</artifactId>
-		<version>1.0.0-RC1-SNAPSHOT</version>
+		<version>1.0.0-RC1</version>
 	</parent>
 	<description>Inspektr Common</description>
 	<modelVersion>4.0.0</modelVersion>
