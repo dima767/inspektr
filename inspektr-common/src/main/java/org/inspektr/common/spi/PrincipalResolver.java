@@ -40,6 +40,9 @@ public interface PrincipalResolver {
 
     /**
      * Resolve the principal performing an audit-able action.
+     * <p>
+     * Note, this method should NEVER throw an exception *unless* the expectation is that a failed resolution causes
+     * the entire transaction to fail.  Otherwise use {@link org.inspektr.common.spi.PrincipalResolver#UNKNOWN_USER}.
      * 
      * @param auditTarget the join point where we're auditing.
      * @param returnValue the returned value
@@ -50,6 +53,9 @@ public interface PrincipalResolver {
     /**
      * Resolve the principal performing an audit-able action that has incurred
      * an exception.
+     * <p>
+     * Note, this method should NEVER throw an exception *unless* the expectation is that a failed resolution causes
+     * the entire transaction to fail.  Otherwise use {@link org.inspektr.common.spi.PrincipalResolver#UNKNOWN_USER}.
      * 
      * @param auditTarget the join point where we're auditing.
      * @param exception	The exception incurred when the join point proceeds.
@@ -60,6 +66,9 @@ public interface PrincipalResolver {
     /**
      * Called when there is no other way to resolve the principal (i.e. an error was captured, auditing was not
      * called, etc.)
+     * <p>
+     * Note, this method should NEVER throw an exception *unless* the expectation is that a failed resolution causes
+     * the entire transaction to fail.  Otherwise use {@link org.inspektr.common.spi.PrincipalResolver#UNKNOWN_USER}.
      *
      * @return the principal.  CANNOT be NULL.
      */

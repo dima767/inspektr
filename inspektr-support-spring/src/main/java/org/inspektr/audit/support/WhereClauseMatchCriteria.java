@@ -22,6 +22,7 @@ import java.util.List;
  *
  * @author Middleware
  * @version $Revision: $
+ * @since 1.0
  *
  */
 public interface WhereClauseMatchCriteria {

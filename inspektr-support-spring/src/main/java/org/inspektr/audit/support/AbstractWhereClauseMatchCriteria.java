@@ -23,6 +23,7 @@ package org.inspektr.audit.support;
  *
  * @author Marvin S. Addison
  * @version $Revision: $
+ * @since 1.0
  *
  */
 public abstract class AbstractWhereClauseMatchCriteria implements WhereClauseMatchCriteria {
@@ -38,7 +39,7 @@ public abstract class AbstractWhereClauseMatchCriteria implements WhereClauseMat
    */
   @Override
   public String toString() {
-    return sbClause.toString();
+    return this.sbClause.toString();
   }
 
   
@@ -58,17 +59,18 @@ public abstract class AbstractWhereClauseMatchCriteria implements WhereClauseMat
    * to the where clause.
    *
    * @param column Database column name.
+   * @param operator the operator to use to separate.
    */
   protected void addCriteria(String column, String operator) {
-    if (sbClause.length() == 0) {
-      sbClause.append("WHERE");
+    if (this.sbClause.length() == 0) {
+      this.sbClause.append("WHERE");
     } else {
-      sbClause.append(" AND");
+      this.sbClause.append(" AND");
     }
-    sbClause.append(' ');
-    sbClause.append(column);
-    sbClause.append(' ');
-    sbClause.append(operator);
-    sbClause.append(" ?");
+    this.sbClause.append(' ');
+    this.sbClause.append(column);
+    this.sbClause.append(' ');
+    this.sbClause.append(operator);
+    this.sbClause.append(" ?");
   }
 }

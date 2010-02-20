@@ -45,8 +45,18 @@ public @interface Audit {
 	 * @return the action to write to the logs.
 	 */
 	String action();
-	
+
+    /**
+     * Reference name of the resource resolver to use.
+     *
+     * @return the reference to the resource resolver.  CANNOT be NULL.
+     */
     String resourceResolverName();
 
+    /**
+     * Reference name of the action resolver to use.
+     *
+     * @return the reference to the action resolver.  CANNOT be NULL.
+     */
     String actionResolverName();
 }

@@ -21,6 +21,7 @@ package org.inspektr.audit;
  *
  * @author Marvin S. Addison
  * @version $Revision: $
+ * @since 1.0
  *
  */
 public interface Cleanable {
