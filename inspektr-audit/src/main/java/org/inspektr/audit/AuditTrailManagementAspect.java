@@ -137,7 +137,7 @@ public final class AuditTrailManagementAspect {
     }
     
     private void executeAuditCode(final String currentPrincipal, final String[] auditableResources, final ProceedingJoinPoint joinPoint, final Object retVal, final String action, final Audit audit) {
-        final String applicationCode = (audit.applicationCode() == null && audit.applicationCode().length() > 0) ? audit.applicationCode() : this.applicationCode;
+        final String applicationCode = (audit.applicationCode() != null && audit.applicationCode().length() > 0) ? audit.applicationCode() : this.applicationCode;
         final ClientInfo clientInfo = this.clientInfoResolver.resolveFrom(joinPoint, retVal);
         final Date actionDate = new Date();
         for (final String auditableResource : auditableResources) {
