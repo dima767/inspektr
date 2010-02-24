@@ -5,17 +5,85 @@
 	<groupId>org.inspektr</groupId>
 	<artifactId>inspektr</artifactId>
 	<packaging>pom</packaging>
-	<name>Inspektr</name>
-	<version>1.0.0-RC1</version>
+	<name>Inspektr Auditing Library</name>
+	<version>1.0.0-RC2-SNAPSHOT</version>
 	<url>http://code.google.com/p/inspektr</url>
 	<inceptionYear>2007</inceptionYear>
+
+    <organization>
+        <name>Rutgers, the State University of New Jersey</name>
+        <url>http:/www.rutgers.edu</url>
+    </organization>
+
+    <description>Inspektr is a non-intrusive auditing library for Java 1.5+ based applications.</description>
+
+    <scm>
+        <connection>scm:git:http://github.com/dima767/inspektr.git</connection>
+        <developerConnection>scm:git:git://github.com/dima767/inspektr.git</developerConnection>
+        <url>http://www.github.com/dima767/inpektr</url>
+        <tag>master</tag>
+    </scm>
+
+    <mailingLists>
+        <mailingList>
+            <archive>http://groups.google.com/group/inspektr-dev</archive>
+            <name>Inspektr Development Mailing List</name>
+        </mailingList>
+        <mailingList>
+            <archive>http://groups.google.com/group/inspektr-user</archive>
+            <name>Inspektr User Support Mailing List</name>
+        </mailingList>
+    </mailingLists>
+
+    <issueManagement>
+        <url>http://github.com/dima767/inspektr/issues</url>
+        <system>Github</system>
+    </issueManagement>
 
 	<licenses>
 		<license>
 			<name>Apache 2.0 License</name>
-			<distribution>manual</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+    <developers>
+        <developer>
+            <id>dima767</id>
+            <name>Dmitriy Kopylenko</name>
+            <email>dkopylen@rutgers.edu</email>
+            <organization>Rutgers, the State University of New Jersey</organization>
+            <organizationUrl>http://www.rutgers.edu</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>battags</id>
+            <name>Scott Battaglia</name>
+            <email>battags@rutgers.edu</email>
+            <organization>Rutgers, the State University of New Jersey</organization>
+            <organizationUrl>http://www.rutgers.edu</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>serac</id>
+            <name>Marvin Addison</name>
+            <email>serac@vt.edu</email>
+            <organization>Virginia Tech</organization>
+            <organizationUrl>http://www.vt.edu</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+
+
+    </developers>
 	<build>
 		<testResources>
 			<testResource>
@@ -64,6 +132,8 @@
 					</descriptors>
 				</configuration>
 			</plugin>
+
+            <!--
             <plugin>
                 <inherited>false</inherited>
                 <groupId>com.google.code.maven-license-plugin</groupId>
@@ -78,6 +148,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+            -->
 		</plugins>
 	</build>
 
@@ -144,12 +215,12 @@
                 <type>jar</type>
             </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-            <type>jar</type>
-        </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+                <type>jar</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -170,10 +241,10 @@
 
     <properties>
         <spring.version>3.0.1.RELEASE</spring.version>
-        <spring.security.version>3.0.1.RELEASE</spring.security.version>
+        <spring.security.version>3.0.2.RELEASE</spring.security.version>
         <slf4j.version>1.5.8</slf4j.version>
         <junit.version>4.7</junit.version>
-        <aspectj.version>1.6.7</aspectj.version>
+        <aspectj.version>1.6.8</aspectj.version>
     </properties>
 
 	<modules>

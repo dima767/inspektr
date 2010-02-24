@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.inspektr</groupId>
 		<artifactId>inspektr</artifactId>
-		<version>1.0.0-RC1</version>
+		<version>1.0.0-RC2-SNAPSHOT</version>
 	</parent>
 	<description>Inspektr Common</description>
 	<modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,6 @@
 	<artifactId>inspektr-common</artifactId>
 	<packaging>jar</packaging>
 	<name>Inspektr - Common API</name>
-    
 	<dependencies>			
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -24,7 +23,7 @@
 			<artifactId>servlet-api</artifactId>
 			<version>2.4</version>
 			<type>jar</type>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
