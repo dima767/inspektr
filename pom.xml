@@ -17,7 +17,7 @@
 
     <scm>
         <connection>scm:git:http://github.com/dima767/inspektr.git</connection>
-        <developerConnection>scm:git:git://github.com/dima767/inspektr.git</developerConnection>
+        <developerConnection>scm:git:git@github.com/dima767/inspektr.git</developerConnection>
         <url>http://www.github.com/dima767/inpektr</url>
         <tag>master</tag>
     </scm>
