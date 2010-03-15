@@ -10,10 +10,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="inspektr-audit" exported="" />
-    <orderEntry type="library" exported="" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
-    <orderEntry type="module" module-name="inspektr-common" exported="" />
-    <orderEntry type="library" exported="" name="Maven: org.slf4j:slf4j-api:1.5.8" level="project" />
     <orderEntry type="module" module-name="inspektr-error" exported="" />
+    <orderEntry type="module" module-name="inspektr-common" exported="" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.0.2.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.springframework:spring-expression:3.0.1.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.springframework:spring-core:3.0.1.RELEASE" level="project" />
@@ -23,12 +21,14 @@
     <orderEntry type="library" exported="" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.springframework:spring-beans:3.0.1.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.springframework:spring-tx:3.0.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.springframework:spring-web:3.0.1.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.springframework:spring-webmvc:3.0.1.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.springframework:spring-jdbc:3.0.1.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.7" level="project" />
+    <orderEntry type="library" exported="" name="Maven: org.slf4j:slf4j-api:1.5.8" level="project" />
   </component>
 </module>
 
