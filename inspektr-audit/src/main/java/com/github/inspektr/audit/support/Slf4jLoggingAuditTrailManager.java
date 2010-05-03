@@ -32,7 +32,7 @@ public final class Slf4jLoggingAuditTrailManager implements AuditTrailManager {
     
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public void record(final AuditActionContext auditActionContext) {
+    public synchronized void record(final AuditActionContext auditActionContext) {
         log.info("Audit trail record BEGIN");
         log.info("=============================================================");
         log.info("WHO: " + auditActionContext.getPrincipal());
