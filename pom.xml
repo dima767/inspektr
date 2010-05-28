@@ -75,9 +75,8 @@
         <developer>
             <id>battags</id>
             <name>Scott Battaglia</name>
-            <email>battags@rutgers.edu</email>
-            <organization>Rutgers, the State University of New Jersey</organization>
-            <organizationUrl>http://www.rutgers.edu</organizationUrl>
+            <email>scott.battaglia@gmail.com</email>
+            <organizationUrl>http://www.scottbattaglia.com</organizationUrl>
             <roles>
                 <role>Developer</role>
             </roles>
