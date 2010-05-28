@@ -3,10 +3,11 @@
 ==  Version 2.0, in this case for the Apache Geronimo distribution.    ==
 =========================================================================
    Inspektr
-   Copyright 2010 Rutgers, the State University of New Jersey and Virginia Tech
+   Copyright 2010 Rutgers, the State University of New Jersey, Virginia Tech,
+   and Scott Battaglia
 
    This product includes software developed at
-   Rutgers, the State University of New Jersey and Virginia Tech.
+   Rutgers, the State University of New Jersey, Virginia Tech, and Scott Battaglia.
 
 =========================================================================
 ==  Spring Notice                                                      ==

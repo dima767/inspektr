@@ -28,21 +28,12 @@ import org.slf4j.LoggerFactory;
  * @since 1.0
  * @see AuditTrailManager
  */
-public final class Slf4jLoggingAuditTrailManager implements AuditTrailManager {
+public final class Slf4jLoggingAuditTrailManager extends AbstractStringAuditTrailManager {
     
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public synchronized void record(final AuditActionContext auditActionContext) {
-        log.info("Audit trail record BEGIN");
-        log.info("=============================================================");
-        log.info("WHO: " + auditActionContext.getPrincipal());
-        log.info("WHAT: " + auditActionContext.getResourceOperatedUpon());
-        log.info("ACTION: " + auditActionContext.getActionPerformed());
-        log.info("APPLICATION: " + auditActionContext.getApplicationCode());
-        log.info("WHEN: " + auditActionContext.getWhenActionWasPerformed());
-        log.info("CLIENT IP ADDRESS: " + auditActionContext.getClientIpAddress());
-        log.info("SERVER IP ADDRESS: " + auditActionContext.getServerIpAddress());
-        log.info("=============================================================");
-        log.info("\n\n");
+    public void record(final AuditActionContext auditActionContext) {
+
+        log.info(toString(auditActionContext));
     }
 }

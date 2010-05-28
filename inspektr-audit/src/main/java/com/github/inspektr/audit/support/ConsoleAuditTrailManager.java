@@ -24,23 +24,14 @@ import com.github.inspektr.audit.AuditActionContext;
  * Useful for testing.
  * 
  * @author Dmitriy Kopylenko
+ * @author Scott Battaglia
  * @version $Id: ConsoleAuditTrailManager.java,v 1.2 2007/06/12 15:18:43 dkopylen Exp $
  * @since 1.0
  * @see AuditTrailManager
  */
-public final class ConsoleAuditTrailManager implements AuditTrailManager {
+public final class ConsoleAuditTrailManager extends AbstractStringAuditTrailManager {
 
     public void record(final AuditActionContext auditActionContext) {
-        System.out.println("Audit trail record BEGIN");
-        System.out.println("=============================================================");
-        System.out.println("WHO: " + auditActionContext.getPrincipal());
-        System.out.println("WHAT: " + auditActionContext.getResourceOperatedUpon());
-        System.out.println("ACTION: " + auditActionContext.getActionPerformed());
-        System.out.println("APPLICATION: " + auditActionContext.getApplicationCode());
-        System.out.println("WHEN: " + auditActionContext.getWhenActionWasPerformed());
-        System.out.println("CLIENT IP ADDRESS: " + auditActionContext.getClientIpAddress());
-        System.out.println("SERVER IP ADDRESS: " + auditActionContext.getServerIpAddress());
-        System.out.println("=============================================================");
-        System.out.println("\n");
+        System.out.println(toString(auditActionContext));
     }
 }
