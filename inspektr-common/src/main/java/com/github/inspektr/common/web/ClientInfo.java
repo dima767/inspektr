@@ -44,7 +44,7 @@ public final class ClientInfo {
 	}
 
     public ClientInfo(final HttpServletRequest request, final String alternateLocation) {
-        this(request.getLocalAddr(), request.getHeader(alternateLocation));
+        this(request.getLocalAddr(), request.getHeader(alternateLocation) != null ? request.getHeader(alternateLocation) : request.getRemoteAddr());
     }
 	
 	public ClientInfo(final String serverIpAddress, final String clientIpAddress) {
