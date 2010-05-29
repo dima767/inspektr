@@ -36,12 +36,16 @@ public final class ClientInfo {
 	private final String clientIpAddress;
 	
 	private ClientInfo() {
-		this(null, null);
+		this((String) null, (String) null);
 	}
 	
 	public ClientInfo(final HttpServletRequest request) {
 		this(request.getLocalAddr(), request.getRemoteAddr());
 	}
+
+    public ClientInfo(final HttpServletRequest request, final String alternateLocation) {
+        this(request.getLocalAddr(), request.getHeader(alternateLocation));
+    }
 	
 	public ClientInfo(final String serverIpAddress, final String clientIpAddress) {
 		this.serverIpAddress = serverIpAddress == null ? "unknown" : serverIpAddress;

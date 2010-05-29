@@ -27,6 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Creates a ClientInfo object and passes it to the {@link ClientInfoHolder}
+ * <p>
+ * If one provides an alternative IP Address Header (i.e. init-param "alternativeIpAddressHeader"), the client
+ * IP address will be read from that instead.
  * 
  * @author Scott Battaglia
  * @version $Revision$ $Date$
@@ -35,13 +38,23 @@ import javax.servlet.http.HttpServletRequest;
  */
 public final class ClientInfoThreadLocalFilter implements Filter {
 
+    public static final String CONST_IP_ADDRESS_HEADER = "alternativeIpAddressHeader";
+
+    private String otherHeader;
+
 	public void destroy() {
 		// nothing to do here
 	}
 	
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain filterChain) throws IOException, ServletException {
 		try {
-			final ClientInfo clientInfo = new ClientInfo((HttpServletRequest) request);
+			final ClientInfo clientInfo;
+
+            if (otherHeader == null || otherHeader.isEmpty()) {
+                clientInfo = new ClientInfo((HttpServletRequest) request);
+            } else {
+                clientInfo = new ClientInfo((HttpServletRequest) request, this.otherHeader);
+            }
 			ClientInfoHolder.setClientInfo(clientInfo);
 			filterChain.doFilter(request, response);
 		} finally {
@@ -50,6 +63,6 @@ public final class ClientInfoThreadLocalFilter implements Filter {
 	}
 
 	public void init(final FilterConfig filterConfig) throws ServletException {
-		// nothing to do
+        this.otherHeader = filterConfig.getInitParameter(CONST_IP_ADDRESS_HEADER);
 	}
 }
