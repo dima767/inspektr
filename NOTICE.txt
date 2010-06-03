@@ -1,6 +1,6 @@
 =========================================================================
 ==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
-==  Version 2.0, in this case for the Apache Geronimo distribution.    ==
+==  Version 2.0, in this case for the Inspektr distribution.           ==
 =========================================================================
    Inspektr
    Copyright 2010 Rutgers, the State University of New Jersey, Virginia Tech,

@@ -173,22 +173,21 @@
 
             
 
-            <!--
             <plugin>
                 <inherited>false</inherited>
-                <groupId>com.google.code.maven-license-plugin</groupId>
+                <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.1</version>
                 <configuration>
                     <basedir>${basedir}</basedir>
                     <header>${basedir}/src/etc/header.txt</header>
                     <aggregate>true</aggregate>
                     <excludes>
                         <exclude>LICENSE</exclude>
+                        <exclude>NOTICE.txt</exclude>
                     </excludes>
                 </configuration>
             </plugin>
-            -->
 		</plugins>
 	</build>
 
