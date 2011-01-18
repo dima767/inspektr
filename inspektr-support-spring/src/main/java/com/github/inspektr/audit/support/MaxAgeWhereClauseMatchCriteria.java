@@ -59,9 +59,4 @@ public final class MaxAgeWhereClauseMatchCriteria extends AbstractWhereClauseMat
     cal.add(Calendar.DAY_OF_MONTH, -this.maxAge);
     return Collections.singletonList(cal.getTime());
   }
-  
-  /** {@inheritDoc} */
-  protected String getDateColumn() {
-    return DATE_COLUMN;
-  }
 }

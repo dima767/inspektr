@@ -21,6 +21,8 @@ package com.github.inspektr.error.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import com.github.inspektr.error.ErrorLogManager;
 import org.springframework.core.Ordered;
@@ -44,9 +46,11 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 1.0
  */
 public final class ErrorLogHandlerExceptionResolver implements HandlerExceptionResolver, Ordered {
-	
+
+    @NotNull
 	private ErrorLogManager errorLogManager;
-	
+
+    @Min(0)
 	private int order = 0;
 	
 	/**

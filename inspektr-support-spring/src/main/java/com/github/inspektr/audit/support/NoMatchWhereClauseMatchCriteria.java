@@ -37,8 +37,7 @@ public final class NoMatchWhereClauseMatchCriteria extends AbstractWhereClauseMa
   }
 
   /** {@inheritDoc} */
-  public List<?> getParameterValues()
-  {
+  public List<?> getParameterValues() {
     return Collections.emptyList();
   }
 

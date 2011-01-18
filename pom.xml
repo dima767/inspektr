@@ -254,6 +254,13 @@
             <artifactId>slf4j-api</artifactId>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -263,6 +270,7 @@
         <junit.version>4.8.2</junit.version>
         <aspectj.version>1.6.10</aspectj.version>
         <javax.servlet.version>2.5</javax.servlet.version>
+        <javax.validation.version>1.0.0.GA</javax.validation.version>
     </properties>
 
 	<modules>

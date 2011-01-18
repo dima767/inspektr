@@ -25,6 +25,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 
 import com.github.inspektr.error.ErrorLogManager;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -42,20 +43,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @since 1.0
  */
 public class ErrorLoggingFilter extends OncePerRequestFilter {
-	
+
+    @NotNull
 	private ErrorLogManager errorLogManager;
 
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws ServletException, IOException {
 
 		try {
 			filterChain.doFilter(request, response);
-		} catch (ServletException e) {
+		} catch (final ServletException e) {
 			this.errorLogManager.recordError(e);
 			throw e;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			this.errorLogManager.recordError(e);
 			throw e;
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			this.errorLogManager.recordError(t);
 			throw new ServletException(t);
 		}
