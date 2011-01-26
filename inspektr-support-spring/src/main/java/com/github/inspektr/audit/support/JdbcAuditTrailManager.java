@@ -48,6 +48,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -81,6 +82,8 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 
     private static final String DELETE_SQL_TEMPLATE = "DELETE FROM %s %s";
 
+    private static final int DEFAULT_COLUMN_LENGTH = 100;
+
     /**
      * Logger instance
      */
@@ -96,6 +99,9 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
     @NotNull
     @Size(min = 1)
     private String tableName = "COM_AUDIT_TRAIL";
+
+    @Min(50)
+    private int columnLength = DEFAULT_COLUMN_LENGTH;
 
     /**
      * ExecutorService that has one thread to asynchronously save requests.
@@ -115,7 +121,7 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
     }
 
     public void record(final AuditActionContext auditActionContext) {
-        this.executorService.execute(new LoggingTask(auditActionContext, this.transactionTemplate));
+        this.executorService.execute(new LoggingTask(auditActionContext, this.transactionTemplate, this.columnLength));
     }
 
     protected class LoggingTask implements Runnable {
@@ -124,18 +130,21 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 
         private final TransactionTemplate transactionTemplate;
 
-        public LoggingTask(final AuditActionContext auditActionContext, final TransactionTemplate transactionTemplate) {
+        private final int columnLength;
+
+        public LoggingTask(final AuditActionContext auditActionContext, final TransactionTemplate transactionTemplate, final int columnLength) {
             this.auditActionContext = auditActionContext;
             this.transactionTemplate = transactionTemplate;
+            this.columnLength = columnLength;
         }
 
         public void run() {
             this.transactionTemplate
                     .execute(new TransactionCallbackWithoutResult() {
                         protected void doInTransactionWithoutResult(final TransactionStatus transactionStatus) {
-                            final String userId = auditActionContext.getPrincipal().length() <= 100 ? auditActionContext.getPrincipal() : auditActionContext.getPrincipal().substring(0, 100);
-                            final String resource = auditActionContext.getResourceOperatedUpon().length() <= 100 ? auditActionContext.getResourceOperatedUpon() : auditActionContext.getResourceOperatedUpon().substring(0, 100);
-                            final String action = auditActionContext.getActionPerformed().length() <= 100 ? auditActionContext.getActionPerformed() : auditActionContext.getActionPerformed().substring(0, 100);
+                            final String userId = auditActionContext.getPrincipal().length() <= columnLength ? auditActionContext.getPrincipal() : auditActionContext.getPrincipal().substring(0, columnLength);
+                            final String resource = auditActionContext.getResourceOperatedUpon().length() <= columnLength ? auditActionContext.getResourceOperatedUpon() : auditActionContext.getResourceOperatedUpon().substring(0, columnLength);
+                            final String action = auditActionContext.getActionPerformed().length() <= columnLength ? auditActionContext.getActionPerformed() : auditActionContext.getActionPerformed().substring(0, columnLength);
 
                             getSimpleJdbcTemplate()
                                     .update(
@@ -162,6 +171,10 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 
     public void setExecutorService(final ExecutorService executorService) {
         this.executorService = executorService;
+    }
+
+    public void setColumnLength(final int columnLength) {
+        this.columnLength = columnLength;
     }
 
     /**
