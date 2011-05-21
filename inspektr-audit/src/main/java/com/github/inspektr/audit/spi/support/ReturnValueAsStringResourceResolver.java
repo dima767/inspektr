@@ -67,6 +67,10 @@ public class ReturnValueAsStringResourceResolver implements AuditResourceResolve
 	}
 
 	public String[] resolveFrom(final JoinPoint auditableTarget, final Exception exception) {
-		return new String[] {exception.getMessage()};
+		final String message = exception.getMessage();
+		if (message != null) {
+			return new String[] {message};
+		}
+		return new String[] {exception.toString()};
 	}
 }
