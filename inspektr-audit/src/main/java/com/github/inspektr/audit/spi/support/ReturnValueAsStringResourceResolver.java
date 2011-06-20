@@ -34,7 +34,7 @@ import com.github.inspektr.audit.spi.AuditResourceResolver;
  * @since 1.0
  *
  */
-public class ReturnValueAsStringResourceResolver implements AuditResourceResolver {
+public final class ReturnValueAsStringResourceResolver implements AuditResourceResolver {
 
 	public String[] resolveFrom(final JoinPoint auditableTarget, final Object retval) {
 		if (retval instanceof Collection) {
