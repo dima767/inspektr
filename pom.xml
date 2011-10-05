@@ -283,5 +283,6 @@
 		<module>inspektr-error</module>
 		<module>inspektr-audit</module>
 		<module>inspektr-support-spring</module>
-	</modules>
+        <module>inspektr-extras</module>
+    </modules>
 </project>
