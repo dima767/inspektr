@@ -104,18 +104,18 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
     @Min(50)
     private int columnLength = DEFAULT_COLUMN_LENGTH;
 
-  /**
-   * ExecutorService that has one thread to asynchronously save requests.
-   */
-  @NotNull
-  private ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
+    /**
+     * ExecutorService that has one thread to asynchronously save requests.
+     */
+    @NotNull
+    private ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
-    public Thread newThread(Runnable r) {
-      Thread ret = new Thread(r, "JdbcAuditTrailManagerThread");
-      ret.setDaemon(true);
-      return ret;
-    }
-  });
+      public Thread newThread(Runnable r) {
+        Thread ret = new Thread(r, "JdbcAuditTrailManagerThread");
+        ret.setDaemon(true);
+        return ret;
+      }
+    });
 
     /**
      * Criteria used to determine records that should be deleted on cleanup
