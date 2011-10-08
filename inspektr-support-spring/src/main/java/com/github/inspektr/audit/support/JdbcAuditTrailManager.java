@@ -37,6 +37,7 @@ package com.github.inspektr.audit.support;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import com.github.inspektr.audit.AuditTrailManager;
 import com.github.inspektr.audit.AuditActionContext;
@@ -107,8 +108,14 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
      * ExecutorService that has one thread to asynchronously save requests.
      */
     @NotNull
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
+      public Thread newThread(Runnable r) {
+        Thread ret = new Thread(r, "JdbcAuditTrailManagerThread");
+        ret.setDaemon(true);
+        return ret;
+      }
+    });
 
     /**
      * Criteria used to determine records that should be deleted on cleanup
