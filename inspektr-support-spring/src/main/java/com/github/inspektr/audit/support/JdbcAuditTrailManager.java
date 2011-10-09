@@ -44,6 +44,7 @@ import com.github.inspektr.audit.AuditActionContext;
 import com.github.inspektr.common.Cleanable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -54,9 +55,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Implementation of {@link com.github.inspektr.audit.AuditTrailManager} to persist the
+ * <p>Implementation of {@link com.github.inspektr.audit.AuditTrailManager} to persist the
  * audit trail to the  AUDIT_TRAIL table in the Oracle data base.
- * <p/>
+ * </p>
  * <pre>
  * CREATE TABLE COM_AUDIT_TRAIL
  * (
@@ -75,7 +76,7 @@ import javax.validation.constraints.Size;
  * @version $Revision: 1.7 $ $Date: 2007/12/03 22:02:41 $
  * @since 1.0
  */
-public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements AuditTrailManager, Cleanable {
+public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements AuditTrailManager, Cleanable, DisposableBean {
 
     private static final String INSERT_SQL_TEMPLATE = "INSERT INTO %s " +
             "(AUD_USER, AUD_CLIENT_IP, AUD_SERVER_IP, AUD_RESOURCE, AUD_ACTION, APPLIC_CD, AUD_DATE) " +
@@ -106,16 +107,13 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 
     /**
      * ExecutorService that has one thread to asynchronously save requests.
+     *
+     * You can configure one with an {@link org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean}.
      */
     @NotNull
-    private ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-      public Thread newThread(Runnable r) {
-        Thread ret = new Thread(r, "JdbcAuditTrailManagerThread");
-        ret.setDaemon(true);
-        return ret;
-      }
-    });
+    private boolean defaultExecutorService = true;
 
     /**
      * Criteria used to determine records that should be deleted on cleanup
@@ -178,6 +176,7 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
 
     public void setExecutorService(final ExecutorService executorService) {
         this.executorService = executorService;
+        this.defaultExecutorService = false;
     }
 
     public void setColumnLength(final int columnLength) {
@@ -185,8 +184,14 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
     }
 
     /**
-     * {@inheritDoc}
+     * We only shut down the default executor service.  We assume, that if you've injected one, its being managed elsewhere.
      */
+    public void destroy() throws Exception {
+        if (this.defaultExecutorService) {
+            this.executorService.shutdown();
+        }
+    }
+
     public void clean() {
         this.transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 
