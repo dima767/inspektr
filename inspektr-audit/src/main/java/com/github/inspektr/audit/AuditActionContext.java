@@ -59,14 +59,14 @@ public final class AuditActionContext implements Serializable {
     private final String serverIpAddress;
 
     public AuditActionContext(final String principal, final String resourceOperatedUpon, final String actionPerformed, final String applicationCode,
-        final Date whenActionWasPerformed, final String clientIpAddress, final String serverIpAddress) {
-        assertNotNull(principal, "principal cannot be null");
-        assertNotNull(resourceOperatedUpon, "resourceOperatedUpon cannot be null");
-        assertNotNull(actionPerformed, "actionPerformed cannot be null.");
-        assertNotNull(applicationCode, "applicationCode cannot be null.");
-        assertNotNull(whenActionWasPerformed, "whenActionPerformed cannot be null.");
-        assertNotNull(clientIpAddress, "clientIpAddress cannot be null.");
-        assertNotNull(serverIpAddress, "serverIpAddress cannot be null.");
+        final Date whenActionWasPerformed, final String clientIpAddress, final String serverIpAddress, AuditPointRuntimeInfo runtimeInfo) {
+        assertNotNull(principal, "'principal' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
+        assertNotNull(resourceOperatedUpon, "'resourceOperatedUpon' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
+        assertNotNull(actionPerformed, "'actionPerformed' cannot be null.\n"  + getDiagnosticInfo(runtimeInfo));
+        assertNotNull(applicationCode, "'applicationCode' cannot be null.\n"  + getDiagnosticInfo(runtimeInfo));
+        assertNotNull(whenActionWasPerformed, "'whenActionPerformed' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
+        assertNotNull(clientIpAddress, "'clientIpAddress' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
+        assertNotNull(serverIpAddress, "'serverIpAddress' cannot be null.\n" + getDiagnosticInfo(runtimeInfo));
         this.principal = principal;
         this.resourceOperatedUpon = resourceOperatedUpon;
         this.actionPerformed = actionPerformed;
@@ -109,4 +109,8 @@ public final class AuditActionContext implements Serializable {
 	public String getServerIpAddress() {
 		return this.serverIpAddress;
 	}
+
+    private String getDiagnosticInfo(AuditPointRuntimeInfo runtimeInfo) {
+        return "Check the correctness of @Audit annotation at the following audit point: " + runtimeInfo.asString();
+    }
 }
