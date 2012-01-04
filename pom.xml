@@ -9,7 +9,7 @@
 	<artifactId>inspektr</artifactId>
 	<packaging>pom</packaging>
 	<name>Inspektr Auditing Library</name>
-	<version>1.1.0.M1-SNAPSHOT</version>
+	<version>1.0.6.GA-SNAPSHOT</version>
 	<url>http://inspektr.github.com</url>
 	<inceptionYear>2007</inceptionYear>
 
