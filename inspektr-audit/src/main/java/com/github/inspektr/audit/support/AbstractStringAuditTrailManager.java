@@ -32,12 +32,12 @@ import com.github.inspektr.audit.AuditTrailManager;
 public abstract class AbstractStringAuditTrailManager implements AuditTrailManager {
 
     /** Use multi-line output by default **/
-    private Boolean useSingleLine = new Boolean("False");
+    private Boolean useSingleLine = false;
 
     /** Separator for single line log entries */
     private String entrySeparator = ",";
 
-    public String getEntrySeparator() {
+    protected String getEntrySeparator() {
             return this.entrySeparator;
     }
 
