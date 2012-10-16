@@ -31,7 +31,33 @@ import com.github.inspektr.audit.AuditTrailManager;
  */
 public abstract class AbstractStringAuditTrailManager implements AuditTrailManager {
 
+    /** Use multi-line output by default **/
+    private boolean useSingleLine = false;
+
+    /** Separator for single line log entries */
+    private String entrySeparator = ",";
+
+    protected String getEntrySeparator() {
+            return this.entrySeparator;
+    }
+
+    public void setEntrySeparator(final String separator) {
+        this.entrySeparator = separator;
+    }
+
+    public void setUseSingleLine(final boolean useSingleLine) {
+        this.useSingleLine = useSingleLine;
+    }
+
     protected String toString(final AuditActionContext auditActionContext) {
+        if(this.useSingleLine) {
+            return getSingleLineAuditString(auditActionContext);
+        } else {
+            return getMultiLineAuditString(auditActionContext);
+        }
+    }
+        
+    protected String getMultiLineAuditString(final AuditActionContext auditActionContext) {
         final StringBuilder builder = new StringBuilder();
         builder.append("Audit trail record BEGIN\n");
         builder.append("=============================================================\n");
@@ -61,4 +87,24 @@ public abstract class AbstractStringAuditTrailManager implements AuditTrailManag
 
         return builder.toString();
     }
+
+    protected String getSingleLineAuditString(final AuditActionContext auditActionContext) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(auditActionContext.getWhenActionWasPerformed());
+        builder.append(getEntrySeparator());
+        builder.append(auditActionContext.getApplicationCode());
+        builder.append(getEntrySeparator());
+        builder.append(auditActionContext.getResourceOperatedUpon());
+        builder.append(getEntrySeparator());
+        builder.append(auditActionContext.getActionPerformed());
+        builder.append(getEntrySeparator());
+        builder.append(auditActionContext.getPrincipal());
+        builder.append(getEntrySeparator());
+        builder.append(auditActionContext.getClientIpAddress());
+        builder.append(getEntrySeparator());
+        builder.append(auditActionContext.getServerIpAddress());
+
+        return builder.toString();
+    }
+
 }
