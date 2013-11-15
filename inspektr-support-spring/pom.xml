@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>com.github.inspektr</groupId>
 		<artifactId>inspektr</artifactId>
-		<version>1.0.8.GA-SNAPSHOT</version>
+		<version>1.1.GA-SNAPSHOT</version>
 	</parent>
 	<description>Inspektr Spring Support</description>
 	<modelVersion>4.0.0</modelVersion>
@@ -63,6 +63,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
             <scope>compile</scope>
         </dependency>
 

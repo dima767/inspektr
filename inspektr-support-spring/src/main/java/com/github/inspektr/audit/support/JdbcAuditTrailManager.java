@@ -37,7 +37,6 @@ package com.github.inspektr.audit.support;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 import com.github.inspektr.audit.AuditTrailManager;
 import com.github.inspektr.audit.AuditActionContext;
@@ -45,7 +44,7 @@ import com.github.inspektr.common.Cleanable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -76,7 +75,7 @@ import javax.validation.constraints.Size;
  * @version $Revision: 1.7 $ $Date: 2007/12/03 22:02:41 $
  * @since 1.0
  */
-public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements AuditTrailManager, Cleanable, DisposableBean {
+public final class JdbcAuditTrailManager extends NamedParameterJdbcDaoSupport implements AuditTrailManager, Cleanable, DisposableBean {
 
     private static final String INSERT_SQL_TEMPLATE = "INSERT INTO %s " +
             "(AUD_USER, AUD_CLIENT_IP, AUD_SERVER_IP, AUD_RESOURCE, AUD_ACTION, APPLIC_CD, AUD_DATE) " +
@@ -151,7 +150,7 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
                             final String resource = auditActionContext.getResourceOperatedUpon().length() <= columnLength ? auditActionContext.getResourceOperatedUpon() : auditActionContext.getResourceOperatedUpon().substring(0, columnLength);
                             final String action = auditActionContext.getActionPerformed().length() <= columnLength ? auditActionContext.getActionPerformed() : auditActionContext.getActionPerformed().substring(0, columnLength);
 
-                            getSimpleJdbcTemplate()
+                            getJdbcTemplate()
                                     .update(
                                             String.format(INSERT_SQL_TEMPLATE, tableName),
                                             userId,
@@ -200,7 +199,7 @@ public final class JdbcAuditTrailManager extends SimpleJdbcDaoSupport implements
                 final List<?> params = cleanupCriteria.getParameterValues();
                 JdbcAuditTrailManager.this.logger.info("Cleaning audit records with query " + sql);
                 JdbcAuditTrailManager.this.logger.debug("Query parameters: " + params);
-                final int count = getSimpleJdbcTemplate().update(sql, params.toArray());
+                final int count = getJdbcTemplate().update(sql, params.toArray());
                 JdbcAuditTrailManager.this.logger.info(count + " records deleted.");
             }
         });
