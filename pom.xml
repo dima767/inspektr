@@ -1,17 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
+        <groupId>org.jasig.parent</groupId>
+        <artifactId>jasig-parent</artifactId>
+        <version>39</version>
     </parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.inspektr</groupId>
-	<artifactId>inspektr</artifactId>
-	<packaging>pom</packaging>
-	<name>Inspektr Auditing Library</name>
-	<version>1.2.GA-SNAPSHOT</version>
-	<url>http://inspektr.github.com</url>
-	<inceptionYear>2007</inceptionYear>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jasig.inspektr</groupId>
+    <artifactId>inspektr</artifactId>
+    <packaging>pom</packaging>
+    <name>Inspektr Auditing Library</name>
+    <version>1.2.GA-SNAPSHOT</version>
+    <url>http://inspektr.github.com</url>
+    <inceptionYear>2007</inceptionYear>
 
     <organization>
         <name>Rutgers, the State University of New Jersey</name>
@@ -27,29 +27,18 @@
         <tag>master</tag>
     </scm>
 
-    <mailingLists>
-        <mailingList>
-            <archive>http://groups.google.com/group/inspektr-dev</archive>
-            <name>Inspektr Development Mailing List</name>
-        </mailingList>
-        <mailingList>
-            <archive>http://groups.google.com/group/inspektr-user</archive>
-            <name>Inspektr User Support Mailing List</name>
-        </mailingList>
-    </mailingLists>
-
     <issueManagement>
-        <url>http://github.com/dima767/inspektr/issues</url>
+        <url>http://github.com/Jasig/inspektr/issues</url>
         <system>Github</system>
     </issueManagement>
 
-	<licenses>
-		<license>
-			<name>Apache 2.0 License</name>
+    <licenses>
+        <license>
+            <name>Apache 2.0 License</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <developers>
         <developer>
@@ -85,58 +74,58 @@
         </developer>
     </developers>
 
-	<build>
-		<testResources>
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-			</testResource>
-		</testResources>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
+    <build>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
-				<configuration>
-					<includes>
-						<include>**/*Tests.java</include>
-					</includes>
-					<excludes>
-						<exclude>**/Abstract*.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Abstract*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
 
             <plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>2.4.2</version>
-					<configuration>
-						<mavenExecutorId>forked-path</mavenExecutorId>
-						<useReleaseProfile>false</useReleaseProfile>
-						<arguments>-Psonatype-oss-release</arguments>
-					</configuration>
-				</plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.4.2</version>
+                    <configuration>
+                        <mavenExecutorId>forked-path</mavenExecutorId>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <arguments>-Psonatype-oss-release</arguments>
+                    </configuration>
+                </plugin>
 
             <plugin>
                 <inherited>false</inherited>
@@ -153,8 +142,8 @@
                     </excludes>
                 </configuration>
             </plugin>
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
@@ -288,10 +277,10 @@
         <javax.validation.version>1.0.0.GA</javax.validation.version>
     </properties>
 
-	<modules>
-		<module>inspektr-common</module>
-		<module>inspektr-error</module>
-		<module>inspektr-audit</module>
-		<module>inspektr-support-spring</module>
-	</modules>
+    <modules>
+        <module>inspektr-common</module>
+        <module>inspektr-error</module>
+        <module>inspektr-audit</module>
+        <module>inspektr-support-spring</module>
+    </modules>
 </project>
