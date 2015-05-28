@@ -1,4 +1,4 @@
-## What is it?
+## Inspektr [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jasig.inspektr/inspektr/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.jasig.inspektr/inspektr)
 
 Inspektr is a very small library designed to capture and record the following pieces of
 runtime information from Spring framework's managed beans i.e. running inside Spring DI container:
