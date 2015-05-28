@@ -1,27 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<groupId>com.github.inspektr</groupId>
-		<artifactId>inspektr</artifactId>
-		<version>1.2.GA-SNAPSHOT</version>
-	</parent>
-	<description>Inspektr Common</description>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.inspektr</groupId>
-	<artifactId>inspektr-common</artifactId>
-	<packaging>jar</packaging>
-	<name>Inspektr - Common API</name>
-	<dependencies>			
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-		</dependency>
+    <parent>
+        <groupId>org.jasig.inspektr</groupId>
+        <artifactId>inspektr</artifactId>
+        <version>1.2.GA-SNAPSHOT</version>
+    </parent>
+    <description>Inspektr Common</description>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>inspektr-common</artifactId>
+    <packaging>jar</packaging>
+    <name>Inspektr - Common API</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>${javax.servlet.version}</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

@@ -55,7 +55,7 @@ Out of the box, Inspektr comes with the following default implementations for al
 ***
 
      /**
-     * Implementation of {@link com.github.inspektr.audit.AuditTrailManager} to persist the
+     * Implementation of {@link org.jasig.inspektr.audit.AuditTrailManager} to persist the
      * audit trail to the  AUDIT_TRAIL table in RDBMS of choice
      * <p/>
      * <pre>
@@ -76,7 +76,7 @@ Out of the box, Inspektr comes with the following default implementations for al
 ```
 
 In addition to the above `AuditTrailManager` imlementations, the default resolvers are available in the
-`com.github.inspektr.audit.spi.support` package
+`org.jasig.inspektr.audit.spi.support` package
 
 ## Configuration
 
@@ -84,7 +84,7 @@ In addition to the above `AuditTrailManager` imlementations, the default resolve
 in the application context definition file: `<aop:aspectj-autoproxy/>` or via AspectJ compile-time weaving by using
  ajc compiler e.g by using AspectJ compiler Maven plugin if using Maven, etc.
 
-2. Configure `com.github.inspektr.common.web.ClientInfoThreadLocalFilter` in `web.xml` (if deploying Servlet-based web application)
+2. Configure `org.jasig.inspektr.common.web.ClientInfoThreadLocalFilter` in `web.xml` (if deploying Servlet-based web application)
 
 3. Configure `AuditTrailManager`s, all the resolvers and wire all of this into the `AuditTrailManagementAspect
 ` in the Spring application context definition file. The following example configuration is taken from 

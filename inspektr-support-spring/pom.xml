@@ -1,46 +1,45 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<groupId>com.github.inspektr</groupId>
-		<artifactId>inspektr</artifactId>
-		<version>1.2.GA-SNAPSHOT</version>
-	</parent>
-	<description>Inspektr Spring Support</description>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.github.inspektr</groupId>
-	<artifactId>inspektr-support-spring</artifactId>
-	<packaging>jar</packaging>
-	<name>Inspektr - Spring Framework Support</name>
-	<dependencies>
-		<dependency>
-			<groupId>com.github.inspektr</groupId>
-			<artifactId>inspektr-audit</artifactId>
-			<version>${project.version}</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+    <parent>
+        <groupId>org.jasig.inspektr</groupId>
+        <artifactId>inspektr</artifactId>
+        <version>1.2.GA-SNAPSHOT</version>
+    </parent>
+    <description>Inspektr Spring Support</description>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>inspektr-support-spring</artifactId>
+    <packaging>jar</packaging>
+    <name>Inspektr - Spring Framework Support</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.jasig.inspektr</groupId>
+            <artifactId>inspektr-audit</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>com.github.inspektr</groupId>
-			<artifactId>inspektr-error</artifactId>
-			<version>${project.version}</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.jasig.inspektr</groupId>
+            <artifactId>inspektr-error</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>com.github.inspektr</groupId>
-			<artifactId>inspektr-common</artifactId>
-			<version>${project.version}</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.jasig.inspektr</groupId>
+            <artifactId>inspektr-common</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
             <scope>compile</scope>
             <optional>true</optional>
-		</dependency>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -74,8 +73,9 @@
 
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet.version}</version>
+            <type>jar</type>
             <scope>provided</scope>
         </dependency>
     </dependencies>
