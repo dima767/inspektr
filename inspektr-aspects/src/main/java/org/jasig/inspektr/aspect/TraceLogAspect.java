@@ -24,7 +24,7 @@ public class TraceLogAspect {
      * @return the object
      * @throws Throwable the throwable
      */
-    @Around("(execution (public * *(..))) && !(execution( * *.set*(..)))")
+    @Around("(execution (public * org.jasig..*.*(..))) && !(execution( * org.jasig..*.set*(..)))")
     public Object traceMethod(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Object returnVal = null;
         final Logger logger = this.getLog(proceedingJoinPoint);
