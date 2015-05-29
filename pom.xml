@@ -244,6 +244,7 @@
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <javax.validation.version>1.0.0.GA</javax.validation.version>
 
+        <maven-aspectj-plugin.version>1.7</maven-aspectj-plugin.version>
         <project.build.sourceVersion>1.7</project.build.sourceVersion>
         <project.build.targetVersion>1.7</project.build.targetVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -254,5 +255,6 @@
         <module>inspektr-error</module>
         <module>inspektr-audit</module>
         <module>inspektr-support-spring</module>
+        <module>inspektr-aspects</module>
     </modules>
 </project>

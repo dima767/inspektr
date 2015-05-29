@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AjcSettings">
+    <option name="ajcPath" value="$MAVEN_REPOSITORY$/org/aspectj/aspectjtools/1.8.5/aspectjtools-1.8.5.jar" />
+    <option name="delegateToJavac" value="true" />
+  </component>
   <component name="CheckStyle-IDEA">
     <option name="configuration">
       <map>
@@ -8,7 +12,7 @@
     </option>
   </component>
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
+    <option name="DEFAULT_COMPILER" value="ajc" />
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="?*.properties" />
@@ -54,9 +58,17 @@
         <processorPath useClasspath="true" />
         <module name="inspektr-common" />
       </profile>
+      <profile default="false" name="Annotation profile for inspektr-aspects" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="inspektr-aspects" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="inspektr" target="1.7" />
+      <module name="inspektr-aspects" target="1.7" />
       <module name="inspektr-audit" target="1.7" />
       <module name="inspektr-common" target="1.7" />
       <module name="inspektr-error" target="1.7" />
@@ -507,6 +519,7 @@
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/inspektr-aspects" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/inspektr-audit" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/inspektr-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/inspektr-error" charset="UTF-8" />
@@ -735,6 +748,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/inspektr.iml" filepath="$PROJECT_DIR$/inspektr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/inspektr-aspects/inspektr-aspects.iml" filepath="$PROJECT_DIR$/inspektr-aspects/inspektr-aspects.iml" />
       <module fileurl="file://$PROJECT_DIR$/inspektr-audit/inspektr-audit.iml" filepath="$PROJECT_DIR$/inspektr-audit/inspektr-audit.iml" />
       <module fileurl="file://$PROJECT_DIR$/inspektr-common/inspektr-common.iml" filepath="$PROJECT_DIR$/inspektr-common/inspektr-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/inspektr-error/inspektr-error.iml" filepath="$PROJECT_DIR$/inspektr-error/inspektr-error.iml" />
