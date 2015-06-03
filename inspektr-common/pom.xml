@@ -2,7 +2,7 @@
     <parent>
         <groupId>org.jasig.inspektr</groupId>
         <artifactId>inspektr</artifactId>
-        <version>1.2.GA</version>
+        <version>1.3.GA-SNAPSHOT</version>
     </parent>
     <description>Inspektr Common</description>
     <modelVersion>4.0.0</modelVersion>
