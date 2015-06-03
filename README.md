@@ -1,4 +1,4 @@
-## Inspektr [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jasig.inspektr/inspektr/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.jasig.inspektr/inspektr)
+## Inspektr [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.jasig.inspektr/inspektr/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.jasig.inspektr/inspektr) [![Build Status](https://travis-ci.org/Jasig/inspektr.png?branch=master)](https://travis-ci.org/Jasig/inspektr)
 
 Inspektr is a very small library designed to capture and record the following pieces of
 runtime information from Spring framework's managed beans i.e. running inside Spring DI container:
