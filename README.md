@@ -11,7 +11,7 @@ runtime information from Spring framework's managed beans i.e. running inside Sp
 * The **CLIENT_IP**: an IP address of the client invoking an audited action
 * The **SERVER_IP**: an IP address of the server running an audited action
 
-Nothing more, nothing less... at the moment at least.
+Nothing more, nothing less.
 
 ## The architecture
 
