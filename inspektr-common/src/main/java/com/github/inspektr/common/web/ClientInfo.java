@@ -44,11 +44,26 @@ public final class ClientInfo {
 	}
 	
 	public ClientInfo(final HttpServletRequest request) {
-		this(request.getLocalAddr(), request.getRemoteAddr());
+		this(request.getLocalAddr(), getIpAddress(request));
 	}
 
     public ClientInfo(final HttpServletRequest request, final String alternateLocation) {
-        this(request.getLocalAddr(), request.getHeader(alternateLocation) != null ? request.getHeader(alternateLocation) : request.getRemoteAddr());
+        this(request.getLocalAddr(), request.getHeader(alternateLocation) != null ? request.getHeader(alternateLocation) : getIpAddress(request));
+    }
+    
+    public static String getIpAddress(HttpServletRequest request) {
+        String localIP = "127.0.0.1";
+        String ip = request.getHeader("x-forwarded-for");
+        if (StringUtils.isBlank(ip) || (ip.equalsIgnoreCase(localIP)) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(ip) || (ip.equalsIgnoreCase(localIP)) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (StringUtils.isBlank(ip) || (ip.equalsIgnoreCase(localIP)) || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 	
 	public ClientInfo(final String serverIpAddress, final String clientIpAddress) {
