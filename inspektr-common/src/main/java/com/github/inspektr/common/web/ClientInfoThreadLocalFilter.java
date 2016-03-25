@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
  * <p>
  * If one provides an alternative IP Address Header (i.e. init-param "alternativeIpAddressHeader"), the client
  * IP address will be read from that instead.
- * 
+ *
  * @author Scott Battaglia
  * @version $Revision$ $Date$
  * @since 1.0
@@ -49,12 +49,12 @@ public final class ClientInfoThreadLocalFilter implements Filter {
 	public void destroy() {
 		// nothing to do here
 	}
-	
+
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain filterChain) throws IOException, ServletException {
 		try {
 			final ClientInfo clientInfo;
 
-            if (otherHeader == null || otherHeader.isEmpty()) {
+            if (otherHeader == null || otherHeader.trim().length()==0) {
                 clientInfo = new ClientInfo((HttpServletRequest) request);
             } else {
                 clientInfo = new ClientInfo((HttpServletRequest) request, this.otherHeader);
